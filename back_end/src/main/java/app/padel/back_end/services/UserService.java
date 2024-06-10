@@ -3,6 +3,7 @@ package app.padel.back_end.services;
 import app.padel.back_end.dto.UserDto;
 import app.padel.back_end.entities.User;
 import app.padel.back_end.enums.Ruolo;
+import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,16 @@ public class UserService {
     public PasswordEncoder passwordEncoder;
 
     public String saveUser(UserDto userDto) {
+       Optional<User> userOptional = getUserByEmail(userDto.getEmail());
+       if(userOptional.isPresent()){
+           throw new BadRequestException("Email già presente nel sistema.");
+       }
+        Optional<User> userOptionalUsername = getUserByUsername(userDto.getUsername());
+
+       if(userOptionalUsername.isPresent()){
+           throw new BadRequestException("Username già presente nel sistema.");
+       }
+
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setNome((userDto.getNome()));
@@ -46,6 +57,9 @@ public class UserService {
 
     public Optional<User> getUserByEmail(String email) {
         return utenteRepository.findByEmail(email);
+    }
+    public Optional<User> getUserByUsername(String username) {
+        return utenteRepository.findByUsername(username);
     }
 
     public User updateUserByAdmin(int id, UserDto userDto) {
@@ -89,6 +103,11 @@ public class UserService {
         }
 
     }
+
+    public boolean existsByEmail(String email) {
+        return utenteRepository.existsByEmail(email);
+    }
+
 
 /*
     public String patchAvatarUtente(MultipartFile foto) throws IOException {

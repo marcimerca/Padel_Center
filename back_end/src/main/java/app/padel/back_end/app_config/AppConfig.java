@@ -30,6 +30,7 @@ public class AppConfig {
 
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers( "/auth/**").permitAll());
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/users/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/check-email/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/**").denyAll());
 
