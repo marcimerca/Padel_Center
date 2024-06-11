@@ -5,7 +5,7 @@ import app.padel.back_end.entities.User;
 import app.padel.back_end.enums.Ruolo;
 import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
-import app.padel.back_end.repositories.UtenteRepository;
+import app.padel.back_end.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    private UtenteRepository utenteRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public PasswordEncoder passwordEncoder;
@@ -41,25 +41,25 @@ public class UserService {
         user.setAvatar(userDto.getAvatar());
         user.setRuolo(Ruolo.USER);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        utenteRepository.save(user);
+        userRepository.save(user);
         return "Utente con username" + user.getUsername() + " inserito correttamente.";
 
     }
 
     public List<User> getAllUsers() {
         ;
-        return utenteRepository.findAll();
+        return userRepository.findAll();
     }
 
     public Optional<User> getUserById(int id) {
-        return utenteRepository.findById(id);
+        return userRepository.findById(id);
     }
 
     public Optional<User> getUserByEmail(String email) {
-        return utenteRepository.findByEmail(email);
+        return userRepository.findByEmail(email);
     }
     public Optional<User> getUserByUsername(String username) {
-        return utenteRepository.findByUsername(username);
+        return userRepository.findByUsername(username);
     }
 
     public User updateUserByAdmin(int id, UserDto userDto) {
@@ -71,7 +71,7 @@ public class UserService {
             user.setUsername(userDto.getUsername());
             user.setEmail(userDto.getEmail());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            utenteRepository.save(user);
+            userRepository.save(user);
             return user;
         } else {
             throw new NotFoundException("L' utente con id " + id + " non è stato trovato");
@@ -87,7 +87,7 @@ public class UserService {
         loggedUser.setUsername(userDto.getUsername());
         loggedUser.setEmail(userDto.getEmail());
         loggedUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        utenteRepository.save(loggedUser);
+        userRepository.save(loggedUser);
         return loggedUser;
     }
 
@@ -96,7 +96,7 @@ public class UserService {
         Optional<User> utenteOptional = getUserById(id);
         if (utenteOptional.isPresent()) {
             User user = utenteOptional.get();
-            utenteRepository.delete(utenteOptional.get());
+            userRepository.delete(utenteOptional.get());
             return "L' utente con id " + id + " è stato eliminato con successo.";
         } else {
             throw new NotFoundException("L' utente con id " + id + " non è stato trovato");
@@ -105,7 +105,7 @@ public class UserService {
     }
 
     public boolean existsByEmail(String email) {
-        return utenteRepository.existsByEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
 

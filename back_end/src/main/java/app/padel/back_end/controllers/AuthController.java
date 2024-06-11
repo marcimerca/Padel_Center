@@ -9,13 +9,11 @@ import app.padel.back_end.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -24,7 +22,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public String register(@RequestBody @Validated UserDto userDto, BindingResult bindingResult) {
 
 
@@ -36,7 +34,7 @@ public class AuthController {
         return userService.saveUser(userDto);
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public AuthDataDto login(@RequestBody @Validated UserLoginDto userLoginDTO, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {

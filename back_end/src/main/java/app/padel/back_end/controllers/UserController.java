@@ -16,18 +16,19 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public User getUserById(@PathVariable int id) {
         Optional<User> utenteOptional = userService.getUserById(id);
@@ -39,7 +40,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public User updateUserByAdmin(@PathVariable int id, @RequestBody @Validated UserDto userDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -50,7 +51,7 @@ public class UserController {
         return userService.updateUserByAdmin(id, userDto);
     }
 
-    @PutMapping("/user/update")
+    @PutMapping("/update")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public User updateUser(@PathVariable int id, @RequestBody @Validated UserDto userDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -61,7 +62,7 @@ public class UserController {
         return userService.updateUser(id, userDto);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteUser(@PathVariable int id) {
         return userService.deleteUser(id);
