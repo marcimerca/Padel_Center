@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,8 +20,13 @@ public class Partita {
 
     private LocalDate dataPartita;
 
-    @OneToMany(mappedBy = "partita")
-    private List<Prenotazione> prenotazioni;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "partite_prenotazioni",
+            joinColumns = @JoinColumn(name = "partita_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> utentiPrenotati = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "slot_orario_id")

@@ -7,6 +7,7 @@ import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.CampoRepository;
 import app.padel.back_end.repositories.SlotOrarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

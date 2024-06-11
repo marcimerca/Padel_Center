@@ -7,8 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -32,14 +34,26 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
 
-    @OneToMany(mappedBy = "user")
-    private List<Prenotazione> prenotazioniUser;
-
+    @ManyToMany(mappedBy = "utentiPrenotati")
+    private List<Partita> partitePrenotate = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(ruolo.name()));
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {

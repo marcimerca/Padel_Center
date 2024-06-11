@@ -32,7 +32,11 @@ public class AppConfig {
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/users/**").permitAll());
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/campi/**").permitAll());
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/slot-orari/**").permitAll());
+
+        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/partite/**").permitAll());
+
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/check-email/**").permitAll());
+
 
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/**").denyAll());
 
