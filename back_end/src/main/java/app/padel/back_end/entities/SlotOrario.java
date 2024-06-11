@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -15,8 +16,8 @@ public class SlotOrario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private LocalDateTime inizio;
-    private LocalDateTime fine;
+    private LocalTime inizio;
+    private LocalTime fine;
 
     @ManyToOne
     @JoinColumn(name = "campo_id")

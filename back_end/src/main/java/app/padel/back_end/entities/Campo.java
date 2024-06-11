@@ -1,5 +1,6 @@
 package app.padel.back_end.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,10 +17,8 @@ public class Campo {
     private String nomeCampo;
 
     @OneToMany(mappedBy = "campo")
+    @JsonIgnore
     private List<SlotOrario> slotOrari;
-
-
-
 
 
 }
