@@ -15,7 +15,7 @@ export class LoginComponent {
     this.authSrv.login(form.value).subscribe(
       () => {
         alert('Login completato!');
-        this.router.navigate(['/']);
+        this.router.navigate(['partite-del-giorno']);
       },
       (error) => {
         alert(error);

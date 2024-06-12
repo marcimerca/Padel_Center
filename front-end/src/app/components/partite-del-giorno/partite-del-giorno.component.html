@@ -1,0 +1,29 @@
+<div class="container text-center w-50" *ngIf="partite">
+  <h1>Partite del giorno</h1>
+  <div *ngFor="let partita of partite" class="border border-1 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">
+          {{ partita.slotOrario.inizio }} - {{ partita.slotOrario.fine }}
+        </h5>
+        <p class="card-text">
+          Giocatori attuali: {{ partita.numGiocatoriAttuali }}
+        </p>
+        <div class="d-flex flex-wrap">
+          <div *ngFor="let giocatore of partita.utentiPrenotati" class="me-2">
+            <div class="rounded-circle p-2 bg-info w-100 h-100">
+              {{ giocatore.nome }}
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-success">Button</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="container text-center w-50"
+  *ngIf="!partite || partite.length === 0"
+>
+  Nessuna partita presente per oggi
+</div>

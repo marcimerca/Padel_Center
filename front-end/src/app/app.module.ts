@@ -4,11 +4,16 @@ import { Route, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './auth/token.interceptor';
+import { AuthGuard } from './auth/auth.guard';
+
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { PartiteDelGiornoComponent } from './components/partite-del-giorno/partite-del-giorno.component';
 
 const routes: Route[] = [
   {
@@ -23,6 +28,11 @@ const routes: Route[] = [
     path: 'login',
     component: LoginComponent,
   },
+  {
+    path: 'partite-del-giorno',
+    component: PartiteDelGiornoComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 @NgModule({
   declarations: [
@@ -31,6 +41,7 @@ const routes: Route[] = [
     HomeComponent,
     RegisterComponent,
     LoginComponent,
+    PartiteDelGiornoComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +50,13 @@ const routes: Route[] = [
     HttpClientModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
