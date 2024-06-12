@@ -1,8 +1,7 @@
 package app.padel.back_end.services;
 
 import app.padel.back_end.dto.PartitaDto;
-import app.padel.back_end.dto.UpdatePartitaDto;
-import app.padel.back_end.entities.Campo;
+import app.padel.back_end.dto.UpdatePartita;
 import app.padel.back_end.entities.Partita;
 import app.padel.back_end.entities.SlotOrario;
 import app.padel.back_end.entities.User;
@@ -139,8 +138,7 @@ public class PartitaService {
 
     }
 
-
-    /*public Partita updatePartita(int id, UpdatePartitaDto updatePartitaDto) {
+    public Partita updatePartita(int id, UpdatePartita updatePartitaDto) {
         Optional<Partita> partitaOptional = findPartitaById(id);
 
         if (partitaOptional.isPresent()) {
@@ -179,7 +177,12 @@ public class PartitaService {
         } else {
             throw new NotFoundException("La partita con id " + id + " non è stata trovata.");
         }
-    }*/
+    }
+
+
+
+
+
 
 
 }

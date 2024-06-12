@@ -1,7 +1,7 @@
 package app.padel.back_end.controllers;
 
 import app.padel.back_end.dto.PartitaDto;
-import app.padel.back_end.dto.UpdatePartitaDto;
+import app.padel.back_end.dto.UpdatePartita;
 import app.padel.back_end.entities.Partita;
 import app.padel.back_end.entities.User;
 import app.padel.back_end.exceptions.BadRequestException;
@@ -86,9 +86,9 @@ public class PartitaController {
     }
 
 
-  /*  @PreAuthorize("hasAuthority('ADMIN')")
+   @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/{id}")
-    public Partita updatePartita(@PathVariable int id, @RequestBody @Validated UpdatePartitaDto update, BindingResult bindingResult) {
+    public Partita updatePartita(@PathVariable int id, @RequestBody @Validated UpdatePartita update, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).
                     reduce("", (s, s2) -> s + s2));
@@ -96,7 +96,7 @@ public class PartitaController {
         Partita updatedPartita = partitaService.updatePartita(id, update);
         return updatedPartita;
     }
-*/
+
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @DeleteMapping("/{id}")
