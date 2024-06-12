@@ -1,5 +1,6 @@
 package app.padel.back_end.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,10 +27,14 @@ public class Partita {
             joinColumns = @JoinColumn(name = "partita_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+
+
+    @JsonIgnore
     private List<User> utentiPrenotati = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "slot_orario_id")
+    @JsonIgnore
     private SlotOrario slotOrario;
 
 

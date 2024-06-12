@@ -1,6 +1,7 @@
 package app.padel.back_end.entities;
 
 import app.padel.back_end.enums.Ruolo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

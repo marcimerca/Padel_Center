@@ -36,7 +36,7 @@ public class UserController {
         if (utenteOptional.isPresent()) {
             return utenteOptional.get();
         } else {
-            throw new NotFoundException("Utente con id " + id + " non è stato trovato.");
+            throw new NotFoundException("L' utente con id " + id + " non è stato trovato.");
         }
     }
 
