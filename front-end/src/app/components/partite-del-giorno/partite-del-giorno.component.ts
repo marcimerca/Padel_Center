@@ -17,4 +17,17 @@ export class PartiteDelGiornoComponent implements OnInit {
       this.partite = data;
     });
   }
+
+  aggiungi(partita: Partita) {
+    const datiDaInviare = {
+      dataPartita: partita.dataPartita,
+      slotOrarioId: partita.slotOrario.id,
+    };
+    this.partitaSrv.aggiungiAPartita(datiDaInviare).subscribe(() => {
+      console.log('Sei stato aggiunto alla partita');
+    });
+    this.partitaSrv.getPartitePerGiorno().subscribe((data) => {
+      this.partite = data;
+    });
+  }
 }

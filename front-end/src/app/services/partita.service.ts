@@ -19,4 +19,10 @@ export class PartitaService {
       `${this.apiURL}partite/per-data?data=${dataFormattata}`
     );
   }
+
+  aggiungiAPartita(partita: Partial<Partita>) {
+    return this.http.post(`${this.apiURL}partite`, partita, {
+      responseType: 'text',
+    });
+  }
 }

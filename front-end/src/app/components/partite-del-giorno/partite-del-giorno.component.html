@@ -1,16 +1,24 @@
 <div class="container text-center mt-3" *ngIf="partite">
   <h1 class="mb-3">Partite del giorno</h1>
   <div *ngFor="let partita of partite" class="mb-3">
-    <div class="card rounded-5">
-      <div class="card-body">
-        <h5 class="card-title">{{ partita.slotOrario.campo.nomeCampo }}</h5>
-        <h5 class="card-subtitle mb-3">
-          {{ partita.slotOrario.inizio }} - {{ partita.slotOrario.fine }}
-        </h5>
+    <div class="card rounded-5 p-1">
+      <div
+        class="card-body text-start my-3 d-flex flex-column justify-content-center gap-4"
+      >
+        <div class="border-bottom border-secondary">
+          <h5 class="card-title m-0">
+            {{ partita.slotOrario.campo.nomeCampo }}
+          </h5>
+          <h5 class="card-subtitle m-0">
+            {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
+            {{ partita.slotOrario.fine | slice : 0 : 5 }}
+          </h5>
+        </div>
+
         <div class="d-flex justify-content-center">
           <div
             *ngFor="let i of [0, 1, 2, 3]; let j = index"
-            class="d-flex flex-column align-items-center mx-4"
+            class="d-flex flex-column align-items-center mx-4 mx-lg-5"
           >
             <ng-container
               *ngIf="j < partita.utentiPrenotati.length; else placeholderAvatar"
@@ -39,6 +47,7 @@
               <button
                 class="btn btn-success rounded-circle position-relative btn-floating"
                 style="width: 50px; height: 50px"
+                (click)="aggiungi(partita)"
               >
                 <img
                   src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
