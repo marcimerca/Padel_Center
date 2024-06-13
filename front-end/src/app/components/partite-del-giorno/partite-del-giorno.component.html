@@ -3,27 +3,69 @@
   <div *ngFor="let partita of partite" class="border border-1 mb-3">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">
+        <h5 class="card-title">{{ partita.slotOrario.campo.nomeCampo }}</h5>
+        <h5 class="card-subtitle mb-3">
           {{ partita.slotOrario.inizio }} - {{ partita.slotOrario.fine }}
         </h5>
-        <p class="card-text">
-          Giocatori attuali: {{ partita.numGiocatoriAttuali }}
-        </p>
-        <div class="d-flex flex-wrap">
-          <div *ngFor="let giocatore of partita.utentiPrenotati" class="me-2">
-            <div class="rounded-circle p-2 bg-info w-100 h-100">
-              {{ giocatore.nome }}
-            </div>
+        <div class="d-flex justify-content-center">
+          <div
+            *ngFor="let i of [0, 1, 2, 3]; let j = index"
+            class="d-flex flex-column align-items-center mx-2"
+          >
+            <ng-container
+              *ngIf="j < partita.utentiPrenotati.length; else placeholderAvatar"
+            >
+              <div
+                class="rounded-circle d-flex bg-secondary justify-content-center align-items-center overflow-hidden"
+                style="width: 50px; height: 50px"
+              >
+                <ng-container
+                  *ngIf="partita.utentiPrenotati[j].avatar; else defaultAvatar"
+                >
+                  <img
+                    [src]="partita.utentiPrenotati[j].avatar"
+                    alt="{{ partita.utentiPrenotati[j].nome }}"
+                    class="w-100 h-100"
+                    style="object-fit: cover"
+                  />
+                </ng-container>
+                <ng-template #defaultAvatar>
+                  <img
+                    src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
+                    alt="Default Avatar"
+                    class="w-100 h-100"
+                    style="object-fit: cover"
+                  />
+                </ng-template>
+              </div>
+              <div class="mt-2 text-center text-dark">
+                {{ partita.utentiPrenotati[j].nome }}
+              </div>
+            </ng-container>
+            <ng-template #placeholderAvatar>
+              <div
+                class="rounded-circle d-flex bg-primary justify-content-center align-items-center overflow-hidden"
+                style="width: 50px; height: 50px"
+              >
+                <img
+                  src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
+                  alt="Placeholder Avatar"
+                  class="w-100 h-100"
+                  style="object-fit: cover"
+                />
+              </div>
+              <div class="mt-2 text-center">Disponibile</div>
+              <button type="button" class="btn btn-success mt-3">Button</button>
+            </ng-template>
           </div>
         </div>
-        <button type="button" class="btn btn-success">Button</button>
       </div>
     </div>
+    <div
+      class="container text-center w-50"
+      *ngIf="!partite || partite.length === 0"
+    >
+      Nessuna partita presente per oggi
+    </div>
   </div>
-</div>
-<div
-  class="container text-center w-50"
-  *ngIf="!partite || partite.length === 0"
->
-  Nessuna partita presente per oggi
 </div>

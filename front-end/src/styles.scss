@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+
+// @import "mdb-angular-ui-kit/assets/scss/bootstrap/functions";
+
+@import "../node_modules/mdb-angular-ui-kit/assets/scss/bootstrap/functions";
+
+// @import "../node_modules/mdb-angular-ui-kit/assets/scss/free/functions";
+
+$text: #4984;
+$background: #2525cd;
+$primary: #ff0000;
+$secondary: #6c757d;
+$accent: #ffc107;
+$warning: #ffc199;
+$success: #ffc107;
+
+$custom-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "accent": $accent,
+  "light": $text,
+  "danger": lighten($accent, 20%),
+  "warning": lighten($warning, 20%),
+  "success": $accent,
+  "info": $secondary,
+);
+
+@import "../node_modules/mdb-angular-ui-kit/assets/scss/bootstrap/variables";
+// @import "../node_modules/mdb-angular-ui-kit/assets/scss/free/variables";
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "mdb-angular-ui-kit/assets/scss/mdb.scss";
