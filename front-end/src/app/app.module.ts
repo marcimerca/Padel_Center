@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Route, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
@@ -14,6 +15,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PartiteDelGiornoComponent } from './components/partite-del-giorno/partite-del-giorno.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 const routes: Route[] = [
   {
@@ -42,6 +44,7 @@ const routes: Route[] = [
     RegisterComponent,
     LoginComponent,
     PartiteDelGiornoComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ const routes: Route[] = [
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    MdbModalModule,
   ],
   providers: [
     {

@@ -1,4 +1,4 @@
-<div class="container text-center mt-3" *ngIf="partite">
+<div class="container-fluid text-center mt-3" *ngIf="partite">
   <h1 class="mb-3">Partite del giorno</h1>
   <div *ngFor="let partita of partite" class="mb-3">
     <div class="card rounded-5 p-1">
@@ -45,9 +45,10 @@
             </ng-container>
             <ng-template #placeholderAvatar>
               <button
+                [disabled]="isButtonDisabled(partita.slotOrario.inizio)"
+                (click)="openModal(partita)"
                 class="btn btn-success rounded-circle position-relative btn-floating"
                 style="width: 50px; height: 50px"
-                (click)="aggiungi(partita)"
               >
                 <img
                   src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
@@ -78,4 +79,32 @@
       Nessuna partita presente per oggi
     </div>
   </div>
+  <!-- <div
+  
+    class="modal fade modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Sei sicuro di voler partecipare alla partita?
+          </h5>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success">Confermo</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Annulla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
 </div>
