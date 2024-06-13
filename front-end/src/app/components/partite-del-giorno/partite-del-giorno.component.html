@@ -1,7 +1,7 @@
-<div class="container text-center w-50" *ngIf="partite">
-  <h1>Partite del giorno</h1>
-  <div *ngFor="let partita of partite" class="border border-1 mb-3">
-    <div class="card">
+<div class="container text-center mt-3" *ngIf="partite">
+  <h1 class="mb-3">Partite del giorno</h1>
+  <div *ngFor="let partita of partite" class="mb-3">
+    <div class="card rounded-5">
       <div class="card-body">
         <h5 class="card-title">{{ partita.slotOrario.campo.nomeCampo }}</h5>
         <h5 class="card-subtitle mb-3">
@@ -10,52 +10,53 @@
         <div class="d-flex justify-content-center">
           <div
             *ngFor="let i of [0, 1, 2, 3]; let j = index"
-            class="d-flex flex-column align-items-center mx-2"
+            class="d-flex flex-column align-items-center mx-4"
           >
             <ng-container
               *ngIf="j < partita.utentiPrenotati.length; else placeholderAvatar"
             >
-              <div
-                class="rounded-circle d-flex bg-secondary justify-content-center align-items-center overflow-hidden"
-                style="width: 50px; height: 50px"
+              <button
+                class="btn btn-primary rounded-circle position-relative disabled btn-floating"
+                style="width: 50px; height: 50px; border: none"
               >
-                <ng-container
-                  *ngIf="partita.utentiPrenotati[j].avatar; else defaultAvatar"
-                >
-                  <img
-                    [src]="partita.utentiPrenotati[j].avatar"
-                    alt="{{ partita.utentiPrenotati[j].nome }}"
-                    class="w-100 h-100"
-                    style="object-fit: cover"
-                  />
-                </ng-container>
-                <ng-template #defaultAvatar>
-                  <img
-                    src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
-                    alt="Default Avatar"
-                    class="w-100 h-100"
-                    style="object-fit: cover"
-                  />
-                </ng-template>
-              </div>
-              <div class="mt-2 text-center text-dark">
-                {{ partita.utentiPrenotati[j].nome }}
+                <img
+                  [src]="
+                    partita.utentiPrenotati[j].avatar
+                      ? partita.utentiPrenotati[j].avatar
+                      : '../../../assets/Profile-Avatar-PNG-Free-Download.png'
+                  "
+                  alt="{{ partita.utentiPrenotati[j].nome }}"
+                  class="w-100 h-100 rounded-circle img-fluid"
+                  style="object-fit: cover"
+                />
+              </button>
+              <div class="mt-2 text-center text-primary">
+                {{ partita.utentiPrenotati[j].nome.toUpperCase().charAt(0) }}.
+                {{ partita.utentiPrenotati[j].cognome.toUpperCase() }}
               </div>
             </ng-container>
             <ng-template #placeholderAvatar>
-              <div
-                class="rounded-circle d-flex bg-primary justify-content-center align-items-center overflow-hidden"
+              <button
+                class="btn btn-success rounded-circle position-relative btn-floating"
                 style="width: 50px; height: 50px"
               >
                 <img
                   src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
                   alt="Placeholder Avatar"
-                  class="w-100 h-100"
+                  class="w-100 h-100 rounded-circle img-fluid"
                   style="object-fit: cover"
                 />
-              </div>
+                <span
+                  class="position-absolute top-0 end-0 badge bg-primary rounded-pill d-flex justify-content-center align-items-center"
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    transform: translate(30%, -30%);
+                  "
+                  >+</span
+                >
+              </button>
               <div class="mt-2 text-center">Disponibile</div>
-              <button type="button" class="btn btn-success mt-3">Button</button>
             </ng-template>
           </div>
         </div>

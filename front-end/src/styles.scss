@@ -6,13 +6,17 @@
 
 // @import "../node_modules/mdb-angular-ui-kit/assets/scss/free/functions";
 
-$text: #4984;
-$background: #2525cd;
-$primary: #ff0000;
-$secondary: #6c757d;
-$accent: #ffc107;
+$text: #eee9e9;
+$background: #0258c0;
+$primary: #d8e216;
+$secondary: #aab210;
+$accent: #e9f416;
 $warning: #ffc199;
-$success: #ffc107;
+$success: #0258c0;
+
+$link-color: #eee9e9;
+$active-link-color: $secondary;
+$hover-link-color: $primary;
 
 $custom-colors: (
   "primary": $primary,
@@ -21,8 +25,8 @@ $custom-colors: (
   "light": $text,
   "danger": lighten($accent, 20%),
   "warning": lighten($warning, 20%),
-  "success": $accent,
-  "info": $secondary,
+  "success": $success,
+  "info": red,
 );
 
 @import "../node_modules/mdb-angular-ui-kit/assets/scss/bootstrap/variables";
@@ -30,3 +34,29 @@ $custom-colors: (
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import "mdb-angular-ui-kit/assets/scss/mdb.scss";
+
+body {
+  background-color: $background;
+  color: $text;
+}
+
+.navbar-nav .nav-link {
+  color: $link-color;
+}
+
+.navbar-nav .nav-link.active {
+  color: $active-link-color;
+}
+
+.navbar-nav .nav-link:hover {
+  color: $hover-link-color;
+}
+
+.btn {
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  &:hover {
+    background-color: darken($primary, 10%);
+    color: $text;
+    transform: scale(1.1);
+  }
+}
