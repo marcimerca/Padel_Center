@@ -16,6 +16,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PartiteDelGiornoComponent } from './components/partite-del-giorno/partite-del-giorno.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { ProfiloUtenteComponent } from './components/profilo-utente/profilo-utente.component';
 
 const routes: Route[] = [
   {
@@ -35,6 +36,11 @@ const routes: Route[] = [
     component: PartiteDelGiornoComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'profilo-utente',
+    component: ProfiloUtenteComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 @NgModule({
   declarations: [
@@ -45,6 +51,7 @@ const routes: Route[] = [
     LoginComponent,
     PartiteDelGiornoComponent,
     ModalComponent,
+    ProfiloUtenteComponent,
   ],
   imports: [
     BrowserModule,

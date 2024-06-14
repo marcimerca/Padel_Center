@@ -25,4 +25,8 @@ export class PartitaService {
       responseType: 'text',
     });
   }
+
+  findPartiteByUserId(userId: number) {
+    return this.http.get<Partita[]>(`${this.apiURL}partite/user`);
+  }
 }
