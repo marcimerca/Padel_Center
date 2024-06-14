@@ -17,6 +17,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PartiteDelGiornoComponent } from './components/partite-del-giorno/partite-del-giorno.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ProfiloUtenteComponent } from './components/profilo-utente/profilo-utente.component';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
+import { ModalAnnullaPrenotazioneComponent } from './components/modal-annulla-prenotazione/modal-annulla-prenotazione.component';
 
 const routes: Route[] = [
   {
@@ -52,6 +55,8 @@ const routes: Route[] = [
     PartiteDelGiornoComponent,
     ModalComponent,
     ProfiloUtenteComponent,
+    CapitalizeFirstPipe,
+    ModalAnnullaPrenotazioneComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +65,7 @@ const routes: Route[] = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     MdbModalModule,
+    MdbCarouselModule,
   ],
   providers: [
     {

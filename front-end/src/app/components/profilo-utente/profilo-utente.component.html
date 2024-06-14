@@ -1,6 +1,130 @@
-<div class="container">
-  <h1>{{ user?.nome }}</h1>
+<div class="bg-success">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img
+              src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
+              alt="Avatar"
+              class="rounded-circle img-fluid"
+              style="width: 150px"
+            />
+            <h5 class="my-3">{{ user?.username }}</h5>
+
+            <div class="d-grid gap-2">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-mdb-button-init
+                data-mdb-ripple-init
+              >
+                Follow
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-mdb-button-init
+                data-mdb-ripple-init
+              >
+                Message
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-sm-3">
+                <p class="fw-bold mb-0">Nome completo</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="mb-0">
+                  {{ user!.nome | capitalizeFirst }}
+                  {{ user!.cognome | capitalizeFirst }}
+                </p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="fw-bold mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="mb-0">{{ user?.email }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div *ngFor="let partita of partiteUser">
-  <h2>{{ partita.dataPartita }}</h2>
+
+<!-- parte delle partite -->
+<div class="container-fluid text-center mt-3" *ngIf="partiteUser">
+  <div *ngFor="let partita of partiteUser" class="mb-3">
+    <div class="card rounded-5 p-1 d-flex">
+      <div
+        class="card-body text-start my-3 d-flex flex-column justify-content-center gap-4"
+      >
+        <div class="border-bottom border-secondary">
+          <h5 class="card-title m-0">
+            {{ partita.dataPartita }}
+          </h5>
+          <h5 class="card-subtitle m-0">
+            {{ partita.slotOrario.campo.nomeCampo }}
+          </h5>
+          <h5 class="card-subtitle m-0">
+            {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
+            {{ partita.slotOrario.fine | slice : 0 : 5 }}
+          </h5>
+        </div>
+        <div class="d-flex justify-content-center flex-wrap">
+          <div
+            *ngFor="let utente of partita.utentiPrenotati; let j = index"
+            class="d-flex flex-column align-items-center mx-2 mx-lg-4"
+          >
+            <button
+              class="btn btn-primary rounded-circle position-relative disabled btn-floating"
+              style="width: 50px; height: 50px; border: none"
+            >
+              <img
+                [src]="
+                  utente.avatar
+                    ? utente.avatar
+                    : '../../../assets/Profile-Avatar-PNG-Free-Download.png'
+                "
+                alt="{{ utente.nome }}"
+                class="w-100 h-100 rounded-circle img-fluid"
+                style="object-fit: cover"
+              />
+            </button>
+            <div class="mt-2 text-center d-flex align-items-center avatar-text">
+              <span>{{ utente.nome.toUpperCase().charAt(0) }}.</span>
+              <span>{{
+                utente.cognome.charAt(0).toUpperCase() +
+                  utente.cognome.slice(1).toLowerCase()
+              }}</span>
+            </div>
+            <button
+              *ngIf="isFutureDate(partita.dataPartita)"
+              class="btn btn-danger mt-2"
+              (click)="openModal(partita.id!)"
+            >
+              Annulla Prenotazione
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="container text-center w-50"
+      *ngIf="!partiteUser || partiteUser.length === 0"
+    >
+      Nessuna partita presente
+    </div>
+  </div>
 </div>

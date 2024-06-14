@@ -1,0 +1,1 @@
+{"version":3,"sourceRoot":"","sources":["../front-end/src/app/components/profilo-utente/profilo-utente.component.scss"],"names":[],"mappings":"AAAA;EACE","sourcesContent":[".card {\n  background-color: #145fb9;\n}\n"]}
