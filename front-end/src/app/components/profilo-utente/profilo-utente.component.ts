@@ -5,6 +5,7 @@ import { Partita } from 'src/app/models/partita.interface';
 import { PartitaService } from 'src/app/services/partita.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { ModalAnnullaPrenotazioneComponent } from '../modal-annulla-prenotazione/modal-annulla-prenotazione.component';
+import { ModalConfermaAnnullamentoComponent } from '../modal-conferma-annullamento/modal-conferma-annullamento.component';
 
 @Component({
   selector: 'app-profilo-utente',
@@ -16,6 +17,8 @@ export class ProfiloUtenteComponent implements OnInit {
   partiteUser!: Partita[];
 
   modalRef: MdbModalRef<ModalAnnullaPrenotazioneComponent> | null = null;
+
+  modalRef2: MdbModalRef<ModalConfermaAnnullamentoComponent> | null = null;
 
   constructor(
     private authSrv: AuthService,
@@ -42,13 +45,6 @@ export class ProfiloUtenteComponent implements OnInit {
     });
   }
 
-  isFutureDate(dateStr: string): boolean {
-    const today = new Date();
-    const date = new Date(dateStr);
-
-    return date > today;
-  }
-
   annullaPrenotazione(partitaId: number) {
     this.partitaSrv.annullaPrenotazione(partitaId).subscribe(() => {
       console.log('La prenotazione è stata annullata correttamente');
@@ -62,6 +58,8 @@ export class ProfiloUtenteComponent implements OnInit {
               return dateA.getTime() - dateB.getTime();
             })
             .reverse();
+
+          this.openSecondModal();
         });
     });
   }
@@ -76,5 +74,25 @@ export class ProfiloUtenteComponent implements OnInit {
         this.annullaPrenotazione(partitaId);
       }
     });
+  }
+
+  openSecondModal() {
+    this.modalRef2 = this.modalService.open(
+      ModalConfermaAnnullamentoComponent,
+      {
+        modalClass: 'modal-dialog-centered',
+      }
+    );
+  }
+
+  isFutureDate(dateStr: string): boolean {
+    const date = new Date(dateStr);
+    return date > new Date();
+  }
+
+  isFutureDateMoreThan24Hours(dateStr: string): boolean {
+    const date = new Date(dateStr);
+    const timeDiffInHours = (date.getTime() - Date.now()) / (1000 * 3600);
+    return date > new Date() && timeDiffInHours > 24;
   }
 }

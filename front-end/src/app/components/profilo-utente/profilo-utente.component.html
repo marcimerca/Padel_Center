@@ -109,15 +109,24 @@
                   utente.cognome.slice(1).toLowerCase()
               }}</span>
             </div>
-            <button
-              *ngIf="isFutureDate(partita.dataPartita)"
-              class="btn btn-danger mt-2"
-              (click)="openModal(partita.id!)"
-            >
-              Annulla Prenotazione
-            </button>
           </div>
         </div>
+        <button
+          *ngIf="isFutureDateMoreThan24Hours(partita.dataPartita)"
+          class="btn btn-danger mt-2 w-50 mx-auto"
+          (click)="openModal(partita.id!)"
+        >
+          Annulla
+        </button>
+        <button
+          *ngIf="
+            isFutureDate(partita.dataPartita) &&
+            !isFutureDateMoreThan24Hours(partita.dataPartita)
+          "
+          class="btn btn-danger mt-2"
+        >
+          Contattatare il circolo per annullare la prenotazione
+        </button>
       </div>
     </div>
     <div

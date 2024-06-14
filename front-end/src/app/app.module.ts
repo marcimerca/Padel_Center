@@ -4,6 +4,7 @@ import { Route, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
+import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
@@ -20,6 +21,7 @@ import { ProfiloUtenteComponent } from './components/profilo-utente/profilo-uten
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { ModalAnnullaPrenotazioneComponent } from './components/modal-annulla-prenotazione/modal-annulla-prenotazione.component';
+import { ModalConfermaAnnullamentoComponent } from './components/modal-conferma-annullamento/modal-conferma-annullamento.component';
 
 const routes: Route[] = [
   {
@@ -57,6 +59,7 @@ const routes: Route[] = [
     ProfiloUtenteComponent,
     CapitalizeFirstPipe,
     ModalAnnullaPrenotazioneComponent,
+    ModalConfermaAnnullamentoComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,6 +69,7 @@ const routes: Route[] = [
     RouterModule.forRoot(routes),
     MdbModalModule,
     MdbCarouselModule,
+    MdbTooltipModule,
   ],
   providers: [
     {
