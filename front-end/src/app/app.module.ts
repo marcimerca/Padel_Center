@@ -22,6 +22,8 @@ import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { ModalAnnullaPrenotazioneComponent } from './components/modal-annulla-prenotazione/modal-annulla-prenotazione.component';
 import { ModalConfermaAnnullamentoComponent } from './components/modal-conferma-annullamento/modal-conferma-annullamento.component';
+import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
+import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 
 const routes: Route[] = [
   {
@@ -70,6 +72,8 @@ const routes: Route[] = [
     MdbModalModule,
     MdbCarouselModule,
     MdbTooltipModule,
+    MdbValidationModule,
+    MdbFormsModule,
   ],
   providers: [
     {

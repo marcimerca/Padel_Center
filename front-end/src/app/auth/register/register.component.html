@@ -1,134 +1,430 @@
-<div class="container mt-3 text-center w-50">
-  <form [formGroup]="registerForm" (ngSubmit)="register(registerForm)">
-    <div>
-      <label for="username" class="form-label">Username</label>
-      <input
-        type="text"
-        id="username"
-        name="username"
-        class="form-control"
-        formControlName="username"
-        autocomplete="username"
-      />
-    </div>
-    <span
-      *ngIf="
-        getFormControl('username')?.invalid &&
-        getFormControl('username')?.touched
-      "
-    >
-      <ng-container *ngIf="getErrorsControl('username', 'required')">
-        <p class="text-danger">Il campo username è obbligatorio</p>
-      </ng-container>
-      <ng-container *ngIf="getErrorsControl('username', 'minlength')">
-        <p class="text-danger">
-          Il campo username deve avere almeno 5 caratteri
-        </p>
-      </ng-container>
-    </span>
-    <div>
-      <label for="nome" class="form-label">Nome</label>
-
-      <input
-        type="text"
-        id="nome"
-        name="nome"
-        class="form-control"
-        formControlName="nome"
-        autocomplete="nome"
-      />
-      <span
-        *ngIf="
-          getFormControl('nome')?.invalid && getFormControl('nome')?.touched
-        "
-      >
-        <ng-container *ngIf="getErrorsControl('nome', 'required')">
-          <p class="text-danger">Il campo nome è obbligatorio</p>
-        </ng-container>
-      </span>
-    </div>
-    <div>
-      <label for="nome" class="form-label">Cognome</label>
-      <input
-        type="text"
-        id="cognome"
-        name="cognome"
-        class="form-control"
-        formControlName="cognome"
-        autocomplete="cognome"
-      />
-      <span
-        *ngIf="
-          getFormControl('cognome')?.invalid &&
-          getFormControl('cognome')?.touched
-        "
-      >
-        <ng-container *ngIf="getErrorsControl('cognome', 'required')">
-          <p class="text-danger">Il campo cognome è obbligatorio</p>
-        </ng-container>
-      </span>
-    </div>
-    <div>
-      <label for="nome" class="form-label">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        class="form-control"
-        formControlName="email"
-        autocomplete="email"
-      />
-      <span
-        *ngIf="
-          getFormControl('email')?.invalid && getFormControl('email')?.touched
-        "
-      >
-        <ng-container *ngIf="getErrorsControl('email', 'required')">
-          <p class="text-danger">Il campo email è obbligatorio</p>
-        </ng-container>
-        <ng-container *ngIf="getErrorsControl('email', 'email')">
-          <p class="text-danger">Il campo deve contenre una mail valida</p>
-        </ng-container>
-        <ng-container
-          *ngIf="
-            getFormControl('email')?.errors &&
-            (getFormControl('email')?.errors)!['alreadyExists']
-          "
+<div class="p-3 p-md-4 p-xl-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xxl-11">
+        <div
+          class="border-light-subtle shadow-lg trasparenza d-flex justify-content-between border border-2 border-opacity-50 border-info p-0"
         >
-          <p class="text-danger">Email già presente nel sistema</p>
-        </ng-container>
-      </span>
+          <div class="row g-0">
+            <div class="col-12 col-md-6">
+              <img
+                class="img-fluid w-100 h-100 object-fit-cover"
+                loading="lazy"
+                src="../../../assets/paddle-tennis-ad-alto-angolo-sulla-linea-bianca.jpg"
+                alt="padel image"
+                id="responsive-image"
+              />
+            </div>
+            <div
+              class="col-12 col-md-6 d-flex align-items-center justify-content-center"
+            >
+              <div class="col-12 col-lg-11 col-xl-10">
+                <div class="card-body p-3 p-md-4 p-xl-5">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="mb-5">
+                        <div class="text-center mb-4"></div>
+                        <h2 class="h4 text-center">Registrati</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <form
+                    [formGroup]="registerForm"
+                    (ngSubmit)="register(registerForm)"
+                  >
+                    <div class="row gy-3 overflow-hidden">
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="username"
+                            id="username"
+                            placeholder="Username"
+                            formControlName="username"
+                            autocomplete="username"
+                            mdbValidate
+                            required
+                          />
+                          <label for="username" class="form-label"
+                            >Username</label
+                          >
+                          <span
+                            *ngIf="
+                              getFormControl('username')?.invalid &&
+                              getFormControl('username')?.touched
+                            "
+                          >
+                            <ng-container
+                              *ngIf="getErrorsControl('username', 'required')"
+                            >
+                              <p class="text-danger">
+                                Il campo username è obbligatorio
+                              </p>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="getErrorsControl('username', 'minlength')"
+                            >
+                              <p class="text-danger">
+                                Il campo username deve avere almeno 5 caratteri
+                              </p>
+                            </ng-container>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="nome"
+                            id="nome"
+                            placeholder="Nome"
+                            formControlName="nome"
+                            autocomplete="nome"
+                            required
+                          />
+                          <label for="nome" class="form-label">Nome</label>
+                          <span
+                            *ngIf="
+                              getFormControl('nome')?.invalid &&
+                              getFormControl('nome')?.touched
+                            "
+                          >
+                            <ng-container
+                              *ngIf="getErrorsControl('nome', 'required')"
+                            >
+                              <p class="text-danger">
+                                Il campo nome è obbligatorio
+                              </p>
+                            </ng-container>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="cognome"
+                            id="cognome"
+                            placeholder="Cognome"
+                            formControlName="cognome"
+                            autocomplete="cognome"
+                            required
+                          />
+                          <label for="cognome" class="form-label"
+                            >Cognome</label
+                          >
+                          <span
+                            *ngIf="
+                              getFormControl('cognome')?.invalid &&
+                              getFormControl('cognome')?.touched
+                            "
+                          >
+                            <ng-container
+                              *ngIf="getErrorsControl('cognome', 'required')"
+                            >
+                              <p class="text-danger">
+                                Il campo cognome è obbligatorio
+                              </p>
+                            </ng-container>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            id="email"
+                            placeholder="la@tuaemail.com"
+                            formControlName="email"
+                            autocomplete="email"
+                            required
+                          />
+                          <label for="email" class="form-label">Email</label>
+                          <span
+                            *ngIf="
+                              getFormControl('email')?.invalid &&
+                              getFormControl('email')?.touched
+                            "
+                          >
+                            <ng-container
+                              *ngIf="getErrorsControl('email', 'required')"
+                            >
+                              <p class="text-danger">
+                                Il campo email è obbligatorio
+                              </p>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="getErrorsControl('email', 'email')"
+                            >
+                              <p class="text-danger">
+                                Il campo deve contenere una mail valida
+                              </p>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="
+                                getFormControl('email')?.errors &&
+                                (getFormControl('email')?.errors)![
+                                  'alreadyExists'
+                                ]
+                              "
+                            >
+                              <p class="text-danger">
+                                Email già presente nel sistema
+                              </p>
+                            </ng-container>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="password"
+                            class="form-control"
+                            name="password"
+                            id="password"
+                            formControlName="password"
+                            autocomplete="password"
+                            placeholder="Password"
+                            required
+                          />
+                          <label for="password" class="form-label"
+                            >Password</label
+                          >
+                          <span
+                            *ngIf="
+                              getFormControl('password')?.invalid &&
+                              getFormControl('password')?.touched
+                            "
+                          >
+                            <ng-container
+                              *ngIf="getErrorsControl('password', 'required')"
+                            >
+                              <p class="text-danger">
+                                Il campo password è obbligatorio
+                              </p>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="getErrorsControl('password', 'minlength')"
+                            >
+                              <p class="text-danger">
+                                La password deve avere almeno 8 caratteri
+                              </p>
+                            </ng-container>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            name="iAgree"
+                            id="iAgree"
+                            required
+                          />
+                          <label
+                            class="form-check-label text-secondary"
+                            for="iAgree"
+                          >
+                            Accetto
+                            <a
+                              href="#!"
+                              class="link-primary text-decoration-none"
+                              >i termini e le condizioni</a
+                            >
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="d-grid">
+                          <button
+                            class="btn btn-secondary shadow-none btn-lg"
+                            [disabled]="registerForm.invalid"
+                            type="submit"
+                          >
+                            Registrati
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="row">
+                    <div class="col-12">
+                      <p class="mb-0 mt-5 text-center">
+                        Hai già un account?
+                        <a href="#!" class="link-primary text-decoration-none"
+                          >Login</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <label for="password" class="form-label">Password</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        class="form-control"
-        formControlName="password"
-        autocomplete="current-password"
-      />
-      <span
-        *ngIf="
-          getFormControl('password')?.invalid &&
-          getFormControl('password')?.touched
-        "
-      >
-        <ng-container *ngIf="getErrorsControl('password', 'required')">
-          <p class="text-danger">Il campo password è obbligatorio</p>
-        </ng-container>
-        <ng-container *ngIf="getErrorsControl('password', 'minlength')">
-          <p class="text-danger">La password deve avere almeno 8 caratteri</p>
-        </ng-container>
-      </span>
-    </div>
-    <button
-      [disabled]="registerForm.invalid"
-      type="submit"
-      class="btn btn-primary mt-2"
-    >
-      Registrati
-    </button>
-  </form>
+  </div>
 </div>
+
+<!-- <div class="container mt-3 card">
+  <div class="row">
+    <div class="col-md-3 d-flex align-items-center">
+      <img
+        src="https://via.placeholder.com/300x600"
+        alt="Registration Image"
+        class="img-fluid rounded"
+        style="max-height: 600px; object-fit: cover"
+      />
+    </div>
+    <div class="col-md-9 text-center">
+      <div class="container mt-3">
+        <form [formGroup]="registerForm" (ngSubmit)="register(registerForm)">
+          <h1 class="mb-4">Registrati</h1>
+          <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="form-control"
+              formControlName="username"
+              autocomplete="username"
+            />
+            <span
+              *ngIf="
+                getFormControl('username')?.invalid &&
+                getFormControl('username')?.touched
+              "
+            >
+              <ng-container *ngIf="getErrorsControl('username', 'required')">
+                <p class="text-danger">Il campo username è obbligatorio</p>
+              </ng-container>
+              <ng-container *ngIf="getErrorsControl('username', 'minlength')">
+                <p class="text-danger">
+                  Il campo username deve avere almeno 5 caratteri
+                </p>
+              </ng-container>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="nome" class="form-label">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              class="form-control"
+              formControlName="nome"
+              autocomplete="nome"
+            />
+            <span
+              *ngIf="
+                getFormControl('nome')?.invalid &&
+                getFormControl('nome')?.touched
+              "
+            >
+              <ng-container *ngIf="getErrorsControl('nome', 'required')">
+                <p class="text-danger">Il campo nome è obbligatorio</p>
+              </ng-container>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="cognome" class="form-label">Cognome</label>
+            <input
+              type="text"
+              id="cognome"
+              name="cognome"
+              class="form-control"
+              formControlName="cognome"
+              autocomplete="cognome"
+            />
+            <span
+              *ngIf="
+                getFormControl('cognome')?.invalid &&
+                getFormControl('cognome')?.touched
+              "
+            >
+              <ng-container *ngIf="getErrorsControl('cognome', 'required')">
+                <p class="text-danger">Il campo cognome è obbligatorio</p>
+              </ng-container>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              formControlName="email"
+              autocomplete="email"
+            />
+            <span
+              *ngIf="
+                getFormControl('email')?.invalid &&
+                getFormControl('email')?.touched
+              "
+            >
+              <ng-container *ngIf="getErrorsControl('email', 'required')">
+                <p class="text-danger">Il campo email è obbligatorio</p>
+              </ng-container>
+              <ng-container *ngIf="getErrorsControl('email', 'email')">
+                <p class="text-danger">
+                  Il campo deve contenere una mail valida
+                </p>
+              </ng-container>
+              <ng-container
+                *ngIf="
+                  getFormControl('email')?.errors &&
+                  (getFormControl('email')?.errors)!['alreadyExists']
+                "
+              >
+                <p class="text-danger">Email già presente nel sistema</p>
+              </ng-container>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              formControlName="password"
+              autocomplete="current-password"
+            />
+            <span
+              *ngIf="
+                getFormControl('password')?.invalid &&
+                getFormControl('password')?.touched
+              "
+            >
+              <ng-container *ngIf="getErrorsControl('password', 'required')">
+                <p class="text-danger">Il campo password è obbligatorio</p>
+              </ng-container>
+              <ng-container *ngIf="getErrorsControl('password', 'minlength')">
+                <p class="text-danger">
+                  La password deve avere almeno 8 caratteri
+                </p>
+              </ng-container>
+            </span>
+          </div>
+          <button
+            [disabled]="registerForm.invalid"
+            type="submit"
+            class="btn btn-primary mt-4"
+          >
+            Registrati
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->

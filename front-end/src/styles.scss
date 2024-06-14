@@ -7,9 +7,9 @@
 // @import "../node_modules/mdb-angular-ui-kit/assets/scss/free/functions";
 
 $text: #eee9e9;
-$background: #0258c0;
+$background: #004275;
 $primary: #d8e216;
-$secondary: #aab210;
+$secondary: #ccd514;
 $accent: #e9f416;
 $warning: #ffc199;
 $success: #0258c0;
@@ -26,7 +26,7 @@ $custom-colors: (
   "danger": lighten($accent, 20%),
   "warning": lighten($warning, 20%),
   "success": $success,
-  "info": red,
+  "info": $text,
 );
 
 @import "../node_modules/mdb-angular-ui-kit/assets/scss/bootstrap/variables";
@@ -55,7 +55,7 @@ body {
 .btn {
   transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   &:hover {
-    background-color: darken($primary, 10%);
+    background-color: $primary;
     color: $text;
     transform: scale(1.1);
   }
