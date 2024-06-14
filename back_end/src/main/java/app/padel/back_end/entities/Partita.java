@@ -29,12 +29,12 @@ public class Partita {
     )
 
 
-    @JsonIgnore
+
     private List<User> utentiPrenotati = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "slot_orario_id")
-    @JsonIgnore
+
     private SlotOrario slotOrario;
 
 

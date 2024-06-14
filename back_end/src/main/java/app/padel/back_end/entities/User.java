@@ -36,6 +36,7 @@ public class User implements UserDetails {
     private Ruolo ruolo;
 
     @ManyToMany(mappedBy = "utentiPrenotati")
+    @JsonIgnore
     private List<Partita> partitePrenotate = new ArrayList<>();
 
     @Override

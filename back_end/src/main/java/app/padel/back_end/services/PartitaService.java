@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -30,45 +31,52 @@ public class PartitaService {
 
     public String savePartita(PartitaDto partitaDto) {
 
-        Optional<SlotOrario> slotOrarioOptional = (slotOrarioRepository.findById(partitaDto.getSlotOrarioId()));
+        Optional<SlotOrario> slotOrarioOptional = slotOrarioRepository.findById(partitaDto.getSlotOrarioId());
 
-        if (slotOrarioOptional.isPresent()) {
-            SlotOrario slotOrario = slotOrarioOptional.get();
-            Optional<Partita> partitaOptional = partitaRepository.findByDataPartitaAndSlotOrario(partitaDto.getDataPartita(), slotOrario);
+        if (slotOrarioOptional.isEmpty()) {
+            throw new NotFoundException("Slot orario non presente");
+        }
 
-            User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SlotOrario slotOrario = slotOrarioOptional.get();
 
-            if (partitaOptional.isPresent()) {
-                Partita partitaEsistente = partitaOptional.get();
+        // Verifica se la data e l'orario della partita sono già passati
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime partitaDateTime = partitaDto.getDataPartita().atTime(slotOrario.getInizio());
 
-                if (partitaEsistente.getNumGiocatoriAttuali() >= partitaEsistente.getNumMaxGiocatori()) {
-                    throw new BadRequestException("La partita per la data " + partitaDto.getDataPartita() + " e lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + " ha già raggiunto il numero massimo di giocatori.");
-                }
-                if (partitaEsistente.getUtentiPrenotati().contains(loggedUser)) {
-                    throw new BadRequestException("Sei già prenotato per questa partita.");
-                } else {
-                    partitaEsistente.getUtentiPrenotati().add(loggedUser);
-                    partitaEsistente.setNumGiocatoriAttuali(partitaEsistente.getNumGiocatoriAttuali() + 1);
-                    partitaRepository.save(partitaEsistente);
-                    return "Sei stato aggiunto con successo alla partita per la data " + partitaDto.getDataPartita() + " e lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + ".";
-                }
+        if (partitaDateTime.isBefore(now)) {
+            throw new BadRequestException("Non è possibile aggiungersi a una partita passata.");
+        }
 
+        Optional<Partita> partitaOptional = partitaRepository.findByDataPartitaAndSlotOrario(partitaDto.getDataPartita(), slotOrario);
+
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (partitaOptional.isPresent()) {
+            Partita partitaEsistente = partitaOptional.get();
+
+            if (partitaEsistente.getNumGiocatoriAttuali() >= partitaEsistente.getNumMaxGiocatori()) {
+                throw new BadRequestException("La partita per la data " + partitaDto.getDataPartita() + " e lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + " ha già raggiunto il numero massimo di giocatori.");
+            }
+            if (partitaEsistente.getUtentiPrenotati().contains(loggedUser)) {
+                throw new BadRequestException("Sei già prenotato per questa partita.");
             } else {
-                Partita partita = new Partita();
-                partita.setDataPartita(partitaDto.getDataPartita());
-                partita.setSlotOrario(slotOrario);
-                partita.setDataPartita(partitaDto.getDataPartita());
-                partita.getUtentiPrenotati().add(loggedUser);
-                partita.setNumGiocatoriAttuali(1);
-                partitaRepository.save(partita);
-                return "Partita per la data " + partitaDto.getDataPartita() + " per lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + " salvata con successo.";
+                partitaEsistente.getUtentiPrenotati().add(loggedUser);
+                partitaEsistente.setNumGiocatoriAttuali(partitaEsistente.getNumGiocatoriAttuali() + 1);
+                partitaRepository.save(partitaEsistente);
+                return "Sei stato aggiunto con successo alla partita per la data " + partitaDto.getDataPartita() + " e lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + ".";
             }
 
         } else {
-            throw new NotFoundException("Slot orario non presente");
+            Partita partita = new Partita();
+            partita.setDataPartita(partitaDto.getDataPartita());
+            partita.setSlotOrario(slotOrario);
+            partita.setDataPartita(partitaDto.getDataPartita());
+            partita.getUtentiPrenotati().add(loggedUser);
+            partita.setNumGiocatoriAttuali(1);
+            partitaRepository.save(partita);
+            return "Partita per la data " + partitaDto.getDataPartita() + " per lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + " salvata con successo.";
         }
     }
-
     public boolean verificaSlotOrarioDisponibile(SlotOrario slotOrario, LocalDate dataPartita) {
         Optional<Partita> partitaOptional = partitaRepository.findByDataPartitaAndSlotOrario(dataPartita, slotOrario);
 
