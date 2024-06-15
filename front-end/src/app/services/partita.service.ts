@@ -17,7 +17,7 @@ export class PartitaService {
     let dataFormattata = dataAttuale.toISOString().split('T')[0];
 
     return this.http.get<Partita[]>(
-      `${this.apiURL}partite/per-data?data=2024-06-13`
+      `${this.apiURL}partite/per-data?data=${dataFormattata}`
     );
   }
 

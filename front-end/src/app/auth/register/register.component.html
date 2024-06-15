@@ -42,7 +42,6 @@
                             id="username"
                             placeholder="Username"
                             formControlName="username"
-                            autocomplete="username"
                             mdbValidate
                             required
                           />
@@ -244,7 +243,7 @@
                       <div class="col-12">
                         <div class="d-grid">
                           <button
-                            class="btn btn-secondary shadow-none btn-lg"
+                            class="btn btn-primary btn-lg text-success"
                             [disabled]="registerForm.invalid"
                             type="submit"
                           >
@@ -258,7 +257,10 @@
                     <div class="col-12">
                       <p class="mb-0 mt-5 text-center">
                         Hai già un account?
-                        <a href="#!" class="link-primary text-decoration-none"
+                        <a
+                          [routerLink]="['/login']"
+                          routerLinkActive="active"
+                          class="link-primary"
                           >Login</a
                         >
                       </p>

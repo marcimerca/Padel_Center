@@ -21,7 +21,16 @@ export class PartiteDelGiornoComponent implements OnInit {
 
   ngOnInit() {
     this.partitaSrv.getPartitePerGiorno().subscribe((data) => {
-      this.partite = data;
+      const now = new Date();
+      this.partite = data.filter((partita) => {
+        const partitaTime = new Date(`1970-01-01T${partita.slotOrario.inizio}`);
+        return (
+          partitaTime.getHours() > now.getHours() ||
+          (partitaTime.getHours() === now.getHours() &&
+            partitaTime.getMinutes() > now.getMinutes())
+        );
+      });
+      console.log(this.partite);
     });
   }
 

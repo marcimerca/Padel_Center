@@ -11,13 +11,18 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   constructor(private authSrv: AuthService, private router: Router) {}
 
+  isLoading = false;
+
   login(form: NgForm) {
+    this.isLoading = true;
     this.authSrv.login(form.value).subscribe(
       () => {
-        alert('Login completato!');
-        this.router.navigate(['partite-del-giorno']);
+        setTimeout(() => {
+          this.router.navigate(['partite-del-giorno']);
+        }, 1000);
       },
       (error) => {
+        this.isLoading = false;
         alert(error);
       }
     );

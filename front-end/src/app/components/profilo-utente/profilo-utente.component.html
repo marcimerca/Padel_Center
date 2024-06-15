@@ -1,8 +1,8 @@
-<div class="bg-success">
+<div class="trasparenza">
   <div class="container py-5">
     <div class="row">
       <div class="col-lg-4">
-        <div class="card mb-4">
+        <div class="card mb-4 trasparenza">
           <div class="card-body text-center">
             <img
               src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
@@ -11,38 +11,28 @@
               style="width: 150px"
             />
             <h5 class="my-3">{{ user?.username }}</h5>
-
-            <div class="d-grid gap-2">
-              <button
-                type="button"
-                class="btn btn-primary"
-                data-mdb-button-init
-                data-mdb-ripple-init
-              >
-                Follow
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                data-mdb-button-init
-                data-mdb-ripple-init
-              >
-                Message
-              </button>
-            </div>
           </div>
         </div>
       </div>
       <div class="col-lg-8">
-        <div class="card mb-4">
+        <div class="card mb-4 trasparenza">
           <div class="card-body">
             <div class="row mb-3">
               <div class="col-sm-3">
-                <p class="fw-bold mb-0">Nome completo</p>
+                <p class="fw-bold mb-0">Nome</p>
               </div>
               <div class="col-sm-9">
                 <p class="mb-0">
                   {{ user!.nome | capitalizeFirst }}
+                </p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-sm-3">
+                <p class="fw-bold mb-0">Cognome</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="mb-0">
                   {{ user!.cognome | capitalizeFirst }}
                 </p>
               </div>
@@ -65,8 +55,10 @@
 
 <!-- parte delle partite -->
 <div class="container-fluid text-center mt-3" *ngIf="partiteUser">
+  <h1>Le tue partite</h1>
+
   <div *ngFor="let partita of partiteUser" class="mb-3">
-    <div class="card rounded-5 p-1 d-flex">
+    <div class="card rounded-5 p-1 d-flex trasparenza">
       <div
         class="card-body text-start my-3 d-flex flex-column justify-content-center gap-4"
       >
@@ -113,20 +105,21 @@
         </div>
         <button
           *ngIf="isFutureDateMoreThan24Hours(partita.dataPartita)"
-          class="btn btn-danger mt-2 w-50 mx-auto"
+          class="btn btn-primary text-success mx-auto shadow-none"
           (click)="openModal(partita.id!)"
         >
           Annulla
         </button>
-        <button
+        <a
           *ngIf="
-            isFutureDate(partita.dataPartita) &&
-            !isFutureDateMoreThan24Hours(partita.dataPartita)
+            isToday(partita.dataPartita) ||
+            (isFutureDate(partita.dataPartita) &&
+              !isFutureDateMoreThan24Hours(partita.dataPartita))
           "
-          class="btn btn-danger mt-2"
+          class="text-primary mx-auto shadow-none"
         >
           Contattatare il circolo per annullare la prenotazione
-        </button>
+        </a>
       </div>
     </div>
     <div

@@ -25,10 +25,10 @@ export class ProfiloUtenteComponent implements OnInit {
     private partitaSrv: PartitaService,
     private modalService: MdbModalService
   ) {}
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.authSrv.user$.subscribe((user) => {
       this.user = user;
+
       if (this.user && this.user.id) {
         this.partitaSrv
           .findPartiteByUserId(this.user.id)
@@ -84,15 +84,51 @@ export class ProfiloUtenteComponent implements OnInit {
       }
     );
   }
-
+  isPastDate(dateString: string): boolean {
+    return new Date(dateString) <= new Date();
+  }
   isFutureDate(dateStr: string): boolean {
     const date = new Date(dateStr);
     return date > new Date();
   }
 
+  isToday(dateStr: string): boolean {
+    const date = new Date(dateStr);
+    const now = new Date();
+
+    // Verifica se la data è oggi
+    const isToday =
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear();
+
+    if (!isToday) {
+      return false;
+    }
+
+    // Verifica se l'orario della partita è nel futuro rispetto all'ora attuale
+    const hoursDiff = date.getHours() - now.getHours();
+    const minutesDiff = date.getMinutes() - now.getMinutes();
+
+    // Considera solo le partite che sono entro 24 ore in futuro
+    if (
+      hoursDiff < 24 &&
+      (hoursDiff > 0 || (hoursDiff === 0 && minutesDiff > 0))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   isFutureDateMoreThan24Hours(dateStr: string): boolean {
     const date = new Date(dateStr);
-    const timeDiffInHours = (date.getTime() - Date.now()) / (1000 * 3600);
-    return date > new Date() && timeDiffInHours > 24;
+    const now = new Date();
+
+    // Calcola la differenza in millisecondi tra le due date
+    const timeDiff = date.getTime() - now.getTime();
+
+    // Verifica se la data è nel futuro e più di 24 ore nel futuro
+    return timeDiff > 0 && timeDiff > 24 * 60 * 60 * 1000;
   }
 }

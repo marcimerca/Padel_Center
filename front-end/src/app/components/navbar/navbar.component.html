@@ -1,9 +1,9 @@
-<!-- Navbar -->
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg">
   <div class="container">
-    <a class="navbar-brand" [routerLink]="['/']">Padel App</a>
-    <!-- Utilizza le classi specifiche di MDBootstrap per il navbar-toggler -->
+    <a class="nav-link navbar-brand text-info" [routerLink]="['/']"
+      >Padel App</a
+    >
+
     <button
       class="navbar-toggler"
       type="button"
@@ -15,12 +15,12 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <!-- Utilizza le classi specifiche di MDBootstrap per la navbar-collapse -->
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a
-            class="nav-link active"
+            class="nav-link"
             aria-current="page"
             [routerLink]="['/']"
             routerLinkActive="active"
@@ -61,9 +61,7 @@
           >
         </li>
       </ul>
-      <h5 *ngIf="user" class="text-dark text-black me-4">
-        Benvenuto {{ user.nome }}
-      </h5>
+      <h5 *ngIf="user" class="me-4">Benvenuto {{ user.nome }}</h5>
       <button *ngIf="user" class="btn btn-secondary me-2" (click)="logout()">
         Logout
       </button>

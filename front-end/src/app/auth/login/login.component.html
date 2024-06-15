@@ -1,34 +1,109 @@
-<div class="container w-50 text-center mt-4">
-  <h1>Login</h1>
-  <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-    <div class="form-group">
-      <label for="email" class="form-label">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        required
-        autocomplete="email"
-        class="form-control"
-        ngModel
-      />
-      <label for="password" class="form-label">Password</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        required
-        autocomplete="current-password"
-        class="form-control"
-        ngModel
-      />
+<div class="p-3 p-md-4 p-xl-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xxl-11">
+        <div
+          class="border-light-subtle shadow-lg trasparenza d-flex justify-content-between border border-2 border-opacity-50 border-info p-0"
+        >
+          <div class="row g-0">
+            <div
+              class="col-12 col-md-6 d-flex align-items-center justify-content-center"
+            >
+              <div class="col-12 col-lg-11 col-xl-10">
+                <div class="card-body p-3 p-md-4 p-xl-5">
+                  <div class="row">
+                    <div class="col-12">
+                      <div>
+                        <div class="text-center mb-5">
+                          <h1>Sei pronto per tornare a giocare?</h1>
+                        </div>
+                        <h2 class="h4 text-center">Login</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+                    <div class="row gy-3 overflow-hidden form-group">
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            id="email"
+                            placeholder="la@tuaemail.com"
+                            ngModel
+                            autocomplete="email"
+                            required
+                          />
+                          <label for="email" class="form-label">Email</label>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="password"
+                            class="form-control"
+                            name="password"
+                            id="password"
+                            ngModel
+                            autocomplete="password"
+                            placeholder="Password"
+                            required
+                          />
+                          <label for="password" class="form-label"
+                            >Password</label
+                          >
+                        </div>
+                      </div>
+                      <div class="col-12"></div>
+                      <div class="col-12">
+                        <div class="d-grid">
+                          <button
+                            class="btn btn-primary btn-lg text-success"
+                            type="submit"
+                          >
+                            Login
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="isLoading"
+                        class="d-flex justify-content-center mt-3"
+                      >
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="row">
+                    <div class="col-12">
+                      <p class="mb-0 mt-5 text-center">
+                        Non hai un account?
+                        <a
+                          [routerLink]="['/register']"
+                          routerLinkActive="active"
+                          class="link-primary"
+                          >Registrati</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 position-relative">
+              <img
+                class="img-fluid w-100 h-100 object-fit-cover"
+                loading="lazy"
+                src="../../../assets/person-getting-ready-play-paddle-tennis-inside.jpg"
+                alt="padel image"
+                id="responsive-image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <button
-      type="submit"
-      [disabled]="loginForm.invalid"
-      class="btn btn-primary mt-4 text-success shadow-none"
-    >
-      Accedi
-    </button>
-  </form>
+  </div>
 </div>
