@@ -14,10 +14,10 @@ import { ModalConfermaAnnullamentoComponent } from '../modal-conferma-annullamen
 })
 export class ProfiloUtenteComponent implements OnInit {
   user!: AuthData | null;
-  partiteUser!: Partita[];
+  partiteDaGiocare: Partita[] = [];
+  partitePassate: Partita[] = [];
 
   modalRef: MdbModalRef<ModalAnnullaPrenotazioneComponent> | null = null;
-
   modalRef2: MdbModalRef<ModalConfermaAnnullamentoComponent> | null = null;
 
   constructor(
@@ -25,6 +25,7 @@ export class ProfiloUtenteComponent implements OnInit {
     private partitaSrv: PartitaService,
     private modalService: MdbModalService
   ) {}
+
   ngOnInit(): void {
     this.authSrv.user$.subscribe((user) => {
       this.user = user;
@@ -33,13 +34,58 @@ export class ProfiloUtenteComponent implements OnInit {
         this.partitaSrv
           .findPartiteByUserId(this.user.id)
           .subscribe((partite) => {
-            this.partiteUser = partite
-              .sort((a, b) => {
-                const dateA = new Date(a.slotOrario.inizio);
-                const dateB = new Date(b.slotOrario.inizio);
-                return dateA.getTime() - dateB.getTime();
+            const now = new Date();
+            const today = new Date(
+              now.getFullYear(),
+              now.getMonth(),
+              now.getDate()
+            );
+
+            this.partiteDaGiocare = partite
+              .filter((partita) => {
+                const partitaTime = new Date(
+                  partita.dataPartita + 'T' + partita.slotOrario.inizio
+                );
+                return (
+                  partitaTime > now ||
+                  (partitaTime.getTime() === today.getTime() &&
+                    (partitaTime.getHours() > now.getHours() ||
+                      (partitaTime.getHours() === now.getHours() &&
+                        partitaTime.getMinutes() > now.getMinutes())))
+                );
               })
-              .reverse();
+              .sort((a, b) => {
+                const dateA = new Date(
+                  a.dataPartita + 'T' + a.slotOrario.inizio
+                );
+                const dateB = new Date(
+                  b.dataPartita + 'T' + b.slotOrario.inizio
+                );
+                return dateA.getTime() - dateB.getTime();
+              });
+
+            this.partitePassate = partite
+              .filter((partita) => {
+                const partitaTime = new Date(
+                  partita.dataPartita + 'T' + partita.slotOrario.inizio
+                );
+                return (
+                  partitaTime < now ||
+                  (partitaTime.getTime() === today.getTime() &&
+                    (partitaTime.getHours() < now.getHours() ||
+                      (partitaTime.getHours() === now.getHours() &&
+                        partitaTime.getMinutes() <= now.getMinutes())))
+                );
+              })
+              .sort((a, b) => {
+                const dateA = new Date(
+                  a.dataPartita + 'T' + a.slotOrario.inizio
+                );
+                const dateB = new Date(
+                  b.dataPartita + 'T' + b.slotOrario.inizio
+                );
+                return dateB.getTime() - dateA.getTime();
+              });
           });
       }
     });
@@ -51,13 +97,36 @@ export class ProfiloUtenteComponent implements OnInit {
       this.partitaSrv
         .findPartiteByUserId(this.user!.id)
         .subscribe((partite) => {
-          this.partiteUser = partite
+          const now = new Date();
+          this.partiteDaGiocare = partite
+            .filter((partita) => {
+              const partitaTime = new Date(
+                `1970-01-01T${partita.slotOrario.inizio}`
+              );
+              return (
+                partitaTime > now ||
+                (partitaTime.getHours() === now.getHours() &&
+                  partitaTime.getMinutes() > now.getMinutes())
+              );
+            })
             .sort((a, b) => {
               const dateA = new Date(a.slotOrario.inizio);
               const dateB = new Date(b.slotOrario.inizio);
               return dateA.getTime() - dateB.getTime();
+            });
+
+          this.partitePassate = partite
+            .filter((partita) => {
+              const partitaTime = new Date(
+                `1970-01-01T${partita.slotOrario.inizio}`
+              );
+              return partitaTime < now;
             })
-            .reverse();
+            .sort((a, b) => {
+              const dateA = new Date(a.slotOrario.inizio);
+              const dateB = new Date(b.slotOrario.inizio);
+              return dateB.getTime() - dateA.getTime();
+            });
 
           this.openSecondModal();
         });
@@ -84,9 +153,11 @@ export class ProfiloUtenteComponent implements OnInit {
       }
     );
   }
+
   isPastDate(dateString: string): boolean {
     return new Date(dateString) <= new Date();
   }
+
   isFutureDate(dateStr: string): boolean {
     const date = new Date(dateStr);
     return date > new Date();
@@ -96,7 +167,6 @@ export class ProfiloUtenteComponent implements OnInit {
     const date = new Date(dateStr);
     const now = new Date();
 
-    // Verifica se la data è oggi
     const isToday =
       date.getDate() === now.getDate() &&
       date.getMonth() === now.getMonth() &&
@@ -106,11 +176,9 @@ export class ProfiloUtenteComponent implements OnInit {
       return false;
     }
 
-    // Verifica se l'orario della partita è nel futuro rispetto all'ora attuale
     const hoursDiff = date.getHours() - now.getHours();
     const minutesDiff = date.getMinutes() - now.getMinutes();
 
-    // Considera solo le partite che sono entro 24 ore in futuro
     if (
       hoursDiff < 24 &&
       (hoursDiff > 0 || (hoursDiff === 0 && minutesDiff > 0))
@@ -125,10 +193,8 @@ export class ProfiloUtenteComponent implements OnInit {
     const date = new Date(dateStr);
     const now = new Date();
 
-    // Calcola la differenza in millisecondi tra le due date
     const timeDiff = date.getTime() - now.getTime();
 
-    // Verifica se la data è nel futuro e più di 24 ore nel futuro
     return timeDiff > 0 && timeDiff > 24 * 60 * 60 * 1000;
   }
 }

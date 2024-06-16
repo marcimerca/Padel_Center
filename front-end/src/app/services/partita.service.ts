@@ -12,12 +12,18 @@ export class PartitaService {
 
   constructor(private http: HttpClient) {}
 
-  getPartitePerGiorno() {
+  getPartiteOggi() {
     let dataAttuale = new Date();
     let dataFormattata = dataAttuale.toISOString().split('T')[0];
 
     return this.http.get<Partita[]>(
       `${this.apiURL}partite/per-data?data=${dataFormattata}`
+    );
+  }
+
+  getPartitePerData(data: string) {
+    return this.http.get<Partita[]>(
+      `${this.apiURL}partite/per-data?data=${data}`
     );
   }
 

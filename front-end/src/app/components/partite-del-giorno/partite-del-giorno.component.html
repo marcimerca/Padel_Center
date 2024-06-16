@@ -1,5 +1,18 @@
+<div class="container w-25">
+  <label for="data">Scegli data</label>
+  <input
+    type="date"
+    name="data"
+    class="form-control"
+    (input)="onCambioData()"
+    [(ngModel)]="dataSelezionata"
+    [min]="mostraDaOggi()"
+  />
+</div>
+
 <div class="container-fluid text-center mt-3" *ngIf="partite">
   <h1 class="mb-3">Partite del giorno</h1>
+
   <div *ngFor="let partita of partite" class="mb-3">
     <div class="card trasparenza rounded-5 p-1 d-flex">
       <div
@@ -98,10 +111,10 @@
       </div>
     </div>
   </div>
-  <div
-    class="container text-center w-50"
-    *ngIf="!partite || partite.length === 0"
-  >
+  <ng-container *ngIf="dataOggi && partite.length === 0">
     Nessuna partita presente per oggi
-  </div>
+  </ng-container>
+  <ng-container *ngIf="!dataOggi && partite.length === 0">
+    Nessuna partita presente per la data {{ formatDate(dataSelezionata) }}
+  </ng-container>
 </div>

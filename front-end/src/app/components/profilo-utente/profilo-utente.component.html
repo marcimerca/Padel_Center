@@ -54,10 +54,13 @@
 </div>
 
 <!-- parte delle partite -->
-<div class="container-fluid text-center mt-3" *ngIf="partiteUser">
-  <h1>Le tue partite</h1>
+<div
+  class="container-fluid text-center mt-3"
+  *ngIf="partiteDaGiocare && partiteDaGiocare.length > 0"
+>
+  <h1>Le tue partite da giocare</h1>
 
-  <div *ngFor="let partita of partiteUser" class="mb-3">
+  <div *ngFor="let partita of partiteDaGiocare" class="mb-3">
     <div class="card rounded-5 p-1 d-flex trasparenza">
       <div
         class="card-body text-start my-3 d-flex flex-column justify-content-center gap-4"
@@ -122,11 +125,78 @@
         </a>
       </div>
     </div>
-    <div
-      class="container text-center w-50"
-      *ngIf="!partiteUser || partiteUser.length === 0"
-    >
-      Nessuna partita presente
+  </div>
+</div>
+<div
+  class="container-fluid text-center mt-3"
+  *ngIf="partitePassate && partitePassate.length > 0"
+>
+  <h1>Le tue partite passate</h1>
+
+  <div *ngFor="let partita of partitePassate" class="mb-3">
+    <div class="card rounded-5 p-1 d-flex trasparenza">
+      <div
+        class="card-body text-start my-3 d-flex flex-column justify-content-center gap-4"
+      >
+        <div class="border-bottom border-secondary">
+          <h5 class="card-title m-0">
+            {{ partita.dataPartita }}
+          </h5>
+          <h5 class="card-subtitle m-0">
+            {{ partita.slotOrario.campo.nomeCampo }}
+          </h5>
+          <h5 class="card-subtitle m-0">
+            {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
+            {{ partita.slotOrario.fine | slice : 0 : 5 }}
+          </h5>
+        </div>
+        <div class="d-flex justify-content-center flex-wrap">
+          <div
+            *ngFor="let utente of partita.utentiPrenotati; let j = index"
+            class="d-flex flex-column align-items-center mx-2 mx-lg-4"
+          >
+            <button
+              class="btn btn-primary rounded-circle position-relative disabled btn-floating"
+              style="width: 50px; height: 50px; border: none"
+            >
+              <img
+                [src]="
+                  utente.avatar
+                    ? utente.avatar
+                    : '../../../assets/Profile-Avatar-PNG-Free-Download.png'
+                "
+                alt="{{ utente.nome }}"
+                class="w-100 h-100 rounded-circle img-fluid"
+                style="object-fit: cover"
+              />
+            </button>
+            <div class="mt-2 text-center d-flex align-items-center avatar-text">
+              <span>{{ utente.nome.toUpperCase().charAt(0) }}.</span>
+              <span>{{
+                utente.cognome.charAt(0).toUpperCase() +
+                  utente.cognome.slice(1).toLowerCase()
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <button
+          *ngIf="isFutureDateMoreThan24Hours(partita.dataPartita)"
+          class="btn btn-primary text-success mx-auto shadow-none"
+          (click)="openModal(partita.id!)"
+        >
+          Annulla
+        </button>
+        <a
+          *ngIf="
+            isToday(partita.dataPartita) ||
+            (isFutureDate(partita.dataPartita) &&
+              !isFutureDateMoreThan24Hours(partita.dataPartita))
+          "
+          class="text-primary mx-auto shadow-none"
+        >
+          Contattatare il circolo per annullare la prenotazione
+        </a>
+      </div>
     </div>
   </div>
 </div>

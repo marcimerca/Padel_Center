@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
+import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
@@ -24,6 +25,7 @@ import { ModalAnnullaPrenotazioneComponent } from './components/modal-annulla-pr
 import { ModalConfermaAnnullamentoComponent } from './components/modal-conferma-annullamento/modal-conferma-annullamento.component';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { ScegliDataComponent } from './components/scegli-data/scegli-data.component';
 
 const routes: Route[] = [
   {
@@ -62,6 +64,7 @@ const routes: Route[] = [
     CapitalizeFirstPipe,
     ModalAnnullaPrenotazioneComponent,
     ModalConfermaAnnullamentoComponent,
+    ScegliDataComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,8 @@ const routes: Route[] = [
     MdbTooltipModule,
     MdbValidationModule,
     MdbFormsModule,
+    NgbModule,
+    NgbDatepickerModule,
   ],
   providers: [
     {
