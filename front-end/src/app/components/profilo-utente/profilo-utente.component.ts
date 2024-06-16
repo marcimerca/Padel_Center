@@ -27,6 +27,9 @@ export class ProfiloUtenteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.caricaPartite();
+  }
+  caricaPartite() {
     this.authSrv.user$.subscribe((user) => {
       this.user = user;
 
@@ -94,46 +97,12 @@ export class ProfiloUtenteComponent implements OnInit {
   annullaPrenotazione(partitaId: number) {
     this.partitaSrv.annullaPrenotazione(partitaId).subscribe(() => {
       console.log('La prenotazione è stata annullata correttamente');
-      this.partitaSrv
-        .findPartiteByUserId(this.user!.id)
-        .subscribe((partite) => {
-          const now = new Date();
-          this.partiteDaGiocare = partite
-            .filter((partita) => {
-              const partitaTime = new Date(
-                `1970-01-01T${partita.slotOrario.inizio}`
-              );
-              return (
-                partitaTime > now ||
-                (partitaTime.getHours() === now.getHours() &&
-                  partitaTime.getMinutes() > now.getMinutes())
-              );
-            })
-            .sort((a, b) => {
-              const dateA = new Date(a.slotOrario.inizio);
-              const dateB = new Date(b.slotOrario.inizio);
-              return dateA.getTime() - dateB.getTime();
-            });
-
-          this.partitePassate = partite
-            .filter((partita) => {
-              const partitaTime = new Date(
-                `1970-01-01T${partita.slotOrario.inizio}`
-              );
-              return partitaTime < now;
-            })
-            .sort((a, b) => {
-              const dateA = new Date(a.slotOrario.inizio);
-              const dateB = new Date(b.slotOrario.inizio);
-              return dateB.getTime() - dateA.getTime();
-            });
-
-          this.openSecondModal();
-        });
+      this.caricaPartite();
+      this.apriModale2();
     });
   }
 
-  openModal(partitaId: number) {
+  apriModale(partitaId: number) {
     this.modalRef = this.modalService.open(ModalAnnullaPrenotazioneComponent, {
       modalClass: 'modal-dialog-centered',
     });
@@ -145,7 +114,7 @@ export class ProfiloUtenteComponent implements OnInit {
     });
   }
 
-  openSecondModal() {
+  apriModale2() {
     this.modalRef2 = this.modalService.open(
       ModalConfermaAnnullamentoComponent,
       {
@@ -154,47 +123,28 @@ export class ProfiloUtenteComponent implements OnInit {
     );
   }
 
-  isPastDate(dateString: string): boolean {
-    return new Date(dateString) <= new Date();
-  }
-
-  isFutureDate(dateStr: string): boolean {
-    const date = new Date(dateStr);
+  verificaDataFutura(dateStr: string, timeStr: string): boolean {
+    const date = new Date(dateStr + 'T' + timeStr);
     return date > new Date();
   }
 
-  isToday(dateStr: string): boolean {
-    const date = new Date(dateStr);
+  verificaDataOggi(dateStr: string, timeStr: string): boolean {
+    const date = new Date(dateStr + 'T' + timeStr);
     const now = new Date();
 
-    const isToday =
+    return (
       date.getDate() === now.getDate() &&
       date.getMonth() === now.getMonth() &&
-      date.getFullYear() === now.getFullYear();
-
-    if (!isToday) {
-      return false;
-    }
-
-    const hoursDiff = date.getHours() - now.getHours();
-    const minutesDiff = date.getMinutes() - now.getMinutes();
-
-    if (
-      hoursDiff < 24 &&
-      (hoursDiff > 0 || (hoursDiff === 0 && minutesDiff > 0))
-    ) {
-      return true;
-    }
-
-    return false;
+      date.getFullYear() === now.getFullYear()
+    );
   }
 
-  isFutureDateMoreThan24Hours(dateStr: string): boolean {
-    const date = new Date(dateStr);
+  verificaPiu24H(dateStr: string, timeStr: string): boolean {
+    const date = new Date(dateStr + 'T' + timeStr);
     const now = new Date();
 
     const timeDiff = date.getTime() - now.getTime();
 
-    return timeDiff > 0 && timeDiff > 24 * 60 * 60 * 1000;
+    return timeDiff > 24 * 60 * 60 * 1000;
   }
 }

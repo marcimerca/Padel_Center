@@ -1,35 +1,49 @@
-<div class="container w-25">
-  <label for="data">Scegli data</label>
-  <input
-    type="date"
-    name="data"
-    class="form-control"
-    (input)="onCambioData()"
-    [(ngModel)]="dataSelezionata"
-    [min]="mostraDaOggi()"
-  />
+<div
+  class="position-fixed top-50 start-50 translate-middle"
+  *ngIf="caricamento"
+>
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<div *ngIf="caricamento" class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="container-fluid my-4">
+  <div class="row">
+    <div class="col-7 col-lg-4">
+      <div class="card p-lg-4 bg-secondary trasparenza justify-content-start">
+        <label for="data" class="text-success">Scegli data</label>
+
+        <input
+          type="date"
+          name="data"
+          class="form-control"
+          (input)="onCambioData()"
+          [(ngModel)]="dataSelezionata"
+          [min]="mostraDaOggi()"
+        />
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid text-center mt-3" *ngIf="partite">
   <h1 class="mb-3">Partite del giorno</h1>
 
   <div *ngFor="let partita of partite" class="mb-3">
-    <div class="card trasparenza rounded-5 p-1 d-flex">
+    <div class="card trasparenza rounded-5 p-1 d-flex shadow">
       <div
         class="card-body text-start my-3 d-flex flex-column justify-content-center gap-4"
       >
-        <div class="border-bottom border-secondary">
+        <div class="border-bottom border-secondary pb-2">
           <h5 class="card-title m-0">
             {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
             {{ partita.slotOrario.fine | slice : 0 : 5 }}
           </h5>
-          <h5 class="card-subtitle m-0">
+          <h6 class="card-subtitle text-primary">
             {{ partita.slotOrario.campo.nomeCampo }}
-          </h5>
-          <h5 class="card-subtitle m-0">
-            {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
-            {{ partita.slotOrario.fine | slice : 0 : 5 }}
-          </h5>
+          </h6>
         </div>
         <div class="d-flex justify-content-center flex-wrap">
           <div
@@ -70,12 +84,11 @@
             </ng-container>
             <ng-template #placeholderAvatar>
               <button
-                [disabled]="isButtonDisabled(partita.slotOrario.inizio)"
                 (click)="openModal(partita)"
-                class="btn btn-success rounded-circle position-relative btn-floating"
+                class="btn btn-success rounded-circle position-relative btn-floating shadow"
                 [ngClass]="{
-                  'btn-dark': isButtonDisabled(partita.slotOrario.inizio),
-                  
+                  'btn-dark': verificaUtenteGiaAggiunto(partita),
+                  disabled: verificaUtenteGiaAggiunto(partita)
                 }"
                 style="width: 50px; height: 50px"
               >
@@ -92,15 +105,14 @@
                     height: 20px;
                     transform: translate(30%, -30%);
                   "
-                  >+</span
                 >
+                  +
+                </span>
               </button>
               <div
-                *ngIf="!isButtonDisabled(partita.slotOrario.inizio)"
                 class="mt-2 text-center text-secondary avatar-text"
                 [ngClass]="{
-                  'text-dark': isButtonDisabled(partita.slotOrario.inizio),
-                  
+                  'text-dark': verificaUtenteGiaAggiunto(partita)
                 }"
               >
                 Partecipa
@@ -112,9 +124,11 @@
     </div>
   </div>
   <ng-container *ngIf="dataOggi && partite.length === 0">
-    Nessuna partita presente per oggi
+    <p>Nessuna partita presente per oggi</p>
   </ng-container>
   <ng-container *ngIf="!dataOggi && partite.length === 0">
-    Nessuna partita presente per la data {{ formatDate(dataSelezionata) }}
+    <p>
+      Nessuna partita presente per la data {{ formattaData(dataSelezionata) }}
+    </p>
   </ng-container>
 </div>

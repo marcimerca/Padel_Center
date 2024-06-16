@@ -26,6 +26,7 @@ import { ModalConfermaAnnullamentoComponent } from './components/modal-conferma-
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { ScegliDataComponent } from './components/scegli-data/scegli-data.component';
+import { ModalConfermaPrenotazioneComponent } from './components/modal-conferma-prenotazione/modal-conferma-prenotazione.component';
 
 const routes: Route[] = [
   {
@@ -65,6 +66,7 @@ const routes: Route[] = [
     ModalAnnullaPrenotazioneComponent,
     ModalConfermaAnnullamentoComponent,
     ScegliDataComponent,
+    ModalConfermaPrenotazioneComponent,
   ],
   imports: [
     BrowserModule,
