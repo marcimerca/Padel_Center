@@ -1,0 +1,43 @@
+.card {
+  background-color: #145eb8;
+}
+a {
+  text-decoration: none;
+  transition: transform 0.3s ease, font-size 0.3s ease;
+  &:hover {
+    text-decoration: underline;
+    font-size: larger;
+  }
+}
+
+.trasparenza {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}
+
+#responsive-image {
+  max-height: 1000px;
+  object-fit: cover;
+}
+
+@media (max-width: 767px) {
+  #responsive-image {
+    max-height: 300px;
+    width: 100%;
+  }
+  img {
+    border-bottom: 2px solid rgb(238, 233, 233, 50%);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+}
+@media (min-width: 767px) {
+  img {
+    border-right: 2px solid rgb(238, 233, 233, 50%);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+}

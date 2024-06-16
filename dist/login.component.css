@@ -1,0 +1,36 @@
+.card {
+  background-color: #145eb8;
+}
+
+.trasparenza {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}
+
+#responsive-image {
+  max-height: 1000px;
+  object-fit: cover;
+}
+
+@media (max-width: 767px) {
+  #responsive-image {
+    max-height: 300px;
+    width: 100%;
+  }
+  img {
+    border-top: 2px solid rgba(238, 233, 233, 0.5);
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+}
+@media (min-width: 767px) {
+  img {
+    border-right: 2px solid rgba(238, 233, 233, 0.5);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-width: 0;
+  }
+}/*# sourceMappingURL=login.component.css.map */

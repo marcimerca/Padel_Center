@@ -37,7 +37,6 @@ export class AuthService {
         this.authSub.next(data);
         localStorage.setItem('user', JSON.stringify(data));
       })
-      // catchError(this.errors)
     );
   }
 
@@ -57,7 +56,9 @@ export class AuthService {
   }
 
   checkEmailExists(email: string) {
-    return this.http.get<boolean>(`${this.apiURL}check-email?email=${email}`);
+    return this.http.get<boolean>(
+      `${this.apiURL}users/check-email?email=${email}`
+    );
   }
 
   // private errors(err: any) {

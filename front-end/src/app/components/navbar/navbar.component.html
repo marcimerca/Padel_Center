@@ -1,6 +1,9 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid col-9">
-    <a class="navbar-brand" href="#">Padel App</a>
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="nav-link navbar-brand text-info" [routerLink]="['/']"
+      >Padel App</a
+    >
+
     <button
       class="navbar-toggler"
       type="button"
@@ -12,11 +15,12 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a
-            class="nav-link active"
+            class="nav-link"
             aria-current="page"
             [routerLink]="['/']"
             routerLinkActive="active"
@@ -24,7 +28,7 @@
             >Home</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!user">
           <a
             class="nav-link"
             [routerLink]="['/register']"
@@ -32,7 +36,7 @@
             >Registrati</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!user">
           <a
             class="nav-link"
             [routerLink]="['/login']"
@@ -40,7 +44,27 @@
             >Login</a
           >
         </li>
+        <li class="nav-item" *ngIf="user">
+          <a
+            class="nav-link"
+            [routerLink]="['/partite-del-giorno']"
+            routerLinkActive="active"
+            >Partite del giorno</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="user">
+          <a
+            class="nav-link"
+            [routerLink]="['/profilo-utente']"
+            routerLinkActive="active"
+            >Profilo</a
+          >
+        </li>
       </ul>
+      <h5 *ngIf="user" class="me-4">Benvenuto {{ user.nome }}</h5>
+      <button *ngIf="user" class="btn btn-secondary me-2" (click)="logout()">
+        Logout
+      </button>
     </div>
   </div>
 </nav>

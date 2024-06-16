@@ -1,1 +1,79 @@
 /* You can add global styles to this file, and also import other style files */
+
+// @import "mdb-angular-ui-kit/assets/scss/bootstrap/functions";
+
+@import "../node_modules/mdb-angular-ui-kit/assets/scss/bootstrap/functions";
+
+// @import "../node_modules/mdb-angular-ui-kit/assets/scss/free/functions";
+
+$text: #eee9e9;
+$background: #023c83;
+$primary: #eeee62;
+$secondary: #d6d659;
+$accent: #e9f416;
+$warning: #ffc199;
+$success: #145eb8;
+
+$link-color: #eee9e9;
+$active-link-color: $secondary;
+$hover-link-color: $primary;
+
+$custom-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "accent": $accent,
+  "light": $text,
+  "danger": lighten($accent, 20%),
+  "warning": lighten($warning, 20%),
+  "success": $success,
+  "info": $text,
+);
+
+@import "../node_modules/mdb-angular-ui-kit/assets/scss/bootstrap/variables";
+// @import "../node_modules/mdb-angular-ui-kit/assets/scss/free/variables";
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "mdb-angular-ui-kit/assets/scss/mdb.scss";
+
+body {
+  background-color: $background;
+  color: $text;
+}
+
+.navbar-nav .nav-link {
+  color: $link-color;
+}
+
+.navbar-nav .nav-link.active {
+  color: $active-link-color;
+}
+
+.navbar-nav .nav-link:hover {
+  color: $hover-link-color;
+}
+
+.btn {
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  &:hover {
+    background-color: $primary;
+    color: $text;
+    transform: scale(1.1);
+  }
+}
+.btn-secondary {
+  background-color: $secondary !important;
+  border-color: $secondary !important;
+  color: $background !important;
+  &:hover {
+    background-color: $primary !important;
+    border-color: darken($secondary, 10%) !important;
+  }
+}
+a {
+  text-decoration: none;
+  transition: transform 0.3s ease, font-size 0.3s ease;
+  &:hover {
+    text-decoration: underline;
+    font-size: 18px;
+  }
+}

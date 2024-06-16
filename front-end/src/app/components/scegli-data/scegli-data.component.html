@@ -1,0 +1,25 @@
+<form class="row row-cols-sm-auto text-black">
+  <div class="col-12">
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="yyyy-mm-dd"
+        name="dp"
+        [(ngModel)]="model"
+        ngbDatepicker
+        #d="ngbDatepicker"
+        (click)="d.open()"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        (click)="d.toggle()"
+        type="button"
+      >
+        <i class="bi bi-calendar3"></i>
+      </button>
+    </div>
+  </div>
+</form>
+
+<hr />
+<pre>Model: {{ model | json }}</pre>
