@@ -8,7 +8,9 @@ import { ModalComponent } from '../modal/modal.component';
   styleUrls: ['./modal-annulla-prenotazione.component.scss'],
 })
 export class ModalAnnullaPrenotazioneComponent {
-  constructor(public modalRef: MdbModalRef<ModalComponent>) {}
+  constructor(
+    public modalRef: MdbModalRef<ModalAnnullaPrenotazioneComponent>
+  ) {}
 
   conferma() {
     this.modalRef.close('conferma');

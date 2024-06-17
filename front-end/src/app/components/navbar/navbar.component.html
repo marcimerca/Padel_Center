@@ -55,6 +55,14 @@
         <li class="nav-item" *ngIf="user">
           <a
             class="nav-link"
+            [routerLink]="['/prenotazione']"
+            routerLinkActive="active"
+            >Prenotazione</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="user">
+          <a
+            class="nav-link"
             [routerLink]="['/profilo-utente']"
             routerLinkActive="active"
             >Profilo</a

@@ -55,7 +55,7 @@
 
 <!-- parte delle partite -->
 <div
-  class="container-fluid text-center mt-3"
+  class="container text-center mt-3"
   *ngIf="partiteDaGiocare && partiteDaGiocare.length > 0"
 >
   <h1>Le tue partite da giocare</h1>
@@ -132,13 +132,13 @@
 </div>
 
 <div
-  class="container-fluid text-center mt-3"
+  class="container text-center mt-3"
   *ngIf="partitePassate && partitePassate.length > 0"
 >
   <h1>Le tue partite passate</h1>
 
   <div *ngFor="let partita of partitePassate" class="mb-3">
-    <div class="card rounded-5 p-1 d-flex trasparenza">
+    <div class="card p-1 d-flex trasparenza">
       <div
         class="card-body text-start my-3 d-flex flex-column justify-content-center gap-4"
       >

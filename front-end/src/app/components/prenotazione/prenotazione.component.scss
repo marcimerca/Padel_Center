@@ -1,0 +1,31 @@
+@import "../../../styles.scss";
+
+.custom-table {
+  background-color: $text !important;
+}
+
+.custom-table tbody tr:hover {
+  background-color: $primary !important;
+}
+
+.custom-table tbody td {
+  transition: transform 0.3s ease;
+}
+
+.custom-table tbody td:hover {
+  cursor: pointer;
+
+  font-size: larger;
+}
+
+.custom-table tbody tr:hover td span {
+  color: inherit;
+}
+
+.trasparenza {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}

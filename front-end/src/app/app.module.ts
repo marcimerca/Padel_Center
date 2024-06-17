@@ -27,6 +27,8 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { ScegliDataComponent } from './components/scegli-data/scegli-data.component';
 import { ModalConfermaPrenotazioneComponent } from './components/modal-conferma-prenotazione/modal-conferma-prenotazione.component';
+import { PrenotazioneComponent } from './components/prenotazione/prenotazione.component';
+import { ModalCreazionePartitaComponent } from './components/modal-creazione-partita/modal-creazione-partita.component';
 
 const routes: Route[] = [
   {
@@ -51,6 +53,11 @@ const routes: Route[] = [
     component: ProfiloUtenteComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'prenotazione',
+    component: PrenotazioneComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 @NgModule({
   declarations: [
@@ -67,6 +74,8 @@ const routes: Route[] = [
     ModalConfermaAnnullamentoComponent,
     ScegliDataComponent,
     ModalConfermaPrenotazioneComponent,
+    PrenotazioneComponent,
+    ModalCreazionePartitaComponent,
   ],
   imports: [
     BrowserModule,
