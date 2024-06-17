@@ -104,14 +104,17 @@ public class PartitaService {
         return partitaRepository.findById(id);
     }
 
+
     public String annullaPrenotazione(int id) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Partita> partitaOptional = partitaRepository.findById(id);
 
         if (partitaOptional.isPresent()) {
             Partita partita = partitaOptional.get();
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime dataPartita = LocalDateTime.of(partita.getDataPartita(), partita.getSlotOrario().getInizio());
 
-            if (partita.getDataPartita().isBefore(LocalDate.now())) {
+            if (dataPartita.isBefore(now)) {
                 throw new BadRequestException("Impossibile annullare una partita che è già stata giocata.");
             }
 
@@ -121,7 +124,7 @@ public class PartitaService {
                     partita.getUtentiPrenotati().remove(loggedUser);
                     partitaRepository.save(partita);
                     return "La prenotazione per l'utente " + loggedUser.getUsername() + " è stata annullata con successo.";
-                } else if (ChronoUnit.DAYS.between(LocalDate.now(), partita.getDataPartita()) > 1) {
+                } else if (ChronoUnit.HOURS.between(now, dataPartita) > 24) {
                     partitaRepository.delete(partita);
                     return "La partita è stata cancellata con successo.";
                 } else {
@@ -131,10 +134,9 @@ public class PartitaService {
                 throw new BadRequestException("Non sei prenotato per questa partita.");
             }
         } else {
-            throw new NotFoundException("La partita con id " + id + "non è stata trovata");
+            throw new NotFoundException("La partita con id " + id + " non è stata trovata");
         }
     }
-
     public String deletePartita(int id) {
         Optional<Partita> partitaOptional = findPartitaById(id);
         if (partitaOptional.isPresent()) {

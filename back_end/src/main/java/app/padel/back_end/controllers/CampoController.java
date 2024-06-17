@@ -1,5 +1,6 @@
 package app.padel.back_end.controllers;
 
+import app.padel.back_end.dto.CampoDisponibilitaDto;
 import app.padel.back_end.dto.CampoDto;
 import app.padel.back_end.dto.UserDto;
 import app.padel.back_end.entities.Campo;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,5 +72,8 @@ public class CampoController {
         return campoService.deleteCampo(id);
     }
 
-
+    @GetMapping("/disponibilita/{data}")
+    public List<CampoDisponibilitaDto> getCampiConDisponibilita(@PathVariable("data") LocalDate data) {
+        return campoService.getCampiConDisponibilita(data);
+    }
 }

@@ -1,7 +1,10 @@
 package app.padel.back_end.services;
 
+import app.padel.back_end.dto.CampoDisponibilitaDto;
 import app.padel.back_end.dto.CampoDto;
+import app.padel.back_end.dto.SlotDisponibilitaDto;
 import app.padel.back_end.entities.Campo;
+import app.padel.back_end.entities.SlotOrario;
 import app.padel.back_end.entities.User;
 import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
@@ -10,6 +13,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,5 +72,21 @@ public class CampoService {
             throw new NotFoundException("Il campo con id " + id + "non è stato trovato");
         }
 
+    }
+
+    public List<CampoDisponibilitaDto> getCampiConDisponibilita(LocalDate data) {
+        List<Campo> campi = campoRepository.findAll();
+        List<CampoDisponibilitaDto> campiDisp = new ArrayList<>();
+
+        for (Campo campo : campi) {
+            List<SlotDisponibilitaDto> slotDisponibilitaDTOs = new ArrayList<>();
+            for (SlotOrario slot : campo.getSlotOrari()) {
+                boolean isOccupato = slot.getPartite().stream().anyMatch(p -> p.getDataPartita().equals(data));
+                slotDisponibilitaDTOs.add(new SlotDisponibilitaDto(slot.getInizio(), slot.getFine(), isOccupato));
+            }
+           campiDisp.add(new CampoDisponibilitaDto(campo.getNomeCampo(), slotDisponibilitaDTOs));
+        }
+
+        return campiDisp;
     }
 }
