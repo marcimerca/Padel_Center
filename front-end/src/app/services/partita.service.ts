@@ -3,6 +3,7 @@ import { environment } from '../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Partita } from '../models/partita.interface';
 import { tap } from 'rxjs/operators';
+import { Campo } from '../models/campo.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -41,5 +42,9 @@ export class PartitaService {
     return this.http.delete(`${this.apiURL}partite/${partitaId}`, {
       responseType: 'text',
     });
+  }
+
+  getCampi() {
+    return this.http.get<Campo[]>(`${this.apiURL}campi`);
   }
 }

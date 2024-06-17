@@ -1,0 +1,61 @@
+<!-- spazio -->
+<div class="container d-flex justify-content-start my-4">
+  <div class="card p-3 bg-secondary trasparenza">
+    <label for="data" class="text-success mb-2">Scegli data</label>
+    <input
+      type="date"
+      name="data"
+      class="form-control"
+      (input)="onCambioData()"
+      [(ngModel)]="dataSelezionata"
+      [min]="mostraDaOggi()"
+    />
+  </div>
+</div>
+<!-- spazio -->
+<div class="container mt-4 text-center">
+  <h1>Scegli un orario e prenota la tua prossima partita!</h1>
+  <h2 *ngIf="dataOggi">Disponibilità per oggi</h2>
+  <h2 *ngIf="!dataOggi">Disponibilità per il {{ dataSelezionata }}</h2>
+  <div class="table-responsive rounded-5">
+    <table class="table table-striped table-borderless custom-table">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            *ngFor="let campo of campiDisp"
+            class="fw-bold text-success bg-primary"
+          >
+            {{ campo.nomeCampo }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of numeroSlot">
+          <td
+            (click)="creaPartita(campo.slotOrari[i].id!, dataSelezionata)"
+            *ngFor="let campo of campiDisp"
+            class="rounded-bottom-3 position-relative"
+          >
+            <span
+              *ngIf="campo.slotOrari[i] && !campo.slotOrari[i].occupato"
+              [ngClass]="{
+                'text-success': !campo.slotOrari[i].occupato,
+                'text-muted': campo.slotOrari[i].occupato
+              }"
+            >
+              {{ campo.slotOrari[i].inizio | slice : 0 : 5 }} -
+              {{ campo.slotOrari[i].fine | slice : 0 : 5 }}
+            </span>
+            <span
+              *ngIf="campo.slotOrari[i] && campo.slotOrari[i].occupato"
+              class="badge bg-primary text-success position-absolute top-50 start-50 translate-middle"
+            >
+              occupato
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

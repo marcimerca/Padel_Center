@@ -8,5 +8,7 @@ import { ModalComponent } from '../modal/modal.component';
   styleUrls: ['./modal-conferma-annullamento.component.scss'],
 })
 export class ModalConfermaAnnullamentoComponent {
-  constructor(public modalRef: MdbModalRef<ModalComponent>) {}
+  constructor(
+    public modalRef: MdbModalRef<ModalConfermaAnnullamentoComponent>
+  ) {}
 }

@@ -20,6 +20,7 @@
     "@angular/router": "^16.2.0",
     "@ng-bootstrap/ng-bootstrap": "^15.1.2",
     "mdb-angular-ui-kit": "^5.2.0",
+    "mdb-ui-kit": "^7.3.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

@@ -1,0 +1,16 @@
+.custom-table {
+  background-color: #efefef !important;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #c9d003 !important;
+  cursor: pointer;
+}
+
+.custom-table tbody tr:hover td span {
+  color: inherit;
+}
+
+.position-relative {
+  position: relative;
+}/*# sourceMappingURL=prenotazione.component.css.map */

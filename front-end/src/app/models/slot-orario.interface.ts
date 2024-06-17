@@ -3,8 +3,8 @@ import { Partita } from './partita.interface';
 
 export interface SlotOrario {
   id: number;
-  inizio: string; // Assuming ISO string format for time
-  fine: string; // Assuming ISO string format for time
+  inizio: string;
+  fine: string;
   campo: Campo;
   partite: Partita[];
 }

@@ -31,7 +31,7 @@ export class PartiteDelGiornoComponent implements OnInit {
 
   constructor(
     private partitaSrv: PartitaService,
-    private modalService: MdbModalService,
+    private modalSrv: MdbModalService,
     private router: Router,
     private authSrv: AuthService
   ) {}
@@ -47,7 +47,7 @@ export class PartiteDelGiornoComponent implements OnInit {
     const oggi = new Date().toISOString().split('T')[0];
 
     if (this.dataSelezionata) {
-      this.dataOggi = this.dataSelezionata === oggi; // Verifica se la data selezionata è oggi
+      this.dataOggi = this.dataSelezionata === oggi;
 
       this.partitaSrv
         .getPartitePerData(this.dataSelezionata)
@@ -130,7 +130,7 @@ export class PartiteDelGiornoComponent implements OnInit {
     return oraAttuale > slotOrarioInizio;
   }
   openModal(partita: Partita) {
-    this.modalRef = this.modalService.open(ModalComponent, {
+    this.modalRef = this.modalSrv.open(ModalComponent, {
       modalClass: 'modal-dialog-centered',
     });
 
@@ -195,11 +195,8 @@ export class PartiteDelGiornoComponent implements OnInit {
   }
 
   apriModale2() {
-    this.modalRef2 = this.modalService.open(
-      ModalConfermaPrenotazioneComponent,
-      {
-        modalClass: 'modal-dialog-centered',
-      }
-    );
+    this.modalRef2 = this.modalSrv.open(ModalConfermaPrenotazioneComponent, {
+      modalClass: 'modal-dialog-centered',
+    });
   }
 }
