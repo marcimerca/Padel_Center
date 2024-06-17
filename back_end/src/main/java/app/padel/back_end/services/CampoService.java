@@ -74,6 +74,8 @@ public class CampoService {
 
     }
 
+
+
     public List<CampoDisponibilitaDto> getCampiConDisponibilita(LocalDate data) {
         List<Campo> campi = campoRepository.findAll();
         List<CampoDisponibilitaDto> campiDisp = new ArrayList<>();
