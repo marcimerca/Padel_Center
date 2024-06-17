@@ -8,7 +8,7 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 public class SlotDisponibilitaDto {
-
+    private int id;
     private LocalTime inizio;
     private LocalTime fine;
     private boolean occupato;

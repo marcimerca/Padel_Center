@@ -82,9 +82,15 @@ public class CampoService {
             List<SlotDisponibilitaDto> slotDisponibilitaDTOs = new ArrayList<>();
             for (SlotOrario slot : campo.getSlotOrari()) {
                 boolean isOccupato = slot.getPartite().stream().anyMatch(p -> p.getDataPartita().equals(data));
-                slotDisponibilitaDTOs.add(new SlotDisponibilitaDto(slot.getInizio(), slot.getFine(), isOccupato));
+                SlotDisponibilitaDto slotDto = new SlotDisponibilitaDto(
+                        slot.getId(),
+                        slot.getInizio(),
+                        slot.getFine(),
+                        isOccupato
+                );
+                slotDisponibilitaDTOs.add(slotDto);
             }
-           campiDisp.add(new CampoDisponibilitaDto(campo.getNomeCampo(), slotDisponibilitaDTOs));
+            campiDisp.add(new CampoDisponibilitaDto(campo.getNomeCampo(), slotDisponibilitaDTOs));
         }
 
         return campiDisp;
