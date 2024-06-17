@@ -8,6 +8,8 @@ import { PartitaService } from 'src/app/services/partita.service';
 import { ModalCreazionePartitaComponent } from '../modal-creazione-partita/modal-creazione-partita.component';
 import { ModalConfermaPrenotazioneComponent } from '../modal-conferma-prenotazione/modal-conferma-prenotazione.component';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { SlotOrario } from 'src/app/models/slot-orario.interface';
+import { SlotDisponibilita } from 'src/app/models/slot-disponibilita.interface';
 
 @Component({
   selector: 'app-prenotazione',
@@ -77,33 +79,36 @@ export class PrenotazioneComponent implements OnInit {
     this.caricaDisponibilita();
   }
 
-  // creaPartita(partita: Partita) {
+  creaPartita(idSlotOrario: number, dataPartita: string) {
+    if (!dataPartita) {
+      dataPartita = new Date().toISOString().slice(0, 10);
+    }
+    const datiDaInviare = {
+      dataPartita: dataPartita,
+      slotOrarioId: idSlotOrario,
+    };
 
-  //   const P = {
-  //     dataPartita: partita.dataPartita,
-  //     slotOrarioId: partita.slotOrario.id,
-  //   };
-  //   this.caricamento = true;
+    const conferma = confirm('Sei sicuro di voler aggiungere questa partita?');
+    if (!conferma) {
+      return;
+    }
+    this.partitaSrv.aggiungiAPartita(datiDaInviare).subscribe(
+      () => {
+        console.log('Partita aggiunta con successo');
 
-  //   this.partitaSrv.aggiungiAPartita(datiDaInviare).subscribe(() => {
-  //     this.partitaSrv.getPartiteOggi().subscribe((data) => {
-  //       this.partite = data;
-  //     });
-  //     this.caricamento = false;
-  //     this.apriModale2();
+        alert('La partita è stata aggiunta con successo!');
 
-  //     setTimeout(() => {
-  //       this.router.navigate(['/profilo-utente']);
-  //     }, 1000);
-  //   });
-  // }
-
-  // apriModale2() {
-  //   this.modalRef2 = this.modalSrv.open(
-  //     ModalConfermaPrenotazioneComponent,
-  //     {
-  //       modalClass: 'modal-dialog-centered',
-  //     }
-  //   );
-  // }
+        setTimeout(() => {
+          this.router.navigate(['/profilo-utente']);
+        }, 1000);
+      },
+      (error) => {
+        console.error("Errore durante l'aggiunta della partita:", error);
+        alert(
+          "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi."
+        );
+        this.caricamento = false;
+      }
+    );
+  }
 }

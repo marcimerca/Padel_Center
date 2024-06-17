@@ -33,6 +33,7 @@
       <tbody>
         <tr *ngFor="let i of numeroSlot">
           <td
+            (click)="creaPartita(campo.slotOrari[i].id!, dataSelezionata)"
             *ngFor="let campo of campiDisp"
             class="rounded-bottom-3 position-relative"
           >
