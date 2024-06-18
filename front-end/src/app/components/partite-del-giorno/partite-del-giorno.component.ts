@@ -12,6 +12,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { AuthData } from 'src/app/models/auth-data.interface';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ModalErrorComponent } from '../modal-error/modal-error.component';
 
 @Component({
   selector: 'app-partite-del-giorno',
@@ -23,6 +24,7 @@ export class PartiteDelGiornoComponent implements OnInit {
   model!: NgbDateStruct;
   modalRef: MdbModalRef<ModalComponent> | null = null;
   modalRef2: MdbModalRef<ModalConfermaPrenotazioneComponent> | null = null;
+  modalRefError: MdbModalRef<ModalErrorComponent> | null = null;
   dataSelezionata: string = '';
   dataOggi = false;
   mostraDatePicker: boolean = false;
@@ -49,9 +51,8 @@ export class PartiteDelGiornoComponent implements OnInit {
     if (this.dataSelezionata) {
       this.dataOggi = this.dataSelezionata === oggi;
 
-      this.partitaSrv
-        .getPartitePerData(this.dataSelezionata)
-        .subscribe((data) => {
+      this.partitaSrv.getPartitePerData(this.dataSelezionata).subscribe(
+        (data) => {
           this.partite = data
             .filter((partita) => {
               if (this.dataOggi) {
@@ -72,28 +73,57 @@ export class PartiteDelGiornoComponent implements OnInit {
               const timeB = new Date(`1970-01-01T${b.slotOrario.inizio}`);
               return timeA.getTime() - timeB.getTime();
             });
-        });
+        },
+        (error) => {
+          console.error("Errore durante l'aggiunta della partita:", error);
+          this.caricamento = false;
+
+          this.modalRefError = this.modalSrv.open(ModalErrorComponent, {
+            modalClass: 'modal-dialog-centered',
+            data: {
+              errorMessage:
+                error.error ||
+                "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
+            },
+          });
+        }
+      );
     } else {
       this.dataOggi = true;
-      this.partitaSrv.getPartiteOggi().subscribe((data) => {
-        const now = new Date();
-        this.partite = data
-          .filter((partita) => {
-            const partitaTime = new Date(
-              `1970-01-01T${partita.slotOrario.inizio}`
-            );
-            return (
-              partitaTime.getHours() > now.getHours() ||
-              (partitaTime.getHours() === now.getHours() &&
-                partitaTime.getMinutes() > now.getMinutes())
-            );
-          })
-          .sort((a, b) => {
-            const timeA = new Date(`1970-01-01T${a.slotOrario.inizio}`);
-            const timeB = new Date(`1970-01-01T${b.slotOrario.inizio}`);
-            return timeA.getTime() - timeB.getTime();
+      this.partitaSrv.getPartiteOggi().subscribe(
+        (data) => {
+          const now = new Date();
+          this.partite = data
+            .filter((partita) => {
+              const partitaTime = new Date(
+                `1970-01-01T${partita.slotOrario.inizio}`
+              );
+              return (
+                partitaTime.getHours() > now.getHours() ||
+                (partitaTime.getHours() === now.getHours() &&
+                  partitaTime.getMinutes() > now.getMinutes())
+              );
+            })
+            .sort((a, b) => {
+              const timeA = new Date(`1970-01-01T${a.slotOrario.inizio}`);
+              const timeB = new Date(`1970-01-01T${b.slotOrario.inizio}`);
+              return timeA.getTime() - timeB.getTime();
+            });
+        },
+        (error) => {
+          console.error("Errore durante l'aggiunta della partita:", error);
+          this.caricamento = false;
+
+          this.modalRefError = this.modalSrv.open(ModalErrorComponent, {
+            modalClass: 'modal-dialog-centered',
+            data: {
+              errorMessage:
+                error.error ||
+                "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
+            },
           });
-      });
+        }
+      );
     }
   }
 
@@ -129,7 +159,7 @@ export class PartiteDelGiornoComponent implements OnInit {
     });
     return oraAttuale > slotOrarioInizio;
   }
-  openModal(partita: Partita) {
+  apriModale(partita: Partita) {
     this.modalRef = this.modalSrv.open(ModalComponent, {
       modalClass: 'modal-dialog-centered',
     });

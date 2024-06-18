@@ -29,6 +29,7 @@ import { ScegliDataComponent } from './components/scegli-data/scegli-data.compon
 import { ModalConfermaPrenotazioneComponent } from './components/modal-conferma-prenotazione/modal-conferma-prenotazione.component';
 import { PrenotazioneComponent } from './components/prenotazione/prenotazione.component';
 import { ModalCreazionePartitaComponent } from './components/modal-creazione-partita/modal-creazione-partita.component';
+import { ModalErrorComponent } from './components/modal-error/modal-error.component';
 
 const routes: Route[] = [
   {
@@ -76,6 +77,7 @@ const routes: Route[] = [
     ModalConfermaPrenotazioneComponent,
     PrenotazioneComponent,
     ModalCreazionePartitaComponent,
+    ModalErrorComponent,
   ],
   imports: [
     BrowserModule,

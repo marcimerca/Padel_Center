@@ -10,6 +10,7 @@ import { ModalConfermaPrenotazioneComponent } from '../modal-conferma-prenotazio
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { SlotOrario } from 'src/app/models/slot-orario.interface';
 import { SlotDisponibilita } from 'src/app/models/slot-disponibilita.interface';
+import { ModalErrorComponent } from '../modal-error/modal-error.component';
 
 @Component({
   selector: 'app-prenotazione',
@@ -25,6 +26,7 @@ export class PrenotazioneComponent implements OnInit {
   caricamento = false;
   modalRef: MdbModalRef<ModalCreazionePartitaComponent> | null = null;
   modalRef2: MdbModalRef<ModalConfermaPrenotazioneComponent> | null = null;
+  modalRefError: MdbModalRef<ModalErrorComponent> | null = null;
 
   constructor(
     private campoSrv: CampoService,
@@ -88,15 +90,13 @@ export class PrenotazioneComponent implements OnInit {
       slotOrarioId: idSlotOrario,
     };
 
-    const conferma = confirm('Sei sicuro di voler aggiungere questa partita?');
-    if (!conferma) {
-      return;
-    }
+    this.caricamento = true;
+
     this.partitaSrv.aggiungiAPartita(datiDaInviare).subscribe(
       () => {
         console.log('Partita aggiunta con successo');
-
-        alert('La partita è stata aggiunta con successo!');
+        this.caricamento = false;
+        this.apriModale2();
 
         setTimeout(() => {
           this.router.navigate(['/profilo-utente']);
@@ -104,11 +104,34 @@ export class PrenotazioneComponent implements OnInit {
       },
       (error) => {
         console.error("Errore durante l'aggiunta della partita:", error);
-        alert(
-          "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi."
-        );
         this.caricamento = false;
+
+        this.modalRefError = this.modalSrv.open(ModalErrorComponent, {
+          modalClass: 'modal-dialog-centered',
+          data: {
+            errorMessage:
+              error.error ||
+              "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
+          },
+        });
       }
     );
+  }
+  apriModale(idSlotOrario: number, dataPartita: string) {
+    this.modalRef = this.modalSrv.open(ModalCreazionePartitaComponent, {
+      modalClass: 'modal-dialog-centered',
+    });
+
+    this.modalRef.onClose.subscribe((result: string) => {
+      if (result === 'conferma') {
+        this.creaPartita(idSlotOrario, dataPartita);
+      }
+    });
+  }
+
+  apriModale2() {
+    this.modalRef2 = this.modalSrv.open(ModalConfermaPrenotazioneComponent, {
+      modalClass: 'modal-dialog-centered',
+    });
   }
 }
