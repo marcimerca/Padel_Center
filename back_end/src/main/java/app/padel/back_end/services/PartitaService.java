@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PartitaService {
@@ -30,7 +31,6 @@ public class PartitaService {
 
 
     public String savePartita(PartitaDto partitaDto) {
-
         Optional<SlotOrario> slotOrarioOptional = slotOrarioRepository.findById(partitaDto.getSlotOrarioId());
 
         if (slotOrarioOptional.isEmpty()) {
@@ -47,9 +47,26 @@ public class PartitaService {
             throw new BadRequestException("Non è possibile aggiungersi a una partita passata.");
         }
 
-        Optional<Partita> partitaOptional = partitaRepository.findByDataPartitaAndSlotOrario(partitaDto.getDataPartita(), slotOrario);
-
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+        List<Partita> partiteUtente = partitaRepository.findByUtentiPrenotati(loggedUser);
+
+
+        List<Partita> partiteNellaData = partiteUtente.stream()
+                .filter(p -> p.getDataPartita().equals(partitaDto.getDataPartita()))
+                .collect(Collectors.toList());
+
+
+        for (Partita p : partiteNellaData) {
+            SlotOrario s = p.getSlotOrario();
+            boolean sovrapposizione = (slotOrario.getInizio().isBefore(s.getFine()) && slotOrario.getFine().isAfter(s.getInizio()));
+            if (sovrapposizione) {
+                throw new BadRequestException("Hai già una partita che si sovrappone a questo slot orario nella stessa data.");
+            }
+        }
+
+        Optional<Partita> partitaOptional = partitaRepository.findByDataPartitaAndSlotOrario(partitaDto.getDataPartita(), slotOrario);
 
         if (partitaOptional.isPresent()) {
             Partita partitaEsistente = partitaOptional.get();
@@ -70,13 +87,13 @@ public class PartitaService {
             Partita partita = new Partita();
             partita.setDataPartita(partitaDto.getDataPartita());
             partita.setSlotOrario(slotOrario);
-            partita.setDataPartita(partitaDto.getDataPartita());
             partita.getUtentiPrenotati().add(loggedUser);
             partita.setNumGiocatoriAttuali(1);
             partitaRepository.save(partita);
             return "Partita per la data " + partitaDto.getDataPartita() + " per lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + " salvata con successo.";
         }
     }
+
     public boolean verificaSlotOrarioDisponibile(SlotOrario slotOrario, LocalDate dataPartita) {
         Optional<Partita> partitaOptional = partitaRepository.findByDataPartitaAndSlotOrario(dataPartita, slotOrario);
 
