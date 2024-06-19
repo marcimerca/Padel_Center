@@ -34,7 +34,7 @@
                   >
                     <div class="row gy-3 overflow-hidden">
                       <div class="col-12">
-                        <div class="form-floating mb-3">
+                        <div class="form-floating mb-4 position-relative">
                           <input
                             type="text"
                             class="form-control"
@@ -48,31 +48,36 @@
                           <label for="username" class="form-label"
                             >Username</label
                           >
-                          <span
-                            *ngIf="
-                              getFormControl('username')?.invalid &&
-                              getFormControl('username')?.touched
-                            "
-                          >
-                            <ng-container
-                              *ngIf="getErrorsControl('username', 'required')"
+                          <div class="mess-errore">
+                            <span
+                              *ngIf="
+                                getFormControl('username')?.invalid &&
+                                getFormControl('username')?.touched
+                              "
                             >
-                              <p class="text-danger">
-                                Il campo username è obbligatorio
-                              </p>
-                            </ng-container>
-                            <ng-container
-                              *ngIf="getErrorsControl('username', 'minlength')"
-                            >
-                              <p class="text-danger">
-                                Il campo username deve avere almeno 5 caratteri
-                              </p>
-                            </ng-container>
-                          </span>
+                              <ng-container
+                                *ngIf="getErrorsControl('username', 'required')"
+                              >
+                                <p class="text-danger">
+                                  Il campo username è obbligatorio
+                                </p>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="
+                                  getErrorsControl('username', 'minlength')
+                                "
+                              >
+                                <p class="text-danger">
+                                  Il campo username deve avere almeno 5
+                                  caratteri
+                                </p>
+                              </ng-container>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-12">
-                        <div class="form-floating mb-3">
+                        <div class="form-floating mb-4 position-relative">
                           <input
                             type="text"
                             class="form-control"
@@ -84,24 +89,26 @@
                             required
                           />
                           <label for="nome" class="form-label">Nome</label>
-                          <span
-                            *ngIf="
-                              getFormControl('nome')?.invalid &&
-                              getFormControl('nome')?.touched
-                            "
-                          >
-                            <ng-container
-                              *ngIf="getErrorsControl('nome', 'required')"
+                          <div class="mess-errore">
+                            <span
+                              *ngIf="
+                                getFormControl('nome')?.invalid &&
+                                getFormControl('nome')?.touched
+                              "
                             >
-                              <p class="text-danger">
-                                Il campo nome è obbligatorio
-                              </p>
-                            </ng-container>
-                          </span>
+                              <ng-container
+                                *ngIf="getErrorsControl('nome', 'required')"
+                              >
+                                <p class="text-danger">
+                                  Il campo nome è obbligatorio
+                                </p>
+                              </ng-container>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-12">
-                        <div class="form-floating mb-3">
+                        <div class="form-floating mb-4 position-relative">
                           <input
                             type="text"
                             class="form-control"
@@ -115,20 +122,22 @@
                           <label for="cognome" class="form-label"
                             >Cognome</label
                           >
-                          <span
-                            *ngIf="
-                              getFormControl('cognome')?.invalid &&
-                              getFormControl('cognome')?.touched
-                            "
-                          >
-                            <ng-container
-                              *ngIf="getErrorsControl('cognome', 'required')"
+                          <div class="mess-errore">
+                            <span
+                              *ngIf="
+                                getFormControl('cognome')?.invalid &&
+                                getFormControl('cognome')?.touched
+                              "
                             >
-                              <p class="text-danger">
-                                Il campo cognome è obbligatorio
-                              </p>
-                            </ng-container>
-                          </span>
+                              <ng-container
+                                *ngIf="getErrorsControl('cognome', 'required')"
+                              >
+                                <p class="text-danger">
+                                  Il campo cognome è obbligatorio
+                                </p>
+                              </ng-container>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-12">
@@ -144,43 +153,45 @@
                             required
                           />
                           <label for="email" class="form-label">Email</label>
-                          <span
-                            *ngIf="
-                              getFormControl('email')?.invalid &&
-                              getFormControl('email')?.touched
-                            "
-                          >
-                            <ng-container
-                              *ngIf="getErrorsControl('email', 'required')"
-                            >
-                              <p class="text-danger">
-                                Il campo email è obbligatorio
-                              </p>
-                            </ng-container>
-                            <ng-container
-                              *ngIf="getErrorsControl('email', 'email')"
-                            >
-                              <p class="text-danger">
-                                Il campo deve contenere una mail valida
-                              </p>
-                            </ng-container>
-                            <ng-container
+                          <div class="mess-errore">
+                            <span
                               *ngIf="
-                                getFormControl('email')?.errors &&
-                                (getFormControl('email')?.errors)![
-                                  'alreadyExists'
-                                ]
+                                getFormControl('email')?.invalid &&
+                                getFormControl('email')?.touched
                               "
                             >
-                              <p class="text-danger">
-                                Email già presente nel sistema
-                              </p>
-                            </ng-container>
-                          </span>
+                              <ng-container
+                                *ngIf="getErrorsControl('email', 'required')"
+                              >
+                                <p class="text-danger">
+                                  Il campo email è obbligatorio
+                                </p>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="getErrorsControl('email', 'email')"
+                              >
+                                <p class="text-danger">
+                                  Il campo deve contenere una mail valida
+                                </p>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="
+                                  getFormControl('email')?.errors &&
+                                  (getFormControl('email')?.errors)![
+                                    'alreadyExists'
+                                  ]
+                                "
+                              >
+                                <p class="text-danger">
+                                  Email già presente nel sistema
+                                </p>
+                              </ng-container>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-12">
-                        <div class="form-floating mb-3">
+                        <div class="form-floating mb-5 position-relative">
                           <input
                             type="password"
                             class="form-control"
@@ -194,30 +205,35 @@
                           <label for="password" class="form-label"
                             >Password</label
                           >
-                          <span
-                            *ngIf="
-                              getFormControl('password')?.invalid &&
-                              getFormControl('password')?.touched
-                            "
-                          >
-                            <ng-container
-                              *ngIf="getErrorsControl('password', 'required')"
+                          <div class="mess-errore">
+                            <span
+                              *ngIf="
+                                getFormControl('password')?.invalid &&
+                                getFormControl('password')?.touched
+                              "
                             >
-                              <p class="text-danger">
-                                Il campo password è obbligatorio
-                              </p>
-                            </ng-container>
-                            <ng-container
-                              *ngIf="getErrorsControl('password', 'minlength')"
-                            >
-                              <p class="text-danger">
-                                La password deve avere almeno 8 caratteri
-                              </p>
-                            </ng-container>
-                          </span>
+                              <ng-container
+                                *ngIf="getErrorsControl('password', 'required')"
+                              >
+                                <p class="text-danger">
+                                  Il campo password è obbligatorio
+                                </p>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="getErrorsControl('password', 'pattern')"
+                              >
+                                <p class="text-danger">
+                                  La password deve essere lunga almeno 8
+                                  caratteri, contenere una lettera maiuscola,
+                                  una minuscola, un numero e un carattere
+                                  speciale.
+                                </p>
+                              </ng-container>
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      <div class="col-12">
+                      <div class="col-12 mt-5">
                         <div class="form-check">
                           <input
                             class="form-check-input"

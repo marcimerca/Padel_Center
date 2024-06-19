@@ -41,3 +41,12 @@ a {
     border-bottom-left-radius: 20px;
   }
 }
+
+.mess-errore {
+  min-height: 1.5em;
+  position: absolute;
+  color: red;
+  top: 100%;
+  left: 0;
+  width: 100%;
+}

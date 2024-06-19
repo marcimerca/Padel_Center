@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Partita } from 'src/app/models/partita.interface';
 import { PartitaService } from 'src/app/services/partita.service';
-import { ModalComponent } from '../modal/modal.component';
-import { ModalConfermaPrenotazioneComponent } from '../modal-conferma-prenotazione/modal-conferma-prenotazione.component';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Router } from '@angular/router';
-import {
-  NgbAlertModule,
-  NgbDatepickerModule,
-  NgbDateStruct,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { AuthData } from 'src/app/models/auth-data.interface';
 import { AuthService } from 'src/app/auth/auth.service';
-import { ModalErrorComponent } from '../modal-error/modal-error.component';
+import { ModalInfoComponent } from '../modal-info/modal-info.component';
+import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
 
 @Component({
   selector: 'app-partite-del-giorno',
@@ -22,9 +17,9 @@ import { ModalErrorComponent } from '../modal-error/modal-error.component';
 export class PartiteDelGiornoComponent implements OnInit {
   user!: AuthData | null;
   model!: NgbDateStruct;
-  modalRef: MdbModalRef<ModalComponent> | null = null;
-  modalRef2: MdbModalRef<ModalConfermaPrenotazioneComponent> | null = null;
-  modalRefError: MdbModalRef<ModalErrorComponent> | null = null;
+  modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
+  modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
+
   dataSelezionata: string = '';
   dataOggi = false;
   mostraDatePicker: boolean = false;
@@ -122,7 +117,7 @@ export class PartiteDelGiornoComponent implements OnInit {
         console.error("Errore durante l'aggiunta della partita:", error);
         this.caricamento = false;
 
-        this.modalRefError = this.modalSrv.open(ModalErrorComponent, {
+        this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
           modalClass: 'modal-dialog-centered',
           data: {
             errorMessage:
@@ -147,8 +142,11 @@ export class PartiteDelGiornoComponent implements OnInit {
     return oraAttuale > slotOrarioInizio;
   }
   apriModale(partita: Partita) {
-    this.modalRef = this.modalSrv.open(ModalComponent, {
+    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Confermi di voler partecipare alla partita?',
+      },
     });
 
     this.modalRef.onClose.subscribe((result: string) => {
@@ -212,8 +210,11 @@ export class PartiteDelGiornoComponent implements OnInit {
   }
 
   apriModale2() {
-    this.modalRef2 = this.modalSrv.open(ModalConfermaPrenotazioneComponent, {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Sei stato aggiunto correttamente alla partita',
+      },
     });
   }
 }

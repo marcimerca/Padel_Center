@@ -17,19 +17,18 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PartiteDelGiornoComponent } from './components/partite-del-giorno/partite-del-giorno.component';
-import { ModalComponent } from './components/modal/modal.component';
+
 import { ProfiloUtenteComponent } from './components/profilo-utente/profilo-utente.component';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
-import { ModalAnnullaPrenotazioneComponent } from './components/modal-annulla-prenotazione/modal-annulla-prenotazione.component';
-import { ModalConfermaAnnullamentoComponent } from './components/modal-conferma-annullamento/modal-conferma-annullamento.component';
+
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { ScegliDataComponent } from './components/scegli-data/scegli-data.component';
-import { ModalConfermaPrenotazioneComponent } from './components/modal-conferma-prenotazione/modal-conferma-prenotazione.component';
+
+import { ModalConfermaComponent } from './components/modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from './components/modal-info/modal-info.component';
 import { PrenotazioneComponent } from './components/prenotazione/prenotazione.component';
-import { ModalCreazionePartitaComponent } from './components/modal-creazione-partita/modal-creazione-partita.component';
-import { ModalErrorComponent } from './components/modal-error/modal-error.component';
 
 const routes: Route[] = [
   {
@@ -68,16 +67,13 @@ const routes: Route[] = [
     RegisterComponent,
     LoginComponent,
     PartiteDelGiornoComponent,
-    ModalComponent,
     ProfiloUtenteComponent,
     CapitalizeFirstPipe,
-    ModalAnnullaPrenotazioneComponent,
-    ModalConfermaAnnullamentoComponent,
     ScegliDataComponent,
-    ModalConfermaPrenotazioneComponent,
     PrenotazioneComponent,
-    ModalCreazionePartitaComponent,
-    ModalErrorComponent,
+
+    ModalConfermaComponent,
+    ModalInfoComponent,
   ],
   imports: [
     BrowserModule,

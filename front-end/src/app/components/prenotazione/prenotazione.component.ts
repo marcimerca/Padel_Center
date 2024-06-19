@@ -2,15 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CampoDisponibilita } from 'src/app/models/campo-disponibilita.interface';
 import { Campo } from 'src/app/models/campo.interface';
-import { Partita } from 'src/app/models/partita.interface';
 import { CampoService } from 'src/app/services/campo.service';
 import { PartitaService } from 'src/app/services/partita.service';
-import { ModalCreazionePartitaComponent } from '../modal-creazione-partita/modal-creazione-partita.component';
-import { ModalConfermaPrenotazioneComponent } from '../modal-conferma-prenotazione/modal-conferma-prenotazione.component';
+
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { SlotOrario } from 'src/app/models/slot-orario.interface';
-import { SlotDisponibilita } from 'src/app/models/slot-disponibilita.interface';
-import { ModalErrorComponent } from '../modal-error/modal-error.component';
+
+import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from '../modal-info/modal-info.component';
 
 @Component({
   selector: 'app-prenotazione',
@@ -24,9 +22,8 @@ export class PrenotazioneComponent implements OnInit {
   dataOggi = false;
   numeroSlot: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   caricamento = false;
-  modalRef: MdbModalRef<ModalCreazionePartitaComponent> | null = null;
-  modalRef2: MdbModalRef<ModalConfermaPrenotazioneComponent> | null = null;
-  modalRefError: MdbModalRef<ModalErrorComponent> | null = null;
+  modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
+  modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
 
   constructor(
     private campoSrv: CampoService,
@@ -106,7 +103,7 @@ export class PrenotazioneComponent implements OnInit {
         console.error("Errore durante l'aggiunta della partita:", error);
         this.caricamento = false;
 
-        this.modalRefError = this.modalSrv.open(ModalErrorComponent, {
+        this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
           modalClass: 'modal-dialog-centered',
           data: {
             errorMessage:
@@ -118,8 +115,11 @@ export class PrenotazioneComponent implements OnInit {
     );
   }
   apriModale(idSlotOrario: number, dataPartita: string) {
-    this.modalRef = this.modalSrv.open(ModalCreazionePartitaComponent, {
+    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Confermi di voler creare la partita?',
+      },
     });
 
     this.modalRef.onClose.subscribe((result: string) => {
@@ -130,8 +130,22 @@ export class PrenotazioneComponent implements OnInit {
   }
 
   apriModale2() {
-    this.modalRef2 = this.modalSrv.open(ModalConfermaPrenotazioneComponent, {
+    this.modalRef2 = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'La partita è stata creata con successo',
+      },
     });
+  }
+
+  verificaBottoneDisabilitato(orarioInizio: string): boolean {
+    const oggi = new Date();
+    const oraCorrente = oggi.getHours();
+    const [oraSlot] = orarioInizio.split(':').map(Number);
+
+    if (this.dataOggi) {
+      return oraCorrente >= oraSlot;
+    }
+    return false;
   }
 }

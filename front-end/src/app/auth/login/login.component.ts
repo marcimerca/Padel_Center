@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { ModalInfoComponent } from 'src/app/components/modal-info/modal-info.component';
+import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 
 @Component({
   selector: 'app-login',
@@ -9,8 +11,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  constructor(private authSrv: AuthService, private router: Router) {}
+  constructor(
+    private authSrv: AuthService,
+    private router: Router,
+    private modalSrv: MdbModalService
+  ) {}
 
+  modalRef: MdbModalRef<ModalInfoComponent> | null = null;
   isLoading = false;
 
   login(form: NgForm) {
@@ -23,7 +30,14 @@ export class LoginComponent {
       },
       (error) => {
         this.isLoading = false;
-        alert(error);
+        this.modalRef = this.modalSrv.open(ModalInfoComponent, {
+          modalClass: 'modal-dialog-centered',
+          data: {
+            errorMessage:
+              error.error ||
+              "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
+          },
+        });
       }
     );
   }

@@ -4,8 +4,8 @@ import { AuthData } from 'src/app/models/auth-data.interface';
 import { Partita } from 'src/app/models/partita.interface';
 import { PartitaService } from 'src/app/services/partita.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { ModalAnnullaPrenotazioneComponent } from '../modal-annulla-prenotazione/modal-annulla-prenotazione.component';
-import { ModalConfermaAnnullamentoComponent } from '../modal-conferma-annullamento/modal-conferma-annullamento.component';
+import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from '../modal-info/modal-info.component';
 
 @Component({
   selector: 'app-profilo-utente',
@@ -17,8 +17,8 @@ export class ProfiloUtenteComponent implements OnInit {
   partiteDaGiocare: Partita[] = [];
   partitePassate: Partita[] = [];
 
-  modalRef: MdbModalRef<ModalAnnullaPrenotazioneComponent> | null = null;
-  modalRef2: MdbModalRef<ModalConfermaAnnullamentoComponent> | null = null;
+  modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
+  modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
 
   constructor(
     private authSrv: AuthService,
@@ -103,8 +103,11 @@ export class ProfiloUtenteComponent implements OnInit {
   }
 
   apriModale(partitaId: number) {
-    this.modalRef = this.modalService.open(ModalAnnullaPrenotazioneComponent, {
+    this.modalRef = this.modalService.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Vuoi annullare la prenotazione?',
+      },
     });
 
     this.modalRef.onClose.subscribe((result: string) => {
@@ -115,12 +118,13 @@ export class ProfiloUtenteComponent implements OnInit {
   }
 
   apriModale2() {
-    this.modalRef2 = this.modalService.open(
-      ModalConfermaAnnullamentoComponent,
-      {
-        modalClass: 'modal-dialog-centered',
-      }
-    );
+    this.modalRef2 = this.modalService.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio:
+          'Hai annullato correttamente la tua prenotazione per la partita',
+      },
+    });
   }
 
   verificaDataFutura(dateStr: string, timeStr: string): boolean {

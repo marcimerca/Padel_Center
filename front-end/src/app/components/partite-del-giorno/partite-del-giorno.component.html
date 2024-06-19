@@ -98,13 +98,17 @@
                 style="width: 50px; height: 50px"
               >
                 <img
-                  src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
+                  [ngClass]="{
+                    'custom-filter': verificaUtenteGiaAggiunto(partita)
+                  }"
+                  src="https://upload.wikimedia.org/wikipedia/commons/archive/3/36/20120517134445%21Tennis_ball_3.svg"
                   alt="Placeholder Avatar"
                   class="w-100 h-100 rounded-circle img-fluid"
                   style="object-fit: cover"
                 />
                 <span
-                  class="position-absolute top-0 end-0 badge bg-primary rounded-pill d-flex justify-content-center align-items-center"
+                  *ngIf="!verificaUtenteGiaAggiunto(partita)"
+                  class="position-absolute top-0 end-0 badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
                   style="
                     width: 20px;
                     height: 20px;

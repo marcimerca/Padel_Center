@@ -9,6 +9,9 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { ModalConfermaComponent } from 'src/app/components/modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from 'src/app/components/modal-info/modal-info.component';
 
 @Component({
   selector: 'app-register',
@@ -16,12 +19,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
+  modalRef: MdbModalRef<ModalInfoComponent> | null = null;
   registerForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private authSrv: AuthService,
-    private router: Router
+    private router: Router,
+    private modalSrv: MdbModalService
   ) {}
 
   ngOnInit() {
@@ -35,7 +40,9 @@ export class RegisterComponent implements OnInit {
       email: this.fb.control(null, [Validators.required, Validators.email]),
       password: this.fb.control(null, [
         Validators.required,
-        Validators.minLength(8),
+        Validators.pattern(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        ),
       ]),
     });
   }
@@ -54,16 +61,29 @@ export class RegisterComponent implements OnInit {
 
     this.authSrv.checkEmailExists(email).subscribe((emailExists: boolean) => {
       if (emailExists) {
-        // Se l'email esiste già, aggiungi l'errore direttamente al campo email
         emailControl?.setErrors({ alreadyExists: true });
       } else {
-        // Se l'email non esiste, procedi con la registrazione
         this.authSrv.register(form.value).subscribe(
           () => {
-            alert('Registration completed!');
-            this.router.navigate(['/login']);
+            this.modalRef = this.modalSrv.open(ModalInfoComponent, {
+              modalClass: 'modal-dialog-centered',
+              data: {
+                messaggio: 'Registrazione avvenuta correttamente',
+              },
+            });
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 1000);
           },
           (error) => {
+            this.modalRef = this.modalSrv.open(ModalInfoComponent, {
+              modalClass: 'modal-dialog-centered',
+              data: {
+                errorMessage:
+                  error.error ||
+                  "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
+              },
+            });
             this.registerForm.get('password')?.setValue('');
           }
         );

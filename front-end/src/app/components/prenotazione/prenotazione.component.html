@@ -6,6 +6,7 @@
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
+
 <!-- spazio -->
 <div class="container d-flex justify-content-start my-4">
   <div class="card p-3 bg-secondary trasparenza">
@@ -20,6 +21,7 @@
     />
   </div>
 </div>
+
 <!-- spazio -->
 <div class="container mt-4 text-center">
   <h1>Scegli un orario e prenota la tua prossima partita!</h1>
@@ -41,15 +43,34 @@
       <tbody>
         <tr *ngFor="let i of numeroSlot">
           <td
-            (click)="apriModale(campo.slotOrari[i].id!, dataSelezionata)"
             *ngFor="let campo of campiDisp"
+            (click)="
+              !verificaBottoneDisabilitato(campo.slotOrari[i].inizio) &&
+                apriModale(campo.slotOrari[i].id!, dataSelezionata)
+            "
+            [ngClass]="{
+              'bg-dark': verificaBottoneDisabilitato(campo.slotOrari[i].inizio),
+              'cursor-not-allowed': verificaBottoneDisabilitato(
+                campo.slotOrari[i].inizio
+              ),
+
+              'rounded-bottom-3': true,
+              'position-relative': true
+            }"
             class="rounded-bottom-3 position-relative"
           >
             <span
               *ngIf="campo.slotOrari[i] && !campo.slotOrari[i].occupato"
               [ngClass]="{
-                'text-success': !campo.slotOrari[i].occupato,
-                'text-muted': campo.slotOrari[i].occupato
+                'text-success': !verificaBottoneDisabilitato(
+                  campo.slotOrari[i].inizio
+                ),
+                'text-muted': verificaBottoneDisabilitato(
+                  campo.slotOrari[i].inizio
+                ),
+
+                'rounded-bottom-3': true,
+                'position-relative': true
               }"
             >
               {{ campo.slotOrari[i].inizio | slice : 0 : 5 }} -
