@@ -6,10 +6,10 @@
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
-<div class="container-fluid my-4">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-6 col-lg-4 mb-3">
-      <div class="card p-3 bg-secondary trasparenza">
+<div class="container my-4">
+  <div class="row g-0 justify-content-start">
+    <div class="col-5 col-md-4 d-flex border-end border-success">
+      <div class="card custom-border-radius w-100 p-3 bg-primary trasparenza">
         <label for="data" class="text-success mb-2">Scegli data</label>
         <input
           type="date"
@@ -21,123 +21,148 @@
         />
       </div>
     </div>
-    <div class="col-12 col-md-6 col-lg-4 mb-3">
-      <div class="p-4 d-flex align-items-center justify-content-center">
+
+    <div class="col-5 col-md-3 d-flex">
+      <div class="d-flex align-items-center justify-content-center h-100 w-100">
         <a
           [routerLink]="['/prenotazione']"
-          class="btn btn-primary text-success shadow-none p-4"
-          >Prenota</a
+          class="custom-border-radius-2 btn btn-primary rounded-top-end text-success shadow-none h-100 w-100 d-flex align-items-center justify-content-center"
         >
+          Crea Partita
+        </a>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container-fluid text-center mt-3" *ngIf="partite">
-  <h1 class="mb-3">Partite del giorno</h1>
-
-  <div *ngFor="let partita of partite" class="mb-3">
-    <div class="card trasparenza rounded-5 p-1 d-flex shadow">
-      <div
-        class="card-body text-start my-3 d-flex flex-column justify-content-center gap-4"
-      >
-        <div class="border-bottom border-secondary pb-2">
-          <h5 class="card-title m-0">
-            {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
-            {{ partita.slotOrario.fine | slice : 0 : 5 }}
-          </h5>
-          <h6 class="card-subtitle text-primary">
-            {{ partita.slotOrario.campo.nomeCampo }}
-          </h6>
-        </div>
-        <div class="d-flex justify-content-center flex-wrap">
+<div class="container text-start mt-3" *ngIf="partite">
+  <h1 class="mb-3 text-primary">Partite del giorno</h1>
+  <div class="row">
+    <div *ngFor="let partita of partite" class="mb-3 col-md-6">
+      <div class="card trasparenza rounded-5 p-1 d-flex shadow">
+        <div
+          class="card-body text-start my-3 d-flex flex-column justify-content-center"
+        >
           <div
-            *ngFor="let i of [0, 1, 2, 3]; let j = index"
-            class="d-flex flex-column align-items-center mx-2 mx-lg-4"
+            class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
           >
-            <ng-container
-              *ngIf="j < partita.utentiPrenotati.length; else placeholderAvatar"
+            <h5 class="card-title m-0">
+              {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
+              {{ partita.slotOrario.fine | slice : 0 : 5 }}
+            </h5>
+            <div
+              class="vr bg-primary position-absolute start-50"
+              style="top: -15px; height: 100%; width: 2px"
+            ></div>
+            <h5 class="card-subtitle text-primary m-0">
+              {{ partita.slotOrario.campo.nomeCampo }}
+            </h5>
+          </div>
+          <div class="d-flex justify-content-center mt-4 mb-2">
+            <div
+              *ngFor="let i of [0, 1, 2, 3]; let j = index"
+              class="avatar-wrapper"
             >
-              <button
-                class="btn btn-primary rounded-circle position-relative disabled btn-floating"
-                style="width: 50px; height: 50px; border: none"
+              <ng-container
+                *ngIf="
+                  j < partita.utentiPrenotati.length;
+                  else placeholderAvatar
+                "
               >
-                <img
-                  [src]="
-                    partita.utentiPrenotati[j].avatar
-                      ? partita.utentiPrenotati[j].avatar
-                      : '../../../assets/Profile-Avatar-PNG-Free-Download.png'
-                  "
-                  alt="{{ partita.utentiPrenotati[j].nome }}"
-                  class="w-100 h-100 rounded-circle img-fluid"
-                  style="object-fit: cover"
-                />
-              </button>
-              <div
-                class="mt-2 text-center d-flex align-items-center avatar-text"
-              >
-                <span
-                  >{{
-                    partita.utentiPrenotati[j].nome.toUpperCase().charAt(0)
-                  }}.</span
+                <button
+                  class="btn btn-primary rounded-circle position-relative disabled btn-floating"
+                  style="width: 50px; height: 50px; border: none"
                 >
-                <span>{{
-                  partita.utentiPrenotati[j].cognome.charAt(0).toUpperCase() +
-                    partita.utentiPrenotati[j].cognome.slice(1).toLowerCase()
-                }}</span>
-              </div>
-            </ng-container>
-            <ng-template #placeholderAvatar>
-              <button
-                (click)="apriModale(partita)"
-                class="btn btn-success rounded-circle position-relative btn-floating shadow"
-                [ngClass]="{
-                  'btn-dark': verificaUtenteGiaAggiunto(partita),
-                  disabled: verificaUtenteGiaAggiunto(partita)
-                }"
-                style="width: 50px; height: 50px"
-              >
-                <img
+                  <img
+                    [src]="
+                      partita.utentiPrenotati[j].avatar
+                        ? partita.utentiPrenotati[j].avatar
+                        : '../../../assets/Profile-Avatar-PNG-Free-Download.png'
+                    "
+                    alt="{{ partita.utentiPrenotati[j].nome }}"
+                    class="w-100 h-100 rounded-circle img-fluid"
+                    style="object-fit: cover"
+                  />
+                </button>
+                <div class="mt-2 text-center avatar-text nome h6">
+                  <span
+                    >{{
+                      partita.utentiPrenotati[j].nome.toUpperCase().charAt(0)
+                    }}.
+                    {{
+                      partita.utentiPrenotati[j].cognome
+                        .charAt(0)
+                        .toUpperCase() +
+                        partita.utentiPrenotati[j].cognome
+                          .slice(1)
+                          .toLowerCase()
+                    }}</span
+                  >
+                </div>
+              </ng-container>
+              <ng-template #placeholderAvatar>
+                <button
+                  (click)="apriModale(partita)"
+                  class="btn btn-success rounded-circle position-relative btn-floating shadow"
                   [ngClass]="{
-                    'custom-filter': verificaUtenteGiaAggiunto(partita)
+                    'btn-dark': verificaUtenteGiaAggiunto(partita),
+                    disabled: verificaUtenteGiaAggiunto(partita)
                   }"
-                  src="https://upload.wikimedia.org/wikipedia/commons/archive/3/36/20120517134445%21Tennis_ball_3.svg"
-                  alt="Placeholder Avatar"
-                  class="w-100 h-100 rounded-circle img-fluid"
-                  style="object-fit: cover"
-                />
-                <span
-                  *ngIf="!verificaUtenteGiaAggiunto(partita)"
-                  class="position-absolute top-0 end-0 badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
-                  style="
-                    width: 20px;
-                    height: 20px;
-                    transform: translate(30%, -30%);
-                  "
+                  style="width: 50px; height: 50px"
                 >
-                  +
-                </span>
-              </button>
-              <div
-                class="mt-2 text-center text-secondary avatar-text"
-                [ngClass]="{
-                  'text-dark': verificaUtenteGiaAggiunto(partita)
-                }"
-              >
-                Partecipa
-              </div>
-            </ng-template>
+                  <img
+                    [ngClass]="{
+                      'custom-filter': verificaUtenteGiaAggiunto(partita)
+                    }"
+                    src="https://upload.wikimedia.org/wikipedia/commons/archive/3/36/20120517134445%21Tennis_ball_3.svg"
+                    alt="Placeholder Avatar"
+                    class="w-100 h-100 rounded-circle img-fluid"
+                    style="object-fit: cover"
+                  />
+                  <span
+                    *ngIf="!verificaUtenteGiaAggiunto(partita)"
+                    class="position-absolute top-0 end-0 badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
+                    style="
+                      width: 20px;
+                      height: 20px;
+                      transform: translate(30%, -30%);
+                    "
+                  >
+                    +
+                  </span>
+                </button>
+                <div
+                  class="mt-2 text-center text-secondary avatar-text nome h6"
+                  [ngClass]="{
+                    'text-dark': verificaUtenteGiaAggiunto(partita)
+                  }"
+                >
+                  Partecipa
+                </div>
+              </ng-template>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
   <ng-container *ngIf="dataOggi && partite.length === 0">
     <p>Nessuna partita presente per oggi</p>
   </ng-container>
   <ng-container *ngIf="!dataOggi && partite.length === 0">
-    <p>
-      Nessuna partita presente per la data {{ formattaData(dataSelezionata) }}
-    </p>
+    <div class="rounded-5">
+      <p class="h4 mb-4">
+        Nessuna partita presente per la data
+        {{ formattaData(dataSelezionata) }}, scegli un'altra data o crea una
+        nuova partita!
+      </p>
+      <img
+        class="img-fluid rounded-5"
+        src="../../../assets/medium-shot-man-holding-smartphone.jpg"
+        alt="uomo con smartphone in campo da padel"
+        style="max-width: 50%"
+      />
+    </div>
   </ng-container>
 </div>

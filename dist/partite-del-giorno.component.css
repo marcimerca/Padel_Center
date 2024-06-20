@@ -3,9 +3,41 @@
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
+}
+
+.custom-border-radius {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0;
+}
+
+.custom-border-radius-2 {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .custom-filter {
   filter: brightness(15%) contrast(80%);
+}
+
+@media (max-width: 576px) {
+  .nome {
+    font-size: 12px;
+  }
+}
+.avatar-wrapper {
+  flex-basis: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.avatar-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }/*# sourceMappingURL=partite-del-giorno.component.css.map */

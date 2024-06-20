@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
-import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
@@ -24,7 +23,6 @@ import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
-import { ScegliDataComponent } from './components/scegli-data/scegli-data.component';
 
 import { ModalConfermaComponent } from './components/modal-conferma/modal-conferma.component';
 import { ModalInfoComponent } from './components/modal-info/modal-info.component';
@@ -69,7 +67,6 @@ const routes: Route[] = [
     PartiteDelGiornoComponent,
     ProfiloUtenteComponent,
     CapitalizeFirstPipe,
-    ScegliDataComponent,
     PrenotazioneComponent,
 
     ModalConfermaComponent,
@@ -86,8 +83,6 @@ const routes: Route[] = [
     MdbTooltipModule,
     MdbValidationModule,
     MdbFormsModule,
-    NgbModule,
-    NgbDatepickerModule,
   ],
   providers: [
     {

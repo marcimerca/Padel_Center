@@ -151,4 +151,18 @@ export class ProfiloUtenteComponent implements OnInit {
 
     return timeDiff > 24 * 60 * 60 * 1000;
   }
+
+  verificaUtenteGiaAggiunto(partita: Partita): boolean {
+    return partita.utentiPrenotati.some(
+      (utente) => utente.id === this.user!.id
+    );
+  }
+  apriModaleInfoCircolo() {
+    this.modalRef2 = this.modalService.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Numero: 0444/198471',
+      },
+    });
+  }
 }
