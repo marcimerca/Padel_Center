@@ -15,8 +15,7 @@ a:hover {
   background-color: rgba(255, 255, 255, 0.05);
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  backdrop-filter: blur(8px);
 }
 
 #responsive-image {
@@ -49,4 +48,11 @@ a:hover {
   top: 100%;
   left: 0;
   width: 100%;
+}
+
+.background-container {
+  background-image: url("../../../assets/high-angle-palette-balls-field.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
 }/*# sourceMappingURL=register.component.css.map */

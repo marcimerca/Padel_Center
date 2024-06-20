@@ -33,7 +33,7 @@ export class LoginComponent {
         this.modalRef = this.modalSrv.open(ModalInfoComponent, {
           modalClass: 'modal-dialog-centered',
           data: {
-            errorMessage:
+            messaggio:
               error.error ||
               "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
           },
