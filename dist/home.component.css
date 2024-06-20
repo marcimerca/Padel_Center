@@ -41,6 +41,7 @@
 .content-section p {
   font-size: 1.2rem;
 }
+
 .main-section {
   height: 100vh;
   display: flex;
@@ -57,9 +58,10 @@
   color: white;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
 }
+
 .trasparenza {
   background-color: rgba(255, 255, 255, 0.05);
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8px);
-}
+}/*# sourceMappingURL=home.component.css.map */
