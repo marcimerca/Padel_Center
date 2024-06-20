@@ -165,4 +165,12 @@ export class ProfiloUtenteComponent implements OnInit {
       },
     });
   }
+
+  formatattaData(data: string): string {
+    return new Intl.DateTimeFormat('it-IT', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(data));
+  }
 }

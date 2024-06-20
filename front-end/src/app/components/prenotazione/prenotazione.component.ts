@@ -114,11 +114,33 @@ export class PrenotazioneComponent implements OnInit {
       }
     );
   }
-  apriModale(idSlotOrario: number, dataPartita: string) {
+
+  formatattaData(data: string): string {
+    return new Intl.DateTimeFormat('it-IT', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(data));
+  }
+
+  apriModale(
+    idSlotOrario: number,
+    dataPartita: string,
+    inizio: string,
+    fine: string
+  ) {
+    if (!dataPartita) {
+      dataPartita = new Date().toISOString().slice(0, 10);
+    }
+    dataPartita = this.formatattaData(dataPartita);
+
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Confermi di voler creare la partita?',
+        messaggio: `Confermi di voler creare la partita per il ${dataPartita}, dalle ${inizio.slice(
+          0,
+          5
+        )} alle ${fine.slice(0, 5)} ?`,
       },
     });
 

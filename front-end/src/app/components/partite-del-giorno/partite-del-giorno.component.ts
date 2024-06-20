@@ -19,6 +19,7 @@ export class PartiteDelGiornoComponent implements OnInit {
   model!: NgbDateStruct;
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
+  oggi = new Date().toISOString().split('T')[0];
 
   dataSelezionata: string = '';
   dataOggi = false;
@@ -41,10 +42,8 @@ export class PartiteDelGiornoComponent implements OnInit {
   }
 
   caricaPartite() {
-    const oggi = new Date().toISOString().split('T')[0];
-
     if (this.dataSelezionata) {
-      this.dataOggi = this.dataSelezionata === oggi;
+      this.dataOggi = this.dataSelezionata === this.oggi;
 
       this.partitaSrv
         .getPartitePerData(this.dataSelezionata)
@@ -190,6 +189,13 @@ export class PartiteDelGiornoComponent implements OnInit {
     const year = dataConvertita.getFullYear();
 
     return `${day}-${month}-${year}`;
+  }
+  formatattaDataParole(data: string): string {
+    return new Intl.DateTimeFormat('it-IT', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(data));
   }
 
   mostraDaOggi(): string {

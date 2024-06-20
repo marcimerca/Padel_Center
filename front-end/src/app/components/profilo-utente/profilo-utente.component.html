@@ -69,9 +69,11 @@
             class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
           >
             <h5 class="card-title m-0">
+              {{ formatattaData(partita.dataPartita) }} <br />
               {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
               {{ partita.slotOrario.fine | slice : 0 : 5 }}
             </h5>
+
             <div
               class="vr bg-primary position-absolute start-50"
               style="top: -15px; height: 100%; width: 2px"
@@ -195,7 +197,7 @@
   </div>
 
   <div
-    class="container text-start mt-3"
+    class="text-start mt-3"
     *ngIf="partitePassate && partitePassate.length > 0"
   >
     <h1 class="mb-3 text-primary">Le tue partite passate</h1>
@@ -209,6 +211,7 @@
               class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
             >
               <h5 class="card-title m-0">
+                {{ formatattaData(partita.dataPartita) }} <br />
                 {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
                 {{ partita.slotOrario.fine | slice : 0 : 5 }}
               </h5>
