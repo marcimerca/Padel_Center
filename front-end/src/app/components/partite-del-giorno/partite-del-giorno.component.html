@@ -36,7 +36,10 @@
 </div>
 
 <div class="container text-start mt-3" *ngIf="partite">
-  <h1 class="mb-3 text-primary">Partite del giorno</h1>
+  <h1 *ngIf="dataOggi" class="mb-3 text-primary">Partite del giorno</h1>
+  <h1 *ngIf="!dataOggi" class="mb-3 text-primary">
+    Partite del {{ formatattaDataParole(dataSelezionata) }}
+  </h1>
   <div class="row">
     <div *ngFor="let partita of partite" class="mb-3 col-md-6">
       <div class="card trasparenza rounded-5 p-1 d-flex shadow">
@@ -153,9 +156,8 @@
   <ng-container *ngIf="!dataOggi && partite.length === 0">
     <div class="rounded-5">
       <p class="h4 mb-4">
-        Nessuna partita presente per la data
-        {{ formattaData(dataSelezionata) }}, scegli un'altra data o crea una
-        nuova partita!
+        Nessuna partita presente per la data selezionata, scegli un altro giorno
+        o crea una nuova partita!
       </p>
       <img
         class="img-fluid rounded-5"
