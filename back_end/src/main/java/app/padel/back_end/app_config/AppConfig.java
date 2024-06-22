@@ -35,7 +35,8 @@ public class AppConfig {
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/slot-orari/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/partite/**").permitAll());
-
+        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/prenotazioni/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/prenotazione/**").permitAll());
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/check-email/**").permitAll());
 
 

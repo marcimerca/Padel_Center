@@ -2,12 +2,11 @@ package app.padel.back_end.services;
 
 import app.padel.back_end.dto.PrenotazioneDto;
 import app.padel.back_end.dto.UpdatePartita;
-import app.padel.back_end.entities.Partita;
-import app.padel.back_end.entities.SlotOrario;
-import app.padel.back_end.entities.User;
+import app.padel.back_end.entities.*;
 import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.PartitaRepository;
+import app.padel.back_end.repositories.PrenotazioneRepository;
 import app.padel.back_end.repositories.SlotOrarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +20,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class PartitaService {
+public class PrenotazioneService {
+
+
+    @Autowired
+    private PrenotazioneRepository prenotazioneRepository;
 
     @Autowired
     private PartitaRepository partitaRepository;
@@ -29,7 +32,6 @@ public class PartitaService {
     @Autowired
     private SlotOrarioRepository slotOrarioRepository;
 
-/*
 
     public String savePartita(PrenotazioneDto prenotazioneDto) {
         Optional<SlotOrario> slotOrarioOptional = slotOrarioRepository.findById(prenotazioneDto.getSlotOrarioId());
@@ -67,10 +69,10 @@ public class PartitaService {
             }
         }
 
-        Optional<Partita> partitaOptional = partitaRepository.findByDataPrenotazioneAndSlotOrario(prenotazioneDto.getDataPrenotazione(), slotOrario);
+        Optional<Prenotazione> partitaOptional = prenotazioneRepository.findByDataPrenotazioneAndSlotOrario(prenotazioneDto.getDataPrenotazione(), slotOrario);
 
         if (partitaOptional.isPresent()) {
-            Partita partitaEsistente = partitaOptional.get();
+            Partita partitaEsistente = (Partita) partitaOptional.get();
 
             if (partitaEsistente.getNumGiocatoriAttuali() >= partitaEsistente.getNumMaxGiocatori()) {
                 throw new BadRequestException("La partita per la data " + prenotazioneDto.getDataPrenotazione() + " e lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + " ha già raggiunto il numero massimo di giocatori.");
@@ -80,7 +82,7 @@ public class PartitaService {
             } else {
                 partitaEsistente.getUtentiPrenotati().add(loggedUser);
                 partitaEsistente.setNumGiocatoriAttuali(partitaEsistente.getNumGiocatoriAttuali() + 1);
-                partitaRepository.save(partitaEsistente);
+                prenotazioneRepository.save(partitaEsistente);
                 return "Sei stato aggiunto con successo alla partita per la data " + prenotazioneDto.getDataPrenotazione() + " e lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + ".";
             }
 
@@ -90,13 +92,15 @@ public class PartitaService {
             partita.setSlotOrario(slotOrario);
             partita.getUtentiPrenotati().add(loggedUser);
             partita.setNumGiocatoriAttuali(1);
-            partitaRepository.save(partita);
+            partita.setMotivoPrenotazione("partita");
+            partita.getSlotOrario().setMotivoPrenotazione("partita");
+           prenotazioneRepository.save(partita);
             return "Partita per la data " + prenotazioneDto.getDataPrenotazione() + " per lo slot dalle " + slotOrario.getInizio() + " alle " + slotOrario.getFine() + " salvata con successo.";
         }
     }
 
     public boolean verificaSlotOrarioDisponibile(SlotOrario slotOrario, LocalDate dataPartita) {
-        Optional<Partita> partitaOptional = partitaRepository.findByDataPrenotazioneAndSlotOrario(dataPartita, slotOrario);
+        Optional<Prenotazione> partitaOptional =  prenotazioneRepository.findByDataPrenotazioneAndSlotOrario(dataPartita, slotOrario);
 
         return partitaOptional.isEmpty();
     }
@@ -106,16 +110,16 @@ public class PartitaService {
     }
 
     public List<Partita> findPartiteByData(LocalDate data) {
-        return partitaRepository.findByDataPrenotazione(data);
+        return prenotazioneRepository.findByDataPrenotazione(data);
     }
 
     public List<Partita> findPartiteByUser(User user) {
-        return partitaRepository.findByUtentiPrenotati(user);
+        return prenotazioneRepository.findByUtentiPrenotati(user);
     }
 
     public List<Partita> findPartiteByLoggedUser() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return partitaRepository.findByUtentiPrenotati(loggedUser);
+        return prenotazioneRepository.findByUtentiPrenotati(loggedUser);
     }
 
     public Optional<Partita> findPartitaById(int id) {
@@ -140,10 +144,10 @@ public class PartitaService {
                 if (partita.getUtentiPrenotati().size() >= 2) {
                     partita.setNumGiocatoriAttuali(partita.getNumGiocatoriAttuali() - 1);
                     partita.getUtentiPrenotati().remove(loggedUser);
-                    partitaRepository.save(partita);
+                    prenotazioneRepository.save(partita);
                     return "La prenotazione per l'utente " + loggedUser.getUsername() + " è stata annullata con successo.";
                 } else if (ChronoUnit.HOURS.between(now, dataPartita) > 24) {
-                    partitaRepository.delete(partita);
+                    prenotazioneRepository.delete(partita);
                     return "La partita è stata cancellata con successo.";
                 } else {
                     throw new BadRequestException("Impossibile annullare la partita, contattare il circolo.");
@@ -155,10 +159,23 @@ public class PartitaService {
             throw new NotFoundException("La partita con id " + id + " non è stata trovata");
         }
     }
+
+
+
+    public Optional<Prenotazione> findPrenotazioneBySlotOrarioAndDataPrenotazione(int slotId, LocalDate dataPrenotazione) {
+        Optional<SlotOrario> slotOrarioOptional = slotOrarioRepository.findById(slotId);
+       if(slotOrarioOptional.isPresent()){
+           return prenotazioneRepository.findByDataPrenotazioneAndSlotOrario(dataPrenotazione, slotOrarioOptional.get());
+       } else {
+           throw new NotFoundException("La prenotazione non è stata trovata");
+       }
+
+    }
+
     public String deletePartita(int id) {
         Optional<Partita> partitaOptional = findPartitaById(id);
         if (partitaOptional.isPresent()) {
-            partitaRepository.delete(partitaOptional.get());
+            prenotazioneRepository.delete(partitaOptional.get());
             return "Partita " + " eliminata correttamente.";
         } else {
             throw new NotFoundException("La partita con id " + id + "non è stata trovata");
@@ -201,20 +218,38 @@ public class PartitaService {
             }
 
             partita.setNumGiocatoriAttuali(utentiAttuali.size());
-            return partitaRepository.save(partita);
+            return prenotazioneRepository.save(partita);
         } else {
             throw new NotFoundException("La partita con id " + id + " non è stata trovata.");
         }
     }
 
-*/
+    //--------------------------\\
+    //prenotazione admin
 
+    public PrenotazioneAdmin savePrenotazioneAdmin(PrenotazioneDto prenotazioneDto) {
 
+        PrenotazioneAdmin prenotazioneAdmin = new PrenotazioneAdmin();
+        prenotazioneAdmin.setMotivoPrenotazione(prenotazioneDto.getMotivoPrenotazione());
+        prenotazioneAdmin.setDataPrenotazione(prenotazioneDto.getDataPrenotazione());
+        prenotazioneAdmin.setSlotOrario(slotOrarioRepository.findById(prenotazioneDto.getSlotOrarioId()).get());
+        prenotazioneAdmin.getSlotOrario().setMotivoPrenotazione(prenotazioneDto.getMotivoPrenotazione());
 
+        PrenotazioneAdmin savedPrenotazioneAdmin = prenotazioneRepository.save(prenotazioneAdmin);
+        return prenotazioneAdmin;
+    }
 
+    public String annullaPrenotazioneAdmin(int id) {
+        Optional<Prenotazione> prenotazioneAdminOptional = prenotazioneRepository.findById(id);
 
+        if (prenotazioneAdminOptional.isPresent()) {
+            Prenotazione prenotazioneAdmin =  prenotazioneAdminOptional.get();
+
+            prenotazioneRepository.delete(prenotazioneAdmin);
+            return "La prenotazione amministrativa è stata annullata con successo.";
+        } else {
+            throw new NotFoundException("La prenotazione amministrativa con id " + id + " non è stata trovata.");
+        }
+    }
 
 }
-
-
-

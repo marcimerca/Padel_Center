@@ -2,9 +2,7 @@ package app.padel.back_end.controllers;
 
 import app.padel.back_end.dto.CampoDisponibilitaDto;
 import app.padel.back_end.dto.CampoDto;
-import app.padel.back_end.dto.UserDto;
 import app.padel.back_end.entities.Campo;
-import app.padel.back_end.entities.User;
 import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.services.CampoService;
@@ -68,7 +66,7 @@ public class CampoController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String deleteUser(@PathVariable int id) {
+    public String deleteCampo(@PathVariable int id) {
         return campoService.deleteCampo(id);
     }
 

@@ -26,5 +26,7 @@ public class SlotOrario {
 
     @OneToMany(mappedBy = "slotOrario")
     @JsonIgnore
-    private List<Partita> partite;
+    private List<Prenotazione> prenotazioni;
+
+    private String motivoPrenotazione;
 }

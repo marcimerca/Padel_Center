@@ -1,6 +1,7 @@
+/*
 package app.padel.back_end.controllers;
 
-import app.padel.back_end.dto.PartitaDto;
+import app.padel.back_end.dto.PrenotazioneDto;
 import app.padel.back_end.dto.UpdatePartita;
 import app.padel.back_end.entities.Partita;
 import app.padel.back_end.entities.User;
@@ -32,12 +33,12 @@ public class PartitaController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping
-    public String savePartita(@RequestBody @Validated PartitaDto partitaDto, BindingResult bindingResult){
+    public String savePartita(@RequestBody @Validated PrenotazioneDto prenotazioneDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).
                     reduce("", (s, s2) -> s + s2));
         }
-        return partitaService.savePartita(partitaDto);
+        return partitaService.savePartita(prenotazioneDto);
     }
 
 
@@ -110,3 +111,4 @@ public class PartitaController {
         return partitaService.deletePartita(partitaId);
     }
 }
+*/

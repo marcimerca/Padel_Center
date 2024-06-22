@@ -6,12 +6,19 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class PartitaDto {
+public class PrenotazioneDto {
 
     @NotNull(message = "dataPartita non può essere null")
-    private LocalDate dataPartita;
+    private LocalDate dataPrenotazione;
 
     @NotNull(message = "slotOrarioId non può essere null")
     private int slotOrarioId;
+
+    @NotNull(message = "motivoPrenotazione non può essere null")
+    private String motivoPrenotazione;
+
+
+
+
 
 }

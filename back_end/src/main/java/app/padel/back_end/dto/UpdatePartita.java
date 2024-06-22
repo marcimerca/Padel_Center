@@ -10,7 +10,7 @@ import java.util.List;
 public class UpdatePartita {
 
     @NotNull(message = "partitaDto non può essere null")
-    private PartitaDto partitaDto;
+    private PrenotazioneDto prenotazioneDto;
 
     private List<User> nuoviUtenti;
 

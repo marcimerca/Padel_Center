@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CampoService {
@@ -81,14 +83,19 @@ public class CampoService {
         List<CampoDisponibilitaDto> campiDisp = new ArrayList<>();
 
         for (Campo campo : campi) {
+            List<SlotOrario> slotOrari = campo.getSlotOrari().stream()
+                    .sorted(Comparator.comparing(SlotOrario::getId))
+                    .collect(Collectors.toList());
+
             List<SlotDisponibilitaDto> slotDisponibilitaDTOs = new ArrayList<>();
-            for (SlotOrario slot : campo.getSlotOrari()) {
-                boolean isOccupato = slot.getPartite().stream().anyMatch(p -> p.getDataPartita().equals(data));
+            for (SlotOrario slot : slotOrari) {
+                boolean isOccupato = slot.getPrenotazioni().stream().anyMatch(p -> p.getDataPrenotazione().equals(data));
                 SlotDisponibilitaDto slotDto = new SlotDisponibilitaDto(
                         slot.getId(),
                         slot.getInizio(),
                         slot.getFine(),
-                        isOccupato
+                        isOccupato,
+                        slot.getMotivoPrenotazione()
                 );
                 slotDisponibilitaDTOs.add(slotDto);
             }
