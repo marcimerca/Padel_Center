@@ -153,7 +153,7 @@ export class PrenotazioneComponent implements OnInit {
   }
 
   apriModale2() {
-    this.modalRef2 = this.modalSrv.open(ModalConfermaComponent, {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
         messaggio: 'La partita è stata creata con successo',

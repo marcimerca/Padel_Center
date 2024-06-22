@@ -29,6 +29,7 @@ export class AdminDashboardComponent {
   modalRef3: MdbModalRef<ModalPrenotazioneAdminComponent> | null = null;
 
   slotSelezionati: SlotDisponibilita[] = [];
+  AllSlotSelezionati: boolean = false;
 
   constructor(
     private campoSrv: CampoService,
@@ -40,8 +41,8 @@ export class AdminDashboardComponent {
     this.campoSrv.getCampi().subscribe((campi) => {
       this.campi = campi;
     });
-    this.caricaDisponibilita();
     this.slotSelezionati = [];
+    this.caricaDisponibilita();
   }
 
   mostraDaOggi(): string {
@@ -183,6 +184,7 @@ export class AdminDashboardComponent {
             this.prenotaAdmin(id, dataPartita, result);
           });
           this.slotSelezionati = [];
+          this.apriModaleConfermaPrenotazione();
         } else {
           this.slotSelezionati = [];
         }
@@ -195,11 +197,15 @@ export class AdminDashboardComponent {
     if (index > -1) {
       this.slotSelezionati.splice(index, 1);
       console.log(`Slot deselezionato: ${slot.id}`);
+      this.caricaDisponibilita();
     } else {
       this.slotSelezionati.push(slot);
       console.log(`Slot selezionato: ${slot.id}`);
     }
-    console.log('Slot attualmente selezionati:', this.slotSelezionati);
+    console.log(
+      'Slot attualmente selezionati:',
+      this.slotSelezionati.map((s) => s.id)
+    );
   }
 
   prenotaAdmin(
@@ -222,15 +228,23 @@ export class AdminDashboardComponent {
     this.partitaSrv.savePrenotazioneAdmin(datiDaInviare).subscribe(
       () => {
         console.log('Prenotazione aggiunta con successo');
+
         this.caricaDisponibilita();
       },
       (error) => {
         console.error("Errore durante l'aggiunta della prenotazione:", error);
-        // Gestisci l'errore, ad esempio, mostra un messaggio di errore all'utente
       }
     );
   }
 
+  apriModaleConfermaPrenotazione() {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Hai creato correttamente la tua prenotazione',
+      },
+    });
+  }
   apriModaleAnnulla() {
     if (this.slotSelezionati.length > 0) {
       this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
@@ -273,6 +287,53 @@ export class AdminDashboardComponent {
         }
       });
     }
+  }
+
+  selezionaTuttiGliSlot() {
+    if (this.slotSelezionati.length > 0) {
+      this.slotSelezionati = [];
+    } else {
+      this.slotSelezionati = [];
+      this.campiDisp.forEach((campo) => {
+        campo.slotOrari.forEach((slot) => {
+          this.slotSelezionati.push(slot);
+        });
+      });
+      console.log(
+        'Tutti gli slot selezionati:',
+        this.slotSelezionati.map((s) => s.id)
+      );
+    }
+  }
+
+  selezionaTuttiGliSlotNonOccupati() {
+    if (this.slotSelezionati.length > 0) {
+      this.slotSelezionati = [];
+    } else {
+      this.slotSelezionati = [];
+      this.campiDisp.forEach((campo) => {
+        campo.slotOrari.forEach((slot) => {
+          if (
+            !slot.occupato &&
+            !this.verificaBottoneDisabilitato(slot.inizio)
+          ) {
+            this.slotSelezionati.push(slot);
+          }
+        });
+      });
+      console.log(
+        'Tutti gli slot selezionati:',
+        this.slotSelezionati.map((s) => s.id)
+      );
+    }
+  }
+
+  isSlotSelected(slot: SlotDisponibilita): boolean {
+    return this.slotSelezionati.some((s) => s.id === slot.id);
+  }
+
+  sonoSlotPrenotati(): boolean {
+    return this.slotSelezionati.every((slot) => slot.occupato);
   }
 
   // apriModale(idSlotOrario: number, dataPartita: string) {
