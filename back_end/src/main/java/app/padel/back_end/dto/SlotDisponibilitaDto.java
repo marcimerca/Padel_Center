@@ -12,6 +12,7 @@ public class SlotDisponibilitaDto {
     private LocalTime inizio;
     private LocalTime fine;
     private boolean occupato;
+    private String motivoPrenotazione;
 
 
 }
