@@ -9,6 +9,7 @@ import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { AuthGuard } from './auth/auth.guard';
+import { AdminGuard } from './auth/admin.guard';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -27,6 +28,8 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { ModalConfermaComponent } from './components/modal-conferma/modal-conferma.component';
 import { ModalInfoComponent } from './components/modal-info/modal-info.component';
 import { PrenotazioneComponent } from './components/prenotazione/prenotazione.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { ModalPrenotazioneAdminComponent } from './components/modal-prenotazione-admin/modal-prenotazione-admin.component';
 
 const routes: Route[] = [
   {
@@ -56,6 +59,11 @@ const routes: Route[] = [
     component: PrenotazioneComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
+    canActivate: [AdminGuard],
+  },
 ];
 @NgModule({
   declarations: [
@@ -68,9 +76,11 @@ const routes: Route[] = [
     ProfiloUtenteComponent,
     CapitalizeFirstPipe,
     PrenotazioneComponent,
+    AdminDashboardComponent,
 
     ModalConfermaComponent,
     ModalInfoComponent,
+    ModalPrenotazioneAdminComponent,
   ],
   imports: [
     BrowserModule,

@@ -83,8 +83,9 @@ export class PrenotazioneComponent implements OnInit {
       dataPartita = new Date().toISOString().slice(0, 10);
     }
     const datiDaInviare = {
-      dataPartita: dataPartita,
+      dataPrenotazione: dataPartita,
       slotOrarioId: idSlotOrario,
+      motivoPrenotazione: 'partita',
     };
 
     this.caricamento = true;
@@ -132,12 +133,12 @@ export class PrenotazioneComponent implements OnInit {
     if (!dataPartita) {
       dataPartita = new Date().toISOString().slice(0, 10);
     }
-    dataPartita = this.formatattaData(dataPartita);
+    let dataPartitaFormattata = this.formatattaData(dataPartita);
 
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: `Confermi di voler creare la partita per il ${dataPartita}, dalle ${inizio.slice(
+        messaggio: `Confermi di voler creare la partita per il ${dataPartitaFormattata}, dalle ${inizio.slice(
           0,
           5
         )} alle ${fine.slice(0, 5)} ?`,

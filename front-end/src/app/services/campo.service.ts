@@ -21,4 +21,33 @@ export class CampoService {
       `${this.apiURL}campi/disponibilita/${data}`
     );
   }
+
+  // setSlotOccupato(
+  //   slotId: number,
+  //   dataOccupato: string,
+  //   motivoOccupato: string
+  // ) {
+  //   const url = `${this.apiURL}slot-orari/${slotId}/occupato`;
+  //   const body = {
+  //     dataOccupato: dataOccupato,
+  //     motivoOccupato: motivoOccupato,
+  //   };
+
+  //   return this.http.post<string>(url, body, {
+  //     responseType: 'text' as 'json', // Forza il tipo 'json' in modo da evitare errori di tipo
+  //   });
+  // }
+  // setSlotOccupato(
+  //   slotId: number,
+  //   dataOccupato: string,
+  //   motivoOccupato: string
+  // ) {
+  //   const url = `${this.apiURL}slot-orari/${slotId}/occupato`;
+  //   const body = {
+  //     dataOccupato: dataOccupato,
+  //     motivoOccupato: motivoOccupato,
+  //   };
+
+  //   return this.http.post<string>(url, body);
+  // }
 }

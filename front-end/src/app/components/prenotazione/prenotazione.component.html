@@ -55,6 +55,7 @@
             *ngFor="let campo of campiDisp"
             (click)="
               !verificaBottoneDisabilitato(campo.slotOrari[i].inizio) &&
+                !campo.slotOrari[i].occupato &&
                 apriModale(
                   campo.slotOrari[i].id!,
                   dataSelezionata,
@@ -64,14 +65,12 @@
             "
             [ngClass]="{
               'bg-dark': verificaBottoneDisabilitato(campo.slotOrari[i].inizio),
-              'cursor-not-allowed': verificaBottoneDisabilitato(
-                campo.slotOrari[i].inizio
-              ),
-
-              'rounded-bottom-3': true,
+              'no-pointer':
+                verificaBottoneDisabilitato(campo.slotOrari[i].inizio) ||
+                campo.slotOrari[i].occupato,
               'position-relative': true
             }"
-            class="rounded-bottom-3 position-relative"
+            class="position-relative"
           >
             <span
               *ngIf="campo.slotOrari[i] && !campo.slotOrari[i].occupato"
@@ -83,7 +82,6 @@
                   campo.slotOrari[i].inizio
                 ),
 
-                'rounded-bottom-3': true,
                 'position-relative': true
               }"
             >
@@ -91,10 +89,24 @@
               {{ campo.slotOrari[i].fine | slice : 0 : 5 }}
             </span>
             <span
-              *ngIf="campo.slotOrari[i] && campo.slotOrari[i].occupato"
+              *ngIf="
+                campo.slotOrari[i] &&
+                campo.slotOrari[i].occupato &&
+                campo.slotOrari[i].motivoPrenotazione == 'partita'
+              "
               class="badge bg-primary text-success position-absolute top-50 start-50 translate-middle"
             >
               occupato
+            </span>
+            <span
+              *ngIf="
+                campo.slotOrari[i] &&
+                campo.slotOrari[i].occupato &&
+                campo.slotOrari[i].motivoPrenotazione != 'partita'
+              "
+              class="badge bg-primary text-success position-absolute top-50 start-50 translate-middle"
+            >
+              {{ campo.slotOrari[i].motivoPrenotazione }}
             </span>
           </td>
         </tr>

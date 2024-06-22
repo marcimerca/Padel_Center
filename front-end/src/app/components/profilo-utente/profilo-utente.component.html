@@ -69,7 +69,7 @@
             class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
           >
             <h5 class="card-title m-0">
-              {{ formatattaData(partita.dataPartita) }} <br />
+              {{ formatattaData(partita.dataPrenotazione) }} <br />
               {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
               {{ partita.slotOrario.fine | slice : 0 : 5 }}
             </h5>
@@ -160,14 +160,17 @@
                     'text-dark': verificaUtenteGiaAggiunto(partita)
                   }"
                 >
-                  Partecipa
+                  Mancante
                 </div>
               </ng-template>
             </div>
           </div>
           <button
             *ngIf="
-              verificaPiu24H(partita.dataPartita, partita.slotOrario.inizio)
+              verificaPiu24H(
+                partita.dataPrenotazione,
+                partita.slotOrario.inizio
+              )
             "
             class="btn btn-primary text-success mx-auto shadow-none"
             (click)="apriModale(partita.id!)"
@@ -178,14 +181,17 @@
             (click)="apriModaleInfoCircolo()"
             *ngIf="
               verificaDataOggi(
-                partita.dataPartita,
+                partita.dataPrenotazione,
                 partita.slotOrario.inizio
               ) ||
               (verificaDataFutura(
-                partita.dataPartita,
+                partita.dataPrenotazione,
                 partita.slotOrario.inizio
               ) &&
-                !verificaPiu24H(partita.dataPartita, partita.slotOrario.inizio))
+                !verificaPiu24H(
+                  partita.dataPrenotazione,
+                  partita.slotOrario.inizio
+                ))
             "
             class="btn btn-primary text-success mx-auto shadow-none"
           >
@@ -211,7 +217,7 @@
               class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
             >
               <h5 class="card-title m-0">
-                {{ formatattaData(partita.dataPartita) }} <br />
+                {{ formatattaData(partita.dataPrenotazione) }} <br />
                 {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
                 {{ partita.slotOrario.fine | slice : 0 : 5 }}
               </h5>
@@ -301,7 +307,7 @@
                       'text-dark': verificaUtenteGiaAggiunto(partita)
                     }"
                   >
-                    Partecipa
+                    Mancante
                   </div>
                 </ng-template>
               </div>

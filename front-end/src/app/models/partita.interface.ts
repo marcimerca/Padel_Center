@@ -1,10 +1,7 @@
-import { SlotOrario } from './slot-orario.interface';
+import { Prenotazione } from './prenotazione.interface';
 import { User } from './user.interface';
-export interface Partita {
-  id?: number;
+export interface Partita extends Prenotazione {
   numMaxGiocatori: number;
   numGiocatoriAttuali: number;
-  dataPartita: string;
   utentiPrenotati: User[];
-  slotOrario: SlotOrario;
 }

@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Partita } from '../models/partita.interface';
 import { tap } from 'rxjs/operators';
 import { Campo } from '../models/campo.interface';
+import { PrenotazioneAdmin } from '../models/prenotazione-admin.interface';
+import { Prenotazione } from '../models/prenotazione.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +44,24 @@ export class PartitaService {
     return this.http.delete(`${this.apiURL}partite/${partitaId}`, {
       responseType: 'text',
     });
+  }
+
+  savePrenotazioneAdmin(prenotazione: Partial<PrenotazioneAdmin>) {
+    return this.http.post<PrenotazioneAdmin>(
+      `${this.apiURL}prenotazione/admin`,
+      prenotazione
+    );
+  }
+
+  annullaPrenotazioneAdmin(id: number) {
+    return this.http.delete(`${this.apiURL}prenotazioni/${id}`, {
+      responseType: 'text',
+    });
+  }
+  findPrenotazioneBySlotAndData(slotId: number, dataPrenotazione: string) {
+    return this.http.get<Prenotazione>(
+      `${this.apiURL}prenotazioni/slot-data?slotId=${slotId}&dataPrenotazione=${dataPrenotazione}`
+    );
   }
 
   getCampi() {

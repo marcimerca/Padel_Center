@@ -4,17 +4,20 @@
   background-color: $text !important;
 }
 
-// .custom-table tbody tr:hover {
-//   background-color: $primary !important;
-// }
+.custom-table tbody tr {
+  height: 40px;
+}
 
-// .custom-table tbody td {
-//   transition: transform 0.3s ease;
-// }
-
+.custom-table tbody td {
+  height: 40px;
+}
 .custom-table tbody td:hover {
   cursor: pointer;
   background-color: $primary !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .custom-table tbody tr:hover td span {
@@ -29,7 +32,13 @@
   border-radius: 20px;
 }
 
-.cursor-not-allowed {
+.no-pointer {
   pointer-events: none;
   cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+  td {
+    font-size: 12px;
+  }
 }

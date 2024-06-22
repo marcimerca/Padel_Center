@@ -47,7 +47,7 @@ export class ProfiloUtenteComponent implements OnInit {
             this.partiteDaGiocare = partite
               .filter((partita) => {
                 const partitaTime = new Date(
-                  partita.dataPartita + 'T' + partita.slotOrario.inizio
+                  partita.dataPrenotazione + 'T' + partita.slotOrario.inizio
                 );
                 return (
                   partitaTime > now ||
@@ -59,10 +59,10 @@ export class ProfiloUtenteComponent implements OnInit {
               })
               .sort((a, b) => {
                 const dateA = new Date(
-                  a.dataPartita + 'T' + a.slotOrario.inizio
+                  a.dataPrenotazione + 'T' + a.slotOrario.inizio
                 );
                 const dateB = new Date(
-                  b.dataPartita + 'T' + b.slotOrario.inizio
+                  b.dataPrenotazione + 'T' + b.slotOrario.inizio
                 );
                 return dateA.getTime() - dateB.getTime();
               });
@@ -70,7 +70,7 @@ export class ProfiloUtenteComponent implements OnInit {
             this.partitePassate = partite
               .filter((partita) => {
                 const partitaTime = new Date(
-                  partita.dataPartita + 'T' + partita.slotOrario.inizio
+                  partita.dataPrenotazione + 'T' + partita.slotOrario.inizio
                 );
                 return (
                   partitaTime < now ||
@@ -82,10 +82,10 @@ export class ProfiloUtenteComponent implements OnInit {
               })
               .sort((a, b) => {
                 const dateA = new Date(
-                  a.dataPartita + 'T' + a.slotOrario.inizio
+                  a.dataPrenotazione + 'T' + a.slotOrario.inizio
                 );
                 const dateB = new Date(
-                  b.dataPartita + 'T' + b.slotOrario.inizio
+                  b.dataPrenotazione + 'T' + b.slotOrario.inizio
                 );
                 return dateB.getTime() - dateA.getTime();
               });

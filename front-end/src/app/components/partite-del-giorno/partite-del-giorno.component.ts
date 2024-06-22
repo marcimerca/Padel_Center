@@ -95,7 +95,7 @@ export class PartiteDelGiornoComponent implements OnInit {
 
   aggiungi(partita: Partita) {
     const datiDaInviare = {
-      dataPartita: partita.dataPartita,
+      dataPrenotazione: partita.dataPrenotazione,
       slotOrarioId: partita.slotOrario.id,
     };
     this.caricamento = true;
