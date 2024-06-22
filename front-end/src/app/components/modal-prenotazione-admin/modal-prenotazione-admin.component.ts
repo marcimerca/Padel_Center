@@ -13,8 +13,14 @@ export class ModalPrenotazioneAdminComponent {
   @Output() onClose = new EventEmitter<string>();
 
   prenotaAdmin(form: NgForm) {
-    console.log('valore', form.value);
-    this.modalRef.close(form.value.motivoPrenotazione);
+    console.log('prenotaAdmin chiamato');
+    if (form.valid) {
+      console.log('Form valido, motivo:', form.value.motivoPrenotazione);
+      this.onClose.emit(form.value.motivoPrenotazione);
+      this.modalRef.close(form.value.motivoPrenotazione);
+    } else {
+      console.log('Form non valido');
+    }
   }
 
   annulla() {
