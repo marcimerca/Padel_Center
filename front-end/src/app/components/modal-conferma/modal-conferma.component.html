@@ -1,8 +1,10 @@
 <div class="rounded-5">
   <div class="modal-header border-success bg-success">
-    <h5 class="modal-title" id="exampleModalLabel">
-      {{ messaggio }}
-    </h5>
+    <div class="d-flex align-items-start">
+      <h5 class="modal-title" id="exampleModalLabel">
+        {{ messaggio }}
+      </h5>
+    </div>
     <button
       type="button"
       class="btn-close btn-primary"
@@ -23,9 +25,8 @@
       type="button"
       class="btn btn-primary text-success shadow-none"
       (click)="annulla()"
-      style="width: 50px"
     >
-      NO
+      ANNULLA
     </button>
   </div>
 </div>

@@ -30,6 +30,11 @@ import { ModalInfoComponent } from './components/modal-info/modal-info.component
 import { PrenotazioneComponent } from './components/prenotazione/prenotazione.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { ModalPrenotazioneAdminComponent } from './components/modal-prenotazione-admin/modal-prenotazione-admin.component';
+import { GestioneDisponibilitaAdminComponent } from './components/gestione-disponibilita-admin/gestione-disponibilita-admin.component';
+import { GestioneCampiAdminComponent } from './components/gestione-campi-admin/gestione-campi-admin.component';
+import { ModalCreazioneCampoAdminComponent } from './components/modal-creazione-campo-admin/modal-creazione-campo-admin.component';
+import { ModalAggiuntaSlotAdminComponent } from './components/modal-aggiunta-slot-admin/modal-aggiunta-slot-admin.component';
+import { ModalModificaNomeCampoComponent } from './components/modal-modifica-nome-campo/modal-modifica-nome-campo.component';
 
 const routes: Route[] = [
   {
@@ -63,7 +68,27 @@ const routes: Route[] = [
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
     canActivate: [AdminGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'gestione-disponibilita',
+        pathMatch: 'full',
+      },
+      {
+        path: 'gestione-disponibilita',
+        component: GestioneDisponibilitaAdminComponent,
+      },
+      {
+        path: 'gestione-campi',
+        component: GestioneCampiAdminComponent,
+      },
+    ],
   },
+  // {
+  //   path: 'gestione-disponibilita',
+  //   component: GestioneDisponibilitaAdminComponent,
+  //   canActivate: [AdminGuard],
+  // },
 ];
 @NgModule({
   declarations: [
@@ -81,6 +106,11 @@ const routes: Route[] = [
     ModalConfermaComponent,
     ModalInfoComponent,
     ModalPrenotazioneAdminComponent,
+    GestioneDisponibilitaAdminComponent,
+    GestioneCampiAdminComponent,
+    ModalCreazioneCampoAdminComponent,
+    ModalAggiuntaSlotAdminComponent,
+    ModalModificaNomeCampoComponent,
   ],
   imports: [
     BrowserModule,

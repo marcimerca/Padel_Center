@@ -1,0 +1,51 @@
+<div class="rounded-5">
+  <div class="modal-header border-success bg-success">
+    <h5 class="modal-title" id="exampleModalLabel">
+      {{ messaggio }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close btn-primary"
+      aria-label="Close"
+      (click)="annulla()"
+    ></button>
+  </div>
+
+  <form
+    class="bg-success p-3"
+    #creaCampoForm="ngForm"
+    (ngSubmit)="creaCampo(creaCampoForm)"
+  >
+    <div class="row gy-3 form-group">
+      <div class="col-12">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control rounded-5"
+            name="nomeCampo"
+            id="nomeCampo"
+            placeholder="Nome del campo..."
+            ngModel
+            required
+          />
+          <label for="nomeCampo" class="form-label">Nome Campo</label>
+        </div>
+      </div>
+    </div>
+    <div class="bg-success d-flex justify-content-center gap-3">
+      <button
+        class="btn btn-primary rounded-5 shadow-0 text-success"
+        type="submit"
+      >
+        Crea
+      </button>
+      <button
+        (click)="annulla()"
+        type="button"
+        class="btn btn-primary rounded-5 text-success shadow-none"
+      >
+        Annulla
+      </button>
+    </div>
+  </form>
+</div>

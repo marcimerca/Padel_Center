@@ -3,6 +3,7 @@ import { environment } from '../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Campo } from '../models/campo.interface';
 import { CampoDisponibilita } from '../models/campo-disponibilita.interface';
+import { SlotOrarioDto } from '../models/slot-orario-dto.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,38 @@ export class CampoService {
     return this.http.get<CampoDisponibilita[]>(
       `${this.apiURL}campi/disponibilita/${data}`
     );
+  }
+
+  creaCampo(campo: Partial<Campo>) {
+    return this.http.post<Campo>(`${this.apiURL}campi`, campo);
+  }
+
+  eliminaCampo(id: number) {
+    return this.http.delete(`${this.apiURL}campi/${id}`, {
+      responseType: 'text',
+    });
+  }
+
+  aggiungiSlotOrario(slotOrarioDto: SlotOrarioDto) {
+    return this.http.post(`${this.apiURL}slot-orari`, slotOrarioDto, {
+      responseType: 'text',
+    });
+  }
+
+  eliminaSlotOrario(id: number) {
+    return this.http.delete(`${this.apiURL}slot-orari/${id}`, {
+      responseType: 'text',
+    });
+  }
+
+  eliminaTuttiSlotOrariCampo(id: number) {
+    return this.http.delete(`${this.apiURL}slot-orari/campo/${id}`, {
+      responseType: 'text',
+    });
+  }
+
+  modificaNomeCampo(id: number, nomeCampo: Partial<Campo>) {
+    return this.http.put(`${this.apiURL}campi/${id}`, nomeCampo);
   }
 
   // setSlotOccupato(
