@@ -328,6 +328,20 @@ export class AdminDashboardComponent {
     }
   }
 
+  selezionaTuttiGliSlotDelCampo(campo: CampoDisponibilita) {
+    if (this.slotSelezionati.length > 0) {
+      this.slotSelezionati = [];
+    } else {
+      this.slotSelezionati = [];
+
+      campo.slotOrari.forEach((slot) => {
+        if (!slot.occupato && !this.verificaBottoneDisabilitato(slot.inizio)) {
+          this.slotSelezionati.push(slot);
+        }
+      });
+    }
+  }
+
   isSlotSelected(slot: SlotDisponibilita): boolean {
     return this.slotSelezionati.some((s) => s.id === slot.id);
   }
