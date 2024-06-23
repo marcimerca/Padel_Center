@@ -9,6 +9,8 @@ import app.padel.back_end.entities.User;
 import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.CampoRepository;
+import app.padel.back_end.repositories.PrenotazioneRepository;
+import app.padel.back_end.repositories.SlotOrarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,13 @@ public class CampoService {
     @Autowired
     private CampoRepository campoRepository;
 
-    public String saveCampo(CampoDto campoDto) {
+    @Autowired
+    private SlotOrarioRepository slotOrarioRepository;
+
+    @Autowired
+    private PrenotazioneRepository prenotazioneRepository;
+
+    public Campo saveCampo(CampoDto campoDto) {
         Optional<Campo> campoOptional = getCampoByNome(campoDto.getNomeCampo());
         if(campoOptional.isPresent()){
             throw new BadRequestException("Il nome " + campoDto.getNomeCampo() + " risulta già presente, sceglierne uno differente");
@@ -34,7 +42,7 @@ public class CampoService {
         Campo campo = new Campo();
         campo.setNomeCampo(campoDto.getNomeCampo());
         campoRepository.save(campo);
-        return "Campo " + campo.getNomeCampo() + " inserito correttamente.";
+        return campo;
 
     }
 
@@ -58,6 +66,7 @@ public class CampoService {
             }
             Campo campo = campoOptional.get();
             campo.setNomeCampo(campoDto.getNomeCampo());
+            campoRepository.save(campo);
             return campo;
         } else {
             throw new NotFoundException("Il campo con id " + id + "non è stato trovato");
@@ -65,9 +74,14 @@ public class CampoService {
 
     }
 
+    @Transactional
     public String deleteCampo(int id) {
         Optional<Campo> campoOptional = getCampoById(id);
         if(campoOptional.isPresent()){
+            campoOptional.get().getSlotOrari().forEach((s)->prenotazioneRepository.deleteBySlotOrario(s));
+            slotOrarioRepository.deleteByCampo(campoOptional.get());
+
+
             campoRepository.delete(campoOptional.get());
            return "Campo " + campoOptional.get().getNomeCampo() + " eliminato correttamente.";
         } else {
@@ -77,19 +91,21 @@ public class CampoService {
     }
 
 
-
     public List<CampoDisponibilitaDto> getCampiConDisponibilita(LocalDate data) {
-        List<Campo> campi = campoRepository.findAll();
+        List<Campo> campi = campoRepository.findAll().stream()
+                .sorted(Comparator.comparing(Campo::getId))
+                .collect(Collectors.toList());
         List<CampoDisponibilitaDto> campiDisp = new ArrayList<>();
 
         for (Campo campo : campi) {
             List<SlotOrario> slotOrari = campo.getSlotOrari().stream()
-                    .sorted(Comparator.comparing(SlotOrario::getId))
+                    .sorted(Comparator.comparing(SlotOrario::getInizio))
                     .collect(Collectors.toList());
 
             List<SlotDisponibilitaDto> slotDisponibilitaDTOs = new ArrayList<>();
             for (SlotOrario slot : slotOrari) {
-                boolean isOccupato = slot.getPrenotazioni().stream().anyMatch(p -> p.getDataPrenotazione().equals(data));
+                boolean isOccupato = slot.getPrenotazioni().stream()
+                        .anyMatch(p -> p.getDataPrenotazione().equals(data));
                 SlotDisponibilitaDto slotDto = new SlotDisponibilitaDto(
                         slot.getId(),
                         slot.getInizio(),
@@ -99,9 +115,12 @@ public class CampoService {
                 );
                 slotDisponibilitaDTOs.add(slotDto);
             }
-            campiDisp.add(new CampoDisponibilitaDto(campo.getNomeCampo(), slotDisponibilitaDTOs));
+            campiDisp.add(new CampoDisponibilitaDto(campo.getId(), campo.getNomeCampo(), slotDisponibilitaDTOs));
         }
 
         return campiDisp;
     }
+
+
+
 }
