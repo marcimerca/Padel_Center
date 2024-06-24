@@ -46,6 +46,12 @@ export class PartitaService {
     });
   }
 
+  eliminaPartitaAdmin(partitaId: number) {
+    return this.http.delete(`${this.apiURL}partite/delete/${partitaId}`, {
+      responseType: 'text',
+    });
+  }
+
   savePrenotazioneAdmin(prenotazione: Partial<PrenotazioneAdmin>) {
     return this.http.post<PrenotazioneAdmin>(
       `${this.apiURL}prenotazione/admin`,
@@ -58,6 +64,20 @@ export class PartitaService {
       responseType: 'text',
     });
   }
+
+  annullaPrenotazionePartitaAdmin(idPartita: number, userId: number) {
+    return this.http.delete(
+      `${this.apiURL}prenotazioni/${idPartita}/${userId}`,
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
+  completaPartita(id: number) {
+    return this.http.put(`${this.apiURL}partite/${id}/completa`, {});
+  }
+
   findPrenotazioneBySlotAndData(slotId: number, dataPrenotazione: string) {
     return this.http.get<Prenotazione>(
       `${this.apiURL}prenotazioni/slot-data?slotId=${slotId}&dataPrenotazione=${dataPrenotazione}`

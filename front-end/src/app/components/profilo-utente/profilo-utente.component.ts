@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { AuthService } from 'src/app/auth/auth.service';
 import { AuthData } from 'src/app/models/auth-data.interface';
 import { Partita } from 'src/app/models/partita.interface';
@@ -16,6 +17,7 @@ export class ProfiloUtenteComponent implements OnInit {
   user!: AuthData | null;
   partiteDaGiocare: Partita[] = [];
   partitePassate: Partita[] = [];
+  partitaCompleta = true;
 
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
@@ -29,9 +31,11 @@ export class ProfiloUtenteComponent implements OnInit {
   ngOnInit(): void {
     this.caricaPartite();
   }
+
   caricaPartite() {
     this.authSrv.user$.subscribe((user) => {
       this.user = user;
+      console.log(user);
 
       if (this.user && this.user.id) {
         this.partitaSrv
@@ -172,5 +176,46 @@ export class ProfiloUtenteComponent implements OnInit {
       month: 'long',
       year: 'numeric',
     }).format(new Date(data));
+  }
+
+  eliminaPartita(partitaId: number) {
+    this.partitaSrv.eliminaPartitaAdmin(partitaId).subscribe(() => {
+      console.log('La prenotazione è stata annullata correttamente');
+      this.caricaPartite();
+      this.apriModaleConfermaEliminazionePartita();
+    });
+  }
+
+  apriModaleEliminaPartita(partitaId: number) {
+    this.modalRef = this.modalService.open(ModalConfermaComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Vuoi eliminare la partita?',
+      },
+    });
+
+    this.modalRef.onClose.subscribe((result: string) => {
+      if (result === 'conferma') {
+        this.eliminaPartita(partitaId);
+      }
+    });
+  }
+  apriModaleConfermaEliminazionePartita() {
+    this.modalRef2 = this.modalService.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Partita eliminata correttamente',
+      },
+    });
+  }
+
+  bloccaESbloccaPartecipazione(partita: Partita) {
+    this.partitaSrv.completaPartita(partita.id!).subscribe(() => {
+      if (partita.numGiocatoriAttuali === partita.numMaxGiocatori) {
+        partita.numGiocatoriAttuali = partita.utentiPrenotati.length;
+      } else {
+        partita.numGiocatoriAttuali = partita.numMaxGiocatori;
+      }
+    });
   }
 }

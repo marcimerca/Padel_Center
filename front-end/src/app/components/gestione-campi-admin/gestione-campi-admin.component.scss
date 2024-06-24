@@ -162,3 +162,18 @@ table .btn {
     width: 100% !important;
   }
 }
+
+.custom-table td,
+.custom-table th {
+  vertical-align: middle;
+  text-align: center;
+  height: 50px !important; /* Imposta un'altezza fissa per tutte le celle */
+}
+
+.custom-table .empty-slot,
+.custom-table .slot-orario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}

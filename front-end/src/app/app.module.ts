@@ -35,6 +35,7 @@ import { GestioneCampiAdminComponent } from './components/gestione-campi-admin/g
 import { ModalCreazioneCampoAdminComponent } from './components/modal-creazione-campo-admin/modal-creazione-campo-admin.component';
 import { ModalAggiuntaSlotAdminComponent } from './components/modal-aggiunta-slot-admin/modal-aggiunta-slot-admin.component';
 import { ModalModificaNomeCampoComponent } from './components/modal-modifica-nome-campo/modal-modifica-nome-campo.component';
+import { GestionePartiteAdminComponent } from './components/gestione-partite-admin/gestione-partite-admin.component';
 
 const routes: Route[] = [
   {
@@ -82,6 +83,10 @@ const routes: Route[] = [
         path: 'gestione-campi',
         component: GestioneCampiAdminComponent,
       },
+      {
+        path: 'gestione-partite',
+        component: GestionePartiteAdminComponent,
+      },
     ],
   },
   // {
@@ -111,6 +116,7 @@ const routes: Route[] = [
     ModalCreazioneCampoAdminComponent,
     ModalAggiuntaSlotAdminComponent,
     ModalModificaNomeCampoComponent,
+    GestionePartiteAdminComponent,
   ],
   imports: [
     BrowserModule,

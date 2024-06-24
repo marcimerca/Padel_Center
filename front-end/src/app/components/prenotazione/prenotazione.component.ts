@@ -9,6 +9,7 @@ import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 
 import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
 import { ModalInfoComponent } from '../modal-info/modal-info.component';
+import { SlotDisponibilita } from 'src/app/models/slot-disponibilita.interface';
 
 @Component({
   selector: 'app-prenotazione',
@@ -24,6 +25,9 @@ export class PrenotazioneComponent implements OnInit {
   caricamento = false;
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
+
+  slotSelezionati: SlotDisponibilita[] = [];
+  AllSlotSelezionati: boolean = false;
 
   constructor(
     private campoSrv: CampoService,
@@ -170,5 +174,17 @@ export class PrenotazioneComponent implements OnInit {
       return oraCorrente >= oraSlot;
     }
     return false;
+  }
+  getNumMaxSlotsArray(): any[] {
+    let maxSlots = 0;
+    this.campiDisp.forEach((campo) => {
+      if (campo.slotOrari.length > maxSlots) {
+        maxSlots = campo.slotOrari.length;
+      }
+    });
+    return Array.from({ length: maxSlots }, (_, i) => ({ index: i }));
+  }
+  isSlotSelected(slot: SlotDisponibilita): boolean {
+    return this.slotSelezionati.some((s) => s.id === slot.id);
   }
 }

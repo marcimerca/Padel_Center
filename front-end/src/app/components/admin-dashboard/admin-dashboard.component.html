@@ -3,18 +3,17 @@
 <!-- Sidebar -->
 
 <!-- Sidebar Toggle Button -->
-<!--Main Navigation-->
 <header>
   <!-- Sidebar -->
   <nav
     id="sidebarMenu"
-    class="collapse d-lg-block sidebar collapse-transparent"
+    class="collapse d-lg-block sidebar trasparenza collapse"
   >
-    <div class="position-sticky">
-      <div class="list-group list-group-flush mx-3 mt-4">
+    <div class="position-sticky w-100">
+      <div class="list-group list-group-flush mt-4 rounded-5 w-100">
         <a
           [routerLink]="['gestione-disponibilita']"
-          routerLinkActive="router-link-active"
+          routerLinkActive="active"
           class="list-group-item list-group-item-action py-3"
         >
           <i class="bi bi-speedometer2 me-2"></i>
@@ -27,7 +26,10 @@
           <i class="bi bi-bar-chart me-2"></i>
           <span>Campi da gioco</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action py-3">
+        <a
+          [routerLink]="['gestione-partite']"
+          class="list-group-item list-group-item-action py-3"
+        >
           <i class="bi bi-lock me-2"></i>
           <span>Partite</span>
         </a>
@@ -43,7 +45,6 @@
     </div>
   </nav>
 
-  <!-- Sidebar Toggle Button -->
   <button
     class="btn btn-primary d-lg-none"
     type="button"
@@ -54,20 +55,11 @@
   >
     <i class="bi bi-list me-2"></i>
   </button>
-  <!-- End Sidebar Toggle Button -->
 </header>
-<!--Main Navigation-->
 
-<!-- End Sidebar Toggle Button -->
-
-<!--Main Navigation-->
-
-<!--Main Navigation-->
-
-<!--Main Navigation-->
-
-<!--Main layout-->
 <main style="margin-top: 58px">
-  <router-outlet></router-outlet>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
 </main>
 <!--Main layout-->

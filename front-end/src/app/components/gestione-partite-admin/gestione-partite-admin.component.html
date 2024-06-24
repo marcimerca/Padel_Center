@@ -17,11 +17,9 @@
           class="form-control"
           (input)="onCambioData()"
           [(ngModel)]="dataSelezionata"
-          [min]="mostraDaOggi()"
         />
       </div>
     </div>
-
     <div class="col-5 col-md-3 d-flex">
       <div class="d-flex align-items-center justify-content-center h-100 w-100">
         <a
@@ -44,7 +42,7 @@
     <div *ngFor="let partita of partite" class="mb-3 col-md-6">
       <div class="card trasparenza rounded-5 p-1 d-flex shadow">
         <div
-          class="card-body text-start my-3 d-flex flex-column justify-content-center position-relative"
+          class="card-body text-start my-3 d-flex flex-column justify-content-center"
         >
           <div
             class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
@@ -58,14 +56,9 @@
               style="top: -15px; height: 100%; width: 2px"
             ></div>
             <h5 class="card-subtitle text-primary m-0">
-              {{ partita.slotOrario.campo.nomeCampo }} <br />
-              <span
-                *ngIf="partita.numGiocatoriAttuali == partita.numMaxGiocatori"
-                >Partita completa</span
-              >
+              {{ partita.slotOrario.campo.nomeCampo }}
             </h5>
           </div>
-
           <div class="d-flex justify-content-center mt-4 mb-2">
             <div
               *ngFor="let i of [0, 1, 2, 3]; let j = index"
@@ -78,7 +71,13 @@
                 "
               >
                 <button
-                  class="btn btn-primary rounded-circle position-relative disabled btn-floating"
+                  (click)="
+                    apriModaleAnnullaPrenotazione(
+                      partita.id!,
+                      partita.utentiPrenotati[j].id!
+                    )
+                  "
+                  class="btn btn-primary rounded-circle position-relative btn-floating"
                   style="width: 50px; height: 50px; border: none"
                 >
                   <img
@@ -91,10 +90,20 @@
                     class="w-100 h-100 rounded-circle img-fluid"
                     style="object-fit: cover"
                   />
+                  <span
+                    class="position-absolute fw-bold top-0 end-0 badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
+                    style="
+                      width: 20px;
+                      height: 20px;
+                      transform: translate(30%, -30%);
+                    "
+                  >
+                    -
+                  </span>
                 </button>
                 <div class="mt-2 text-center avatar-text nome h6">
-                  <span
-                    >{{
+                  <span>
+                    {{
                       partita.utentiPrenotati[j].nome.toUpperCase().charAt(0)
                     }}.
                     {{
@@ -104,40 +113,28 @@
                         partita.utentiPrenotati[j].cognome
                           .slice(1)
                           .toLowerCase()
-                    }}</span
-                  >
+                    }}
+                  </span>
                 </div>
               </ng-container>
               <ng-template #placeholderAvatar>
                 <button
+                  [ngClass]="{
+                    'custom-filter': partita.numGiocatoriAttuali == 4
+                  }"
+                  *ngIf="!partitaBloccata"
                   (click)="apriModale(partita)"
                   class="btn btn-success rounded-circle position-relative btn-floating shadow"
-                  [ngClass]="{
-                    'btn-dark':
-                      verificaUtenteGiaAggiunto(partita) ||
-                      partita.numGiocatoriAttuali == 4,
-                    disabled:
-                      verificaUtenteGiaAggiunto(partita) ||
-                      partita.numGiocatoriAttuali == 4
-                  }"
                   style="width: 50px; height: 50px"
                 >
                   <img
-                    [ngClass]="{
-                      'custom-filter':
-                        verificaUtenteGiaAggiunto(partita) ||
-                        partita.numGiocatoriAttuali == 4
-                    }"
                     src="https://upload.wikimedia.org/wikipedia/commons/archive/3/36/20120517134445%21Tennis_ball_3.svg"
                     alt="Placeholder Avatar"
                     class="w-100 h-100 rounded-circle img-fluid"
                     style="object-fit: cover"
                   />
                   <span
-                    *ngIf="
-                      !verificaUtenteGiaAggiunto(partita) &&
-                      partita.numGiocatoriAttuali < 4
-                    "
+                    *ngIf="partita.numGiocatoriAttuali != 4"
                     class="position-absolute top-0 end-0 badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
                     style="
                       width: 20px;
@@ -156,16 +153,37 @@
                       partita.numGiocatoriAttuali == 4
                   }"
                 >
-                  Partecipa
+                  {{
+                    partita.numGiocatoriAttuali === partita.numMaxGiocatori
+                      ? "Bloccato"
+                      : "Mancante"
+                  }}
                 </div>
               </ng-template>
             </div>
+          </div>
+          <div class="d-flex justify-content-center gap-2">
+            <button
+              class="btn btn-primary text-success mx-auto shadow-none"
+              (click)="apriModaleEliminaPartita(partita.id!)"
+            >
+              Elimina
+            </button>
+            <button
+              class="btn btn-primary text-success mx-auto shadow-none"
+              (click)="bloccaESbloccaPartecipazione(partita.id!)"
+            >
+              {{
+                partita.numGiocatoriAttuali === partita.numMaxGiocatori
+                  ? "Sblocca prenotazioni"
+                  : "Blocca prenotazioni"
+              }}
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
   <ng-container *ngIf="dataOggi && partite.length === 0">
     <p>Nessuna partita presente per oggi</p>
   </ng-container>
