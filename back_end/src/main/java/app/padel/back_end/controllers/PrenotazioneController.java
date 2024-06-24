@@ -142,4 +142,19 @@ public class PrenotazioneController {
         return prenotazioneService.annullaPrenotazioneAdmin(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("/prenotazioni/{idPartita}/{userId}")
+    public String annullaPrenotazionePartitaAdmin(@PathVariable int idPartita,@PathVariable int userId) {
+        return prenotazioneService.annullaPrenotazionePartitaAdmin(idPartita, userId);
+    }
+
+
+    @PutMapping("/partite/{id}/completa")
+    public Partita completaPartita(@PathVariable("id") int id) {
+           return prenotazioneService.bloccaESbloccaPartita(id);
+
+    }
+
+
+
 }

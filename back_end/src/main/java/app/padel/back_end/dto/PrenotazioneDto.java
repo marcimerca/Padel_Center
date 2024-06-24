@@ -14,7 +14,7 @@ public class PrenotazioneDto {
     @NotNull(message = "slotOrarioId non può essere null")
     private int slotOrarioId;
 
-    @NotNull(message = "motivoPrenotazione non può essere null")
+
     private String motivoPrenotazione;
 
 

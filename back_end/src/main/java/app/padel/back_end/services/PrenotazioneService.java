@@ -8,6 +8,8 @@ import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.PartitaRepository;
 import app.padel.back_end.repositories.PrenotazioneRepository;
 import app.padel.back_end.repositories.SlotOrarioRepository;
+import app.padel.back_end.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class PrenotazioneService {
 
     @Autowired
     private SlotOrarioRepository slotOrarioRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     public String savePartita(PrenotazioneDto prenotazioneDto) {
@@ -183,6 +188,28 @@ public class PrenotazioneService {
 
     }
 
+
+    public Partita bloccaESbloccaPartita(int idPartita) {
+        Optional<Partita> partitaOptional = partitaRepository.findById(idPartita);
+
+        if (partitaOptional.isPresent()) {
+            Partita partita = partitaOptional.get();
+
+            if (partita.getNumGiocatoriAttuali() == partita.getNumMaxGiocatori()) {
+                partita.setNumGiocatoriAttuali(partita.getUtentiPrenotati().size());
+                partitaRepository.save(partita);
+               return partita;
+            } else {
+                partita.setNumGiocatoriAttuali(partita.getNumMaxGiocatori());
+                partitaRepository.save(partita);
+                return partita;
+            }
+        } else {
+            throw new NotFoundException("La partita con id " + idPartita + " non è stata trovata");
+        }
+    }
+
+
     public Partita updatePartita(int id, UpdatePartita updatePartitaDto) {
         Optional<Partita> partitaOptional = findPartitaById(id);
 
@@ -193,7 +220,7 @@ public class PrenotazioneService {
                 throw new BadRequestException("Impossibile modificare una partita con data nel passato.");
             }
 
-            // Controllo se il numero massimo di giocatori è stato raggiunto
+
             if (partita.getNumGiocatoriAttuali() + updatePartitaDto.getNuoviUtenti().size() > partita.getNumMaxGiocatori()) {
                 throw new BadRequestException("La partita ha già raggiunto il numero massimo di giocatori.");
             }
@@ -201,7 +228,7 @@ public class PrenotazioneService {
             List<User> utentiAttuali = partita.getUtentiPrenotati();
             for (User nuovoUtente : updatePartitaDto.getNuoviUtenti()) {
                 if (updatePartitaDto.isAggiungiUtente()) {
-                    // Aggiungi un nuovo utente solo se non è già presente nella lista
+
                     if (!utentiAttuali.contains(nuovoUtente)) {
                         utentiAttuali.add(nuovoUtente);
                     } else {
@@ -251,5 +278,33 @@ public class PrenotazioneService {
             throw new NotFoundException("La prenotazione amministrativa con id " + id + " non è stata trovata.");
         }
     }
+
+    public String annullaPrenotazionePartitaAdmin(int idPartita, int userId) {
+        Optional<Partita> partitaOptional = partitaRepository.findById(idPartita);
+        if (partitaOptional.isPresent()) {
+            Partita partita = partitaOptional.get();
+            Optional<User> userOptional = userRepository.findById(userId);
+
+            if(userOptional.isPresent()){
+                partita.setNumGiocatoriAttuali(partita.getNumGiocatoriAttuali() - 1);
+                if(partita.getUtentiPrenotati().isEmpty()){
+                    prenotazioneRepository.delete(partita);
+                    return "Utente rimosso e partita eliminata correttamente";
+                } else {
+                    partita.getUtentiPrenotati().remove(userOptional.get());
+                    prenotazioneRepository.save(partita);
+                    return "Utente rimosso correttamente dalla partita";
+                }
+
+            } else {
+                return "Utente con id " + userId + "non è stato trovato";
+            }
+
+        } else {
+            throw new NotFoundException("La partita con id " + idPartita + " non è stata trovata");
+        }
+    }
+
+
 
 }
