@@ -1,10 +1,12 @@
 package app.padel.back_end.services;
 
 import app.padel.back_end.dto.UserDto;
+import app.padel.back_end.entities.Partita;
 import app.padel.back_end.entities.User;
 import app.padel.back_end.enums.Ruolo;
 import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
+import app.padel.back_end.repositories.PrenotazioneRepository;
 import app.padel.back_end.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,12 @@ public class UserService {
 
     @Autowired
     public PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public PrenotazioneRepository prenotazioneRepository;
+
+    @Autowired
+    public PrenotazioneService prenotazioneService;
 
     public String saveUser(UserDto userDto) {
        Optional<User> userOptional = getUserByEmail(userDto.getEmail());
@@ -93,12 +101,15 @@ public class UserService {
     }
 
 
-    public String deleteUser(int id) {
+    public User deleteUser(int id) {
         Optional<User> utenteOptional = getUserById(id);
         if (utenteOptional.isPresent()) {
             User user = utenteOptional.get();
+            List<Partita> partiteUser = prenotazioneService.findPartiteByUser(user);
+            partiteUser.forEach((partita -> prenotazioneService.annullaPrenotazionePartitaAdmin(partita.getId(), user.getId())));
+            partiteUser.forEach(partita -> prenotazioneRepository.save(partita));
             userRepository.delete(utenteOptional.get());
-            return "L' utente con id " + id + " è stato eliminato con successo.";
+            return user;
         } else {
             throw new NotFoundException("L' utente con id " + id + " non è stato trovato");
         }

@@ -48,7 +48,7 @@ public class AuthService {
             }
 
         } else {
-            throw new NotFoundException(" L'utente con email " + userLoginDto.getEmail() + "non è stato trovato");
+            throw new NotFoundException(" L'utente con email " + userLoginDto.getEmail() + " non è stato trovato");
         }
     }
 }
