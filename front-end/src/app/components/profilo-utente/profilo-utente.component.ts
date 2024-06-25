@@ -7,6 +7,9 @@ import { PartitaService } from 'src/app/services/partita.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
 import { ModalInfoComponent } from '../modal-info/modal-info.component';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.interface';
 
 @Component({
   selector: 'app-profilo-utente',
@@ -14,7 +17,9 @@ import { ModalInfoComponent } from '../modal-info/modal-info.component';
   styleUrls: ['./profilo-utente.component.scss'],
 })
 export class ProfiloUtenteComponent implements OnInit {
-  user!: AuthData | null;
+  userId: string = '';
+
+  user!: AuthData | User | null;
   partiteDaGiocare: Partita[] = [];
   partitePassate: Partita[] = [];
   partitaCompleta = true;
@@ -25,76 +30,84 @@ export class ProfiloUtenteComponent implements OnInit {
   constructor(
     private authSrv: AuthService,
     private partitaSrv: PartitaService,
-    private modalService: MdbModalService
+    private modalSrv: MdbModalService,
+    private route: ActivatedRoute,
+    private userSrv: UserService
   ) {}
 
   ngOnInit(): void {
-    this.caricaPartite();
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.userId = id;
+        this.userSrv.getUserById(parseInt(id)).subscribe((userData) => {
+          this.user = userData;
+          this.caricaPartite(); // Passa l'oggetto user direttamente
+        });
+      } else {
+        this.authSrv.user$.subscribe((user) => {
+          this.user = user;
+          if (this.user) {
+            this.caricaPartite(); // Passa l'oggetto user direttamente
+          }
+        });
+      }
+    });
   }
 
   caricaPartite() {
-    this.authSrv.user$.subscribe((user) => {
-      this.user = user;
-      console.log(user);
+    let caricaPartiteObservable;
 
-      if (this.user && this.user.id) {
-        this.partitaSrv
-          .findPartiteByUserId(this.user.id)
-          .subscribe((partite) => {
-            const now = new Date();
-            const today = new Date(
-              now.getFullYear(),
-              now.getMonth(),
-              now.getDate()
-            );
+    if ('accessToken' in this.user!) {
+      caricaPartiteObservable = this.partitaSrv.findPartiteByLoggedUser(
+        this.user.id
+      );
+    } else {
+      caricaPartiteObservable = this.partitaSrv.findPartiteByUserId(
+        this.user!.id
+      );
+    }
+    caricaPartiteObservable.subscribe((partite) => {
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-            this.partiteDaGiocare = partite
-              .filter((partita) => {
-                const partitaTime = new Date(
-                  partita.dataPrenotazione + 'T' + partita.slotOrario.inizio
-                );
-                return (
-                  partitaTime > now ||
-                  (partitaTime.getTime() === today.getTime() &&
-                    (partitaTime.getHours() > now.getHours() ||
-                      (partitaTime.getHours() === now.getHours() &&
-                        partitaTime.getMinutes() > now.getMinutes())))
-                );
-              })
-              .sort((a, b) => {
-                const dateA = new Date(
-                  a.dataPrenotazione + 'T' + a.slotOrario.inizio
-                );
-                const dateB = new Date(
-                  b.dataPrenotazione + 'T' + b.slotOrario.inizio
-                );
-                return dateA.getTime() - dateB.getTime();
-              });
+      this.partiteDaGiocare = partite
+        .filter((partita) => {
+          const partitaTime = new Date(
+            partita.dataPrenotazione + 'T' + partita.slotOrario.inizio
+          );
+          return (
+            partitaTime > now ||
+            (partitaTime.getTime() === today.getTime() &&
+              (partitaTime.getHours() > now.getHours() ||
+                (partitaTime.getHours() === now.getHours() &&
+                  partitaTime.getMinutes() > now.getMinutes())))
+          );
+        })
+        .sort(
+          (a, b) =>
+            new Date(a.dataPrenotazione + 'T' + a.slotOrario.inizio).getTime() -
+            new Date(b.dataPrenotazione + 'T' + b.slotOrario.inizio).getTime()
+        );
 
-            this.partitePassate = partite
-              .filter((partita) => {
-                const partitaTime = new Date(
-                  partita.dataPrenotazione + 'T' + partita.slotOrario.inizio
-                );
-                return (
-                  partitaTime < now ||
-                  (partitaTime.getTime() === today.getTime() &&
-                    (partitaTime.getHours() < now.getHours() ||
-                      (partitaTime.getHours() === now.getHours() &&
-                        partitaTime.getMinutes() <= now.getMinutes())))
-                );
-              })
-              .sort((a, b) => {
-                const dateA = new Date(
-                  a.dataPrenotazione + 'T' + a.slotOrario.inizio
-                );
-                const dateB = new Date(
-                  b.dataPrenotazione + 'T' + b.slotOrario.inizio
-                );
-                return dateB.getTime() - dateA.getTime();
-              });
-          });
-      }
+      this.partitePassate = partite
+        .filter((partita) => {
+          const partitaTime = new Date(
+            partita.dataPrenotazione + 'T' + partita.slotOrario.inizio
+          );
+          return (
+            partitaTime < now ||
+            (partitaTime.getTime() === today.getTime() &&
+              (partitaTime.getHours() < now.getHours() ||
+                (partitaTime.getHours() === now.getHours() &&
+                  partitaTime.getMinutes() <= now.getMinutes())))
+          );
+        })
+        .sort(
+          (a, b) =>
+            new Date(b.dataPrenotazione + 'T' + b.slotOrario.inizio).getTime() -
+            new Date(a.dataPrenotazione + 'T' + a.slotOrario.inizio).getTime()
+        );
     });
   }
 
@@ -107,7 +120,7 @@ export class ProfiloUtenteComponent implements OnInit {
   }
 
   apriModale(partitaId: number) {
-    this.modalRef = this.modalService.open(ModalConfermaComponent, {
+    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
         messaggio: 'Vuoi annullare la prenotazione?',
@@ -122,7 +135,7 @@ export class ProfiloUtenteComponent implements OnInit {
   }
 
   apriModale2() {
-    this.modalRef2 = this.modalService.open(ModalInfoComponent, {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
         messaggio:
@@ -162,7 +175,7 @@ export class ProfiloUtenteComponent implements OnInit {
     );
   }
   apriModaleInfoCircolo() {
-    this.modalRef2 = this.modalService.open(ModalInfoComponent, {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
         messaggio: 'Numero: 0444/198471',
@@ -187,7 +200,7 @@ export class ProfiloUtenteComponent implements OnInit {
   }
 
   apriModaleEliminaPartita(partitaId: number) {
-    this.modalRef = this.modalService.open(ModalConfermaComponent, {
+    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
         messaggio: 'Vuoi eliminare la partita?',
@@ -201,7 +214,7 @@ export class ProfiloUtenteComponent implements OnInit {
     });
   }
   apriModaleConfermaEliminazionePartita() {
-    this.modalRef2 = this.modalService.open(ModalInfoComponent, {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
         messaggio: 'Partita eliminata correttamente',

@@ -9,50 +9,50 @@ import { SlotOrarioDto } from '../models/slot-orario-dto.interface';
   providedIn: 'root',
 })
 export class CampoService {
-  apiURL = environment.apiURL;
+  baseURL = environment.baseURL;
 
   constructor(private http: HttpClient) {}
 
   getCampi() {
-    return this.http.get<Campo[]>(`${this.apiURL}campi`);
+    return this.http.get<Campo[]>(`${this.baseURL}campi`);
   }
 
   getCampiConDisponibilita(data: string) {
     return this.http.get<CampoDisponibilita[]>(
-      `${this.apiURL}campi/disponibilita/${data}`
+      `${this.baseURL}campi/disponibilita/${data}`
     );
   }
 
   creaCampo(campo: Partial<Campo>) {
-    return this.http.post<Campo>(`${this.apiURL}campi`, campo);
+    return this.http.post<Campo>(`${this.baseURL}campi`, campo);
   }
 
   eliminaCampo(id: number) {
-    return this.http.delete(`${this.apiURL}campi/${id}`, {
+    return this.http.delete(`${this.baseURL}campi/${id}`, {
       responseType: 'text',
     });
   }
 
   aggiungiSlotOrario(slotOrarioDto: SlotOrarioDto) {
-    return this.http.post(`${this.apiURL}slot-orari`, slotOrarioDto, {
+    return this.http.post(`${this.baseURL}slot-orari`, slotOrarioDto, {
       responseType: 'text',
     });
   }
 
   eliminaSlotOrario(id: number) {
-    return this.http.delete(`${this.apiURL}slot-orari/${id}`, {
+    return this.http.delete(`${this.baseURL}slot-orari/${id}`, {
       responseType: 'text',
     });
   }
 
   eliminaTuttiSlotOrariCampo(id: number) {
-    return this.http.delete(`${this.apiURL}slot-orari/campo/${id}`, {
+    return this.http.delete(`${this.baseURL}slot-orari/campo/${id}`, {
       responseType: 'text',
     });
   }
 
   modificaNomeCampo(id: number, nomeCampo: Partial<Campo>) {
-    return this.http.put(`${this.apiURL}campi/${id}`, nomeCampo);
+    return this.http.put(`${this.baseURL}campi/${id}`, nomeCampo);
   }
 
   // setSlotOccupato(
@@ -60,7 +60,7 @@ export class CampoService {
   //   dataOccupato: string,
   //   motivoOccupato: string
   // ) {
-  //   const url = `${this.apiURL}slot-orari/${slotId}/occupato`;
+  //   const url = `${this.baseURL}slot-orari/${slotId}/occupato`;
   //   const body = {
   //     dataOccupato: dataOccupato,
   //     motivoOccupato: motivoOccupato,
@@ -75,7 +75,7 @@ export class CampoService {
   //   dataOccupato: string,
   //   motivoOccupato: string
   // ) {
-  //   const url = `${this.apiURL}slot-orari/${slotId}/occupato`;
+  //   const url = `${this.baseURL}slot-orari/${slotId}/occupato`;
   //   const body = {
   //     dataOccupato: dataOccupato,
   //     motivoOccupato: motivoOccupato,

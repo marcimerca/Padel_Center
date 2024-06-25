@@ -36,6 +36,8 @@ import { ModalCreazioneCampoAdminComponent } from './components/modal-creazione-
 import { ModalAggiuntaSlotAdminComponent } from './components/modal-aggiunta-slot-admin/modal-aggiunta-slot-admin.component';
 import { ModalModificaNomeCampoComponent } from './components/modal-modifica-nome-campo/modal-modifica-nome-campo.component';
 import { GestionePartiteAdminComponent } from './components/gestione-partite-admin/gestione-partite-admin.component';
+import { UsersComponent } from './components/users/users.component';
+import { FilterUsers } from './pipes/filter-users.pipe';
 
 const routes: Route[] = [
   {
@@ -59,6 +61,11 @@ const routes: Route[] = [
     path: 'profilo-utente',
     component: ProfiloUtenteComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'users/:id',
+    component: ProfiloUtenteComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: 'prenotazione',
@@ -86,6 +93,10 @@ const routes: Route[] = [
       {
         path: 'gestione-partite',
         component: GestionePartiteAdminComponent,
+      },
+      {
+        path: 'gestione-users',
+        component: UsersComponent,
       },
     ],
   },
@@ -117,6 +128,8 @@ const routes: Route[] = [
     ModalAggiuntaSlotAdminComponent,
     ModalModificaNomeCampoComponent,
     GestionePartiteAdminComponent,
+    UsersComponent,
+    FilterUsers,
   ],
   imports: [
     BrowserModule,

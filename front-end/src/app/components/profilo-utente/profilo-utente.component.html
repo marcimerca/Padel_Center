@@ -51,14 +51,17 @@
 
 <!-- Parte delle partite da giocare -->
 <div class="container text-start mt-3">
-  <h1 class="mb-3 text-primary">Le tue partite da giocare</h1>
-  <button
-    (click)="apriModaleInfoCircolo()"
-    *ngIf="user!.ruolo == 'USER'"
-    class="btn btn-primary text-success mx-auto mb-3 shadow-none"
-  >
-    Contattare il circolo per annullare la prenotazione
-  </button>
+  <div class="d-flex align-items-center w-100 justify-content-between">
+    <h1 class="mb-3 text-primary">Partite da giocare</h1>
+    <button
+      (click)="apriModaleInfoCircolo()"
+      *ngIf="userId == ''"
+      class="btn btn-primary text-success mx-auto mb-3 shadow-none"
+    >
+      Contattare il circolo per annullare una prenotazione fra meno di 24 ore.
+    </button>
+  </div>
+
   <ng-container
     *ngIf="
       partiteDaGiocare && partiteDaGiocare.length > 0;
@@ -214,7 +217,7 @@
 
 <!-- Parte delle partite passate -->
 <div class="container text-start mt-3">
-  <h1 class="mb-3 text-primary">Le tue partite passate</h1>
+  <h1 class="mb-3 text-primary">Partite passate</h1>
   <ng-container
     *ngIf="partitePassate && partitePassate.length > 0; else noPartitePassate"
   >

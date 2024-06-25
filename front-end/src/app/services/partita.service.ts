@@ -11,7 +11,7 @@ import { Prenotazione } from '../models/prenotazione.interface';
   providedIn: 'root',
 })
 export class PartitaService {
-  apiURL = environment.apiURL;
+  baseURL = environment.baseURL;
 
   constructor(private http: HttpClient) {}
 
@@ -20,54 +20,58 @@ export class PartitaService {
     let dataFormattata = dataAttuale.toISOString().split('T')[0];
 
     return this.http.get<Partita[]>(
-      `${this.apiURL}partite/per-data?data=${dataFormattata}`
+      `${this.baseURL}partite/per-data?data=${dataFormattata}`
     );
   }
 
   getPartitePerData(data: string) {
     return this.http.get<Partita[]>(
-      `${this.apiURL}partite/per-data?data=${data}`
+      `${this.baseURL}partite/per-data?data=${data}`
     );
   }
 
   aggiungiAPartita(partita: Partial<Partita>) {
-    return this.http.post(`${this.apiURL}partite`, partita, {
+    return this.http.post(`${this.baseURL}partite`, partita, {
       responseType: 'text',
     });
   }
 
+  findPartiteByLoggedUser(userId: number) {
+    return this.http.get<Partita[]>(`${this.baseURL}partite/user`);
+  }
+
   findPartiteByUserId(userId: number) {
-    return this.http.get<Partita[]>(`${this.apiURL}partite/user`);
+    return this.http.get<Partita[]>(`${this.baseURL}partite/by-user/${userId}`);
   }
 
   annullaPrenotazione(partitaId: number) {
-    return this.http.delete(`${this.apiURL}partite/${partitaId}`, {
+    return this.http.delete(`${this.baseURL}partite/${partitaId}`, {
       responseType: 'text',
     });
   }
 
   eliminaPartitaAdmin(partitaId: number) {
-    return this.http.delete(`${this.apiURL}partite/delete/${partitaId}`, {
+    return this.http.delete(`${this.baseURL}partite/delete/${partitaId}`, {
       responseType: 'text',
     });
   }
 
   savePrenotazioneAdmin(prenotazione: Partial<PrenotazioneAdmin>) {
     return this.http.post<PrenotazioneAdmin>(
-      `${this.apiURL}prenotazione/admin`,
+      `${this.baseURL}prenotazione/admin`,
       prenotazione
     );
   }
 
   annullaPrenotazioneAdmin(id: number) {
-    return this.http.delete(`${this.apiURL}prenotazioni/${id}`, {
+    return this.http.delete(`${this.baseURL}prenotazioni/${id}`, {
       responseType: 'text',
     });
   }
 
   annullaPrenotazionePartitaAdmin(idPartita: number, userId: number) {
     return this.http.delete(
-      `${this.apiURL}prenotazioni/${idPartita}/${userId}`,
+      `${this.baseURL}prenotazioni/${idPartita}/${userId}`,
       {
         responseType: 'text',
       }
@@ -75,16 +79,16 @@ export class PartitaService {
   }
 
   completaPartita(id: number) {
-    return this.http.put(`${this.apiURL}partite/${id}/completa`, {});
+    return this.http.put(`${this.baseURL}partite/${id}/completa`, {});
   }
 
   findPrenotazioneBySlotAndData(slotId: number, dataPrenotazione: string) {
     return this.http.get<Prenotazione>(
-      `${this.apiURL}prenotazioni/slot-data?slotId=${slotId}&dataPrenotazione=${dataPrenotazione}`
+      `${this.baseURL}prenotazioni/slot-data?slotId=${slotId}&dataPrenotazione=${dataPrenotazione}`
     );
   }
 
   getCampi() {
-    return this.http.get<Campo[]>(`${this.apiURL}campi`);
+    return this.http.get<Campo[]>(`${this.baseURL}campi`);
   }
 }

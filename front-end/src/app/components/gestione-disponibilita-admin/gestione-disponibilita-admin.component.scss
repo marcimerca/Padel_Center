@@ -122,6 +122,17 @@ body {
   td {
     font-size: 12px;
   }
+  .btn-custom {
+    padding: 0.375rem 0.75rem; /* Padding più piccolo */
+    font-size: 0.7rem; /* Dimensione del testo ridotta */
+  }
+  .fixed-buttons {
+    position: sticky;
+    left: 0;
+    width: 100%; /* Assicurati che si estenda per tutta la larghezza del viewport */
+    background-color: white;
+    z-index: 1000; /* Mantienilo sopra agli altri contenuti */
+  }
 }
 
 table .btn {
@@ -138,4 +149,20 @@ table .btn {
   vertical-align: middle;
   text-align: center;
   padding: 0;
+}
+
+.table-responsive-sm {
+  overflow-x: auto;
+  position: relative;
+}
+
+.table-responsive-sm::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.15));
+  pointer-events: none; /* Assicura che non interferisca con lo scroll o clic */
 }
