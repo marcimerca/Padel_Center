@@ -259,11 +259,9 @@ export class ProfiloUtenteComponent implements OnInit {
           .subscribe(
             (response) => {
               console.log('Vincitori aggiunti con successo:', response);
-              // Esegui altre azioni necessarie dopo aver aggiunto i vincitori
             },
             (error) => {
               console.error("Errore durante l'aggiunta dei vincitori:", error);
-              // Gestisci l'errore in modo appropriato
             }
           );
       } else if (result.tipo === 'sconfitta') {
