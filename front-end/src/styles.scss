@@ -12,7 +12,7 @@ $primary: #eeee62;
 $secondary: #d6d659;
 $accent: #e9f416;
 $warning: #ffc199;
-$success: #145eb8;
+$success: #12468a;
 
 $link-color: #eee9e9;
 $active-link-color: $secondary;
@@ -74,6 +74,5 @@ a {
   transition: transform 0.3s ease, font-size 0.3s ease;
   &:hover {
     text-decoration: underline;
-    font-size: 18px;
   }
 }
