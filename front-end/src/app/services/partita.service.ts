@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { Campo } from '../models/campo.interface';
 import { PrenotazioneAdmin } from '../models/prenotazione-admin.interface';
 import { Prenotazione } from '../models/prenotazione.interface';
+import { User } from '../models/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -90,5 +91,21 @@ export class PartitaService {
 
   getCampi() {
     return this.http.get<Campo[]>(`${this.baseURL}campi`);
+  }
+
+  aggiungiVincitori(partitaId: number, vincitori: User[]) {
+    return this.http.put(
+      `${this.baseURL}/partite/aggiungi-vincitori/${partitaId}`,
+      vincitori
+    );
+  }
+
+  aggiungiVincitoriAllaPartita2(
+    partitaId: number,
+    compagno: User | null,
+    tipoRisultato: string
+  ) {
+    const url = `${this.baseURL}partite/aggiungi-vincitori2/${partitaId}?tipoRisultato=${tipoRisultato}`;
+    return this.http.put<any>(url, compagno);
   }
 }

@@ -91,7 +91,7 @@
                     style="object-fit: cover"
                   />
                   <span
-                    class="position-absolute fw-bold top-0 end-0 badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
+                    class="position-absolute fw-bold top-0 end-0 badge bg-success border border-secondary text-primary rounded-pill d-flex justify-content-center align-items-center"
                     style="
                       width: 20px;
                       height: 20px;
@@ -135,7 +135,7 @@
                   />
                   <span
                     *ngIf="partita.numGiocatoriAttuali != 4"
-                    class="position-absolute top-0 end-0 badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
+                    class="position-absolute top-0 end-0 border border-secondary badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
                     style="
                       width: 20px;
                       height: 20px;
@@ -170,7 +170,7 @@
               Elimina
             </button>
             <button
-              class="btn btn-primary text-success mx-auto shadow-none"
+              class="btn btn-primary text-success custom-button mx-auto shadow-none"
               (click)="bloccaESbloccaPartecipazione(partita.id!)"
             >
               {{

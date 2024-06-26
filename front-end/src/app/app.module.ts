@@ -38,6 +38,7 @@ import { ModalModificaNomeCampoComponent } from './components/modal-modifica-nom
 import { GestionePartiteAdminComponent } from './components/gestione-partite-admin/gestione-partite-admin.component';
 import { UsersComponent } from './components/users/users.component';
 import { FilterUsers } from './pipes/filter-users.pipe';
+import { ModalAggiungiVincitoriComponent } from './components/modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
 
 const routes: Route[] = [
   {
@@ -130,6 +131,7 @@ const routes: Route[] = [
     GestionePartiteAdminComponent,
     UsersComponent,
     FilterUsers,
+    ModalAggiungiVincitoriComponent,
   ],
   imports: [
     BrowserModule,

@@ -110,17 +110,21 @@ body {
 .custom-table tbody td {
   height: 40px;
 }
-.custom-table tbody td:hover {
+.custom-table tbody td:hover:not(.cursor-not-allowed) {
   cursor: pointer;
-  background-color: $primary !important;
+  background-color: $primary;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 }
+
 @media (max-width: 576px) {
   td {
     font-size: 12px;
+  }
+  .span-ora {
+    display: none;
   }
 }
 
@@ -138,4 +142,18 @@ table .btn {
   vertical-align: middle;
   text-align: center;
   padding: 0;
+}
+
+.table-responsive-sm {
+  overflow-x: auto;
+  position: relative;
+}
+
+.table-responsive-sm::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 100%;
 }

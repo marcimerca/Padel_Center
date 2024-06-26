@@ -10,6 +10,7 @@ import { ModalInfoComponent } from '../modal-info/modal-info.component';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.interface';
+import { ModalAggiungiVincitoriComponent } from '../modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
 
 @Component({
   selector: 'app-profilo-utente',
@@ -20,12 +21,15 @@ export class ProfiloUtenteComponent implements OnInit {
   userId: string = '';
 
   user!: AuthData | User | null;
+  conteggioPartiteVinte: number = 0;
+  conteggioPartitePerse: number = 0;
   partiteDaGiocare: Partita[] = [];
   partitePassate: Partita[] = [];
   partitaCompleta = true;
 
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
+  modalRef3: MdbModalRef<ModalAggiungiVincitoriComponent> | null = null;
 
   constructor(
     private authSrv: AuthService,
@@ -48,7 +52,7 @@ export class ProfiloUtenteComponent implements OnInit {
         this.authSrv.user$.subscribe((user) => {
           this.user = user;
           if (this.user) {
-            this.caricaPartite(); // Passa l'oggetto user direttamente
+            this.caricaPartite();
           }
         });
       }
@@ -108,6 +112,7 @@ export class ProfiloUtenteComponent implements OnInit {
             new Date(b.dataPrenotazione + 'T' + b.slotOrario.inizio).getTime() -
             new Date(a.dataPrenotazione + 'T' + a.slotOrario.inizio).getTime()
         );
+      this.calcolaConteggioPartiteVinteEPersa();
     });
   }
 
@@ -230,5 +235,79 @@ export class ProfiloUtenteComponent implements OnInit {
         partita.numGiocatoriAttuali = partita.numMaxGiocatori;
       }
     });
+  }
+
+  apriModaleRisultato(partita: Partita) {
+    this.modalRef3 = this.modalSrv.open(ModalAggiungiVincitoriComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        utentiInput: partita.utentiPrenotati.filter(
+          (utente) => utente.id !== this.user?.id
+        ),
+      },
+    });
+
+    this.modalRef3.onClose.subscribe((result) => {
+      if (result.tipo === 'vittoria') {
+        console.log('Vittoria registrata', result.compagno);
+        this.partitaSrv
+          .aggiungiVincitoriAllaPartita2(
+            partita.id!,
+            result.compagno,
+            result.tipo
+          )
+          .subscribe(
+            (response) => {
+              console.log('Vincitori aggiunti con successo:', response);
+              // Esegui altre azioni necessarie dopo aver aggiunto i vincitori
+            },
+            (error) => {
+              console.error("Errore durante l'aggiunta dei vincitori:", error);
+              // Gestisci l'errore in modo appropriato
+            }
+          );
+      } else if (result.tipo === 'sconfitta') {
+        console.log('Sconfitta registrata');
+        this.partitaSrv
+          .aggiungiVincitoriAllaPartita2(
+            partita.id!,
+            result.compagno,
+            result.tipo
+          )
+          .subscribe(
+            (response) => {
+              console.log('Vincitori aggiunti con successo:', response);
+              // Esegui altre azioni necessarie dopo aver aggiunto i vincitori
+            },
+            (error) => {
+              console.error("Errore durante l'aggiunta dei vincitori:", error);
+              // Gestisci l'errore in modo appropriato
+            }
+          );
+      }
+      this.caricaPartite();
+    });
+  }
+
+  utenteHaVinto(partita: Partita): boolean {
+    return (
+      partita.giocatoriVincenti &&
+      partita.giocatoriVincenti.some((v) => v.id === this.user?.id)
+    );
+  }
+
+  calcolaConteggioPartiteVinteEPersa() {
+    this.conteggioPartiteVinte = 0;
+    this.conteggioPartitePerse = 0;
+
+    this.partitePassate.forEach((partita) => {
+      if (this.utenteHaVinto(partita)) {
+        this.conteggioPartiteVinte++;
+      } else if (partita.giocatoriVincenti.length < 2) {
+        this.conteggioPartitePerse++;
+      }
+    });
+    console.log(this.conteggioPartiteVinte);
+    console.log(this.conteggioPartitePerse);
   }
 }

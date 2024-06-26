@@ -76,7 +76,6 @@ body {
   text-align: center;
 }
 
-/* Toggling the sidebar header content, hide the big heading [h3] and showing the small heading [strong] and vice versa*/
 #sidebar .sidebar-header strong {
   display: none;
 }
@@ -167,7 +166,7 @@ table .btn {
 .custom-table th {
   vertical-align: middle;
   text-align: center;
-  height: 50px !important; /* Imposta un'altezza fissa per tutte le celle */
+  height: 50px !important;
 }
 
 .custom-table .empty-slot,
@@ -177,3 +176,7 @@ table .btn {
   justify-content: center;
   height: 100%;
 }
+
+// .background-color {
+//   background-color: $background !important;
+// }

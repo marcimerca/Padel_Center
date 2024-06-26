@@ -1,9 +1,9 @@
-<div class="container mt-4 mb-4 text-center">
-  <h1 class="text-primary mb-4">Gestione Campi</h1>
+<div class="container mb-4 text-center">
+  <h1 class="text-primary mb-4 p-2">Gestione Campi</h1>
   <div class="d-flex justify-content-center mb-4">
     <button
       (click)="apriModaleCreaCampo()"
-      class="btn btn-primary text-success p-2"
+      class="btn btn-primary btn-lg text-success p-2"
     >
       Crea Campo
     </button>
@@ -20,13 +20,13 @@
           </button>
           <button
             (click)="apriModaleEliminaTuttiSlotCampo(campo.id!)"
-            class="btn btn-secondary text-dark btn-sm"
+            class="btn btn-secondary text-success btn-sm"
           >
             Elimina Tutti gli Slot
           </button>
           <button
             (click)="apriModaleEliminaCampo(campo.id!)"
-            class="btn btn-danger text-white btn-sm"
+            class="btn btn-primary text-success btn-sm"
           >
             Elimina Campo
           </button>
@@ -92,7 +92,7 @@
                     (click)="apriModaleAggiuntaSlot(campo.id!)"
                     class="text-success h-100 text-decoration-underline rounded-bottom-3 position-relative p-2 empty-slot"
                   >
-                    da inserire
+                    aggiungi orario
                   </div>
                 </ng-template>
               </td>

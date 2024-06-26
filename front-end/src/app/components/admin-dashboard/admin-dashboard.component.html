@@ -15,14 +15,14 @@
     class="d-lg-block sidebar collapse trasparenza sticky-top"
   >
     <div class="position-sticky w-100">
-      <ul class="navbar-nav flex-column mt-4">
+      <ul class="navbar-nav flex-column">
         <li class="nav-item">
           <a
             class="nav-link"
             [routerLink]="['gestione-disponibilita']"
             routerLinkActive="active"
           >
-            <i class="bi bi-speedometer2 me-2"></i>
+            <i class="bi bi-calendar4-week me-2"></i>
             Gestione disponibilità
           </a>
         </li>
@@ -34,7 +34,7 @@
             [routerLink]="['gestione-campi']"
             routerLinkActive="active"
           >
-            <i class="bi bi-layout-text-sidebar-reverse me-2"></i>
+            <i class="bi bi-square-half me-2"></i>
             Campi da gioco
           </a>
         </li>
@@ -81,8 +81,8 @@
   <!-- Sidebar Toggle Button -->
 </header>
 
-<main style="margin-top: 58px">
-  <div class="container">
+<main>
+  <div class="container mt-2">
     <router-outlet></router-outlet>
   </div>
 </main>

@@ -21,6 +21,9 @@
 .custom-filter {
   filter: brightness(15%) contrast(80%);
 }
+.custom-button {
+  width: 220px;
+}
 
 @media (max-width: 576px) {
   .nome {

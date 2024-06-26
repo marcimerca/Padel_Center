@@ -1,6 +1,6 @@
-<div class="container pt-4">
+<div class="container">
   <!-- Sezione partite del giorno -->
-  <div class="container p-4 my-4">
+  <div class="container my-4">
     <div class="row bg-primary trasparenza">
       <div class="col-4 col-md">
         <div class="text-success">
@@ -52,21 +52,15 @@
             <td *ngFor="let campo of campiDisp" class="p-0">
               <div
                 *ngIf="campo.slotOrari[slot.index]; else emptySlot"
-                class="h-100"
+                class="h-100 w-100"
               >
                 <div
-                  (click)="
-                    !verificaBottoneDisabilitato(
-                      campo.slotOrari[slot.index].inizio
-                    ) && selezionaSlot(campo.slotOrari[slot.index])
-                  "
+                  (click)="selezionaSlot(campo.slotOrari[slot.index])"
                   [ngClass]="{
                     'bg-dark': verificaBottoneDisabilitato(
                       campo.slotOrari[slot.index].inizio
                     ),
-                    'cursor-not-allowed': verificaBottoneDisabilitato(
-                      campo.slotOrari[slot.index].inizio
-                    ),
+
                     selezionati: isSlotSelected(campo.slotOrari[slot.index]),
                     'rounded-bottom-3': true,
                     'position-relative': true,
@@ -129,12 +123,12 @@
         </tbody>
       </table>
       <div
-        class="d-flex flex-md-nowrap justify-content-center justify-content-md-start p-md-2 gap-1 gap-md-3 fixed-buttons"
+        class="d-flex flex-md-nowrap justify-content-center p-1 justify-content-md-start p-md-2 gap-1 gap-md-3 sticky-buttons"
       >
         <button
           [ngClass]="{ disabled: slotSelezionati.length <= 0 }"
           (click)="prenotaFasciaOraria(dataSelezionata)"
-          class="btn btn-primary btn-custom text-success p-0 p-md-2"
+          class="btn btn-primary btn-custom text-success p-1 p-md-2"
         >
           Prenota
         </button>
@@ -143,19 +137,19 @@
             disabled: slotSelezionati.length <= 0 || !sonoSlotPrenotati()
           }"
           (click)="apriModaleAnnulla()"
-          class="btn btn-primary btn-custom text-success p-0 p-md-2"
+          class="btn btn-primary btn-custom text-success p-1 p-md-2"
         >
           Cancella Prenotazione
         </button>
         <button
           (click)="selezionaTuttiGliSlot()"
-          class="btn btn-primary btn-custom text-success p-0 p-md-2"
+          class="btn btn-primary btn-custom text-success p-1 p-md-2"
         >
           {{ slotSelezionati.length > 0 ? "Deseleziona" : "Seleziona tutto" }}
         </button>
         <button
           (click)="selezionaTuttiGliSlotNonOccupati()"
-          class="btn btn-primary btn-custom text-success p-0 p-md-2"
+          class="btn btn-primary btn-custom text-success p-1 p-md-2"
         >
           Seleziona non occupati
         </button>

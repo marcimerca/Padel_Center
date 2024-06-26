@@ -45,53 +45,41 @@ export class GestionePartiteAdminComponent implements OnInit {
   caricaPartite() {
     if (this.dataSelezionata) {
       this.dataOggi = this.dataSelezionata === this.oggi;
-
       this.partitaSrv
         .getPartitePerData(this.dataSelezionata)
         .subscribe((data) => {
           this.partite = data
-            .filter((partita) => {
-              if (this.dataOggi) {
-                const now = new Date();
-                const partitaTime = new Date(
-                  `1970-01-01T${partita.slotOrario.inizio}`
-                );
-                return (
-                  partitaTime.getHours() > now.getHours() ||
-                  (partitaTime.getHours() === now.getHours() &&
-                    partitaTime.getMinutes() > now.getMinutes())
-                );
-              }
-              return true;
-            })
-            .sort((a, b) => {
-              const timeA = new Date(`1970-01-01T${a.slotOrario.inizio}`);
-              const timeB = new Date(`1970-01-01T${b.slotOrario.inizio}`);
-              return timeA.getTime() - timeB.getTime();
-            });
+            .filter((partita) =>
+              this.isFutureDate(
+                partita.dataPrenotazione,
+                partita.slotOrario.inizio
+              )
+            )
+            .sort((a, b) => this.ordinaPartite(a, b));
         });
     } else {
       this.dataOggi = true;
       this.partitaSrv.getPartiteOggi().subscribe((data) => {
-        const now = new Date();
         this.partite = data
-          .filter((partita) => {
-            const partitaTime = new Date(
-              `1970-01-01T${partita.slotOrario.inizio}`
-            );
-            return (
-              partitaTime.getHours() > now.getHours() ||
-              (partitaTime.getHours() === now.getHours() &&
-                partitaTime.getMinutes() > now.getMinutes())
-            );
-          })
-          .sort((a, b) => {
-            const timeA = new Date(`1970-01-01T${a.slotOrario.inizio}`);
-            const timeB = new Date(`1970-01-01T${b.slotOrario.inizio}`);
-            return timeA.getTime() - timeB.getTime();
-          });
+          .filter((partita) =>
+            this.isFutureDate(
+              partita.dataPrenotazione,
+              partita.slotOrario.inizio
+            )
+          )
+          .sort((a, b) => this.ordinaPartite(a, b));
       });
     }
+  }
+
+  ordinaPartite(a: Partita, b: Partita): number {
+    const timeA = new Date(`1970-01-01T${a.slotOrario.inizio}`);
+    const timeB = new Date(`1970-01-01T${b.slotOrario.inizio}`);
+    const timeComparison = timeA.getTime() - timeB.getTime();
+    if (timeComparison !== 0) {
+      return timeComparison;
+    }
+    return a.id! - b.id!; // Ordina per ID se le date e orari sono uguali
   }
 
   aggiungi(partita: Partita) {
@@ -108,10 +96,6 @@ export class GestionePartiteAdminComponent implements OnInit {
         });
         this.caricamento = false;
         this.apriModale2();
-
-        setTimeout(() => {
-          this.router.navigate(['/profilo-utente']);
-        }, 1000);
       },
       (error) => {
         console.error("Errore durante l'aggiunta della partita:", error);
