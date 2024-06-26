@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from 'src/app/auth/auth.service';
 import { AuthData } from 'src/app/models/auth-data.interface';
@@ -11,13 +11,14 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.interface';
 import { ModalAggiungiVincitoriComponent } from '../modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
+import { Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-profilo-utente',
   templateUrl: './profilo-utente.component.html',
   styleUrls: ['./profilo-utente.component.scss'],
 })
-export class ProfiloUtenteComponent implements OnInit {
+export class ProfiloUtenteComponent implements OnInit, OnDestroy {
   userId: string = '';
 
   user!: AuthData | User | null;
@@ -30,6 +31,8 @@ export class ProfiloUtenteComponent implements OnInit {
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
   modalRef3: MdbModalRef<ModalAggiungiVincitoriComponent> | null = null;
+
+  datiModalSubscription: Subscription | null = null;
 
   constructor(
     private authSrv: AuthService,
@@ -236,7 +239,20 @@ export class ProfiloUtenteComponent implements OnInit {
       }
     });
   }
+  apriModaleConfermaRisultato(partitaId: number) {
+    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Confermi il risultato: ?',
+      },
+    });
 
+    this.modalRef.onClose.subscribe((result: string) => {
+      if (result === 'conferma') {
+        this.annullaPrenotazione(partitaId);
+      }
+    });
+  }
   apriModaleRisultato(partita: Partita) {
     this.modalRef3 = this.modalSrv.open(ModalAggiungiVincitoriComponent, {
       modalClass: 'modal-dialog-centered',
@@ -287,6 +303,63 @@ export class ProfiloUtenteComponent implements OnInit {
     });
   }
 
+  apriModaleRisultato2(partita: Partita) {
+    // Apri la modale per aggiungere i vincitori
+    this.modalRef3 = this.modalSrv.open(ModalAggiungiVincitoriComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        utentiInput: partita.utentiPrenotati.filter(
+          (utente) => utente.id !== this.user!.id
+        ),
+      },
+    });
+
+    // Ascolta l'evento onClose dalla modale per aggiungere i vincitori
+    this.modalRef3.onClose.subscribe((result) => {
+      // Gestisci il risultato della prima modale (aggiungi vincitori)
+      if (result.tipo === 'vittoria' || result.tipo === 'sconfitta') {
+        // Passa i dati alla modale di conferma tramite il servizio di dati condiviso
+        this.userSrv.setDatiModal(result);
+
+        // Apri la modale di conferma
+        this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
+          modalClass: 'modal-dialog-centered',
+          data: {
+            messaggio: `Confermi il risultato: ${result.tipo}?`,
+          },
+        });
+
+        // Sottoscrivi una volta per ricevere i dati dalla modale di conferma
+        this.modalRef.onClose.subscribe((confermato: boolean) => {
+          // Se confermato, aggiungi i vincitori
+          if (confermato) {
+            const datiModal = this.userSrv.getDatiModal();
+            if (datiModal && datiModal.tipo && datiModal.compagno) {
+              this.partitaSrv
+                .aggiungiVincitoriAllaPartita2(
+                  partita.id!,
+                  datiModal.compagno,
+                  datiModal.tipo
+                )
+                .subscribe(
+                  (response) => {
+                    console.log('Vincitori aggiunti con successo:', response);
+                    this.caricaPartite(); // Aggiorna la lista delle partite dopo aver aggiunto i vincitori
+                  },
+                  (error) => {
+                    console.error(
+                      "Errore durante l'aggiunta dei vincitori:",
+                      error
+                    );
+                  }
+                );
+            }
+          }
+        });
+      }
+    });
+  }
+
   utenteHaVinto(partita: Partita): boolean {
     return (
       partita.giocatoriVincenti &&
@@ -305,7 +378,12 @@ export class ProfiloUtenteComponent implements OnInit {
         this.conteggioPartitePerse++;
       }
     });
-    console.log(this.conteggioPartiteVinte);
-    console.log(this.conteggioPartitePerse);
+  }
+
+  ngOnDestroy() {
+    // Assicurati di disporre la sottoscrizione per evitare memory leaks
+    if (this.datiModalSubscription) {
+      this.datiModalSubscription.unsubscribe();
+    }
   }
 }

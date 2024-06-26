@@ -367,10 +367,11 @@
             >
               Elimina
             </button>
+            <!-- partita.giocatoriVincenti.length < 2 && -->
             <button
-              *ngIf="partita.giocatoriVincenti.length < 2"
+              *ngIf="partita.utentiPrenotati.length == 4"
               class="btn btn-primary text-success mx-auto shadow-none"
-              (click)="apriModaleRisultato(partita)"
+              (click)="apriModaleRisultato2(partita)"
             >
               Registra risultato
             </button>
