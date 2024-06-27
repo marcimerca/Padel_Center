@@ -11,9 +11,11 @@ import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.services.PartitaService;
 import app.padel.back_end.services.PrenotazioneService;
 import app.padel.back_end.services.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,16 @@ public class PrenotazioneController {
 
     @Autowired
     private UserService userService;
+
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public PrenotazioneController(PartitaService partitaService, PrenotazioneService prenotazioneService, ObjectMapper objectMapper) {
+        this.partitaService = partitaService;
+        this.prenotazioneService = prenotazioneService;
+        this.objectMapper = objectMapper;
+    }
+
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/partite")
@@ -144,17 +156,53 @@ public class PrenotazioneController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/prenotazioni/{idPartita}/{userId}")
-    public String annullaPrenotazionePartitaAdmin(@PathVariable int idPartita,@PathVariable int userId) {
+    public String annullaPrenotazionePartitaAdmin(@PathVariable int idPartita, @PathVariable int userId) {
         return prenotazioneService.annullaPrenotazionePartitaAdmin(idPartita, userId);
     }
 
 
     @PutMapping("/partite/{id}/completa")
     public Partita completaPartita(@PathVariable("id") int id) {
-           return prenotazioneService.bloccaESbloccaPartita(id);
+        return prenotazioneService.bloccaESbloccaPartita(id);
 
     }
 
+    @PutMapping("/partite/aggiungi-vincitori/{partitaId}")
+    public Partita aggiungiVincitoriAllaPartita(
+            @PathVariable int partitaId,
+            @RequestBody List<User> vincitori, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(bindingResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).
+                    reduce("", (s, s2) -> s + s2));
+        }
+        return prenotazioneService.aggiungiVincitoriAllaPartita(partitaId, vincitori);
+
+
+    }
+
+
+    @PutMapping("/partite/aggiungi-vincitori2/{partitaId}")
+    public Partita aggiungiVincitoriAllaPartita2(
+            @PathVariable("partitaId") int partitaId,
+            @RequestParam("tipoRisultato") String tipoRisultato,
+            @RequestBody User compagno) {
+
+        Partita partitaAggiornata = prenotazioneService.aggiungiVincitoriAllaPartita2(partitaId, compagno, tipoRisultato);
+        return partitaAggiornata;
+
+    }
+
+
+    @PutMapping("/partite/aggiungi-vincitori-admin/{partitaId}")
+    public Partita aggiungiVincitoriAllaPartitaAdmin(
+            @PathVariable("partitaId") int partitaId,
+            @RequestParam("tipoRisultato") String tipoRisultato,
+            @RequestBody List<User> compagni) {
+
+        Partita partitaAggiornata = prenotazioneService.aggiungiVincitoriAllaPartitaAdmin(partitaId, compagni, tipoRisultato);
+        return partitaAggiornata;
+
+    }
 
 
 }

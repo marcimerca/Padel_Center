@@ -1,7 +1,10 @@
 package app.padel.back_end.app_config;
 
+import app.padel.back_end.entities.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,5 +46,12 @@ public class AppConfig {
         httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/**").denyAll());
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
+        ObjectMapper mapper = builder.createXmlMapper(false).build();
+        mapper.addMixIn(User.class, UserMixin.class);
+        return mapper;
     }
 }
