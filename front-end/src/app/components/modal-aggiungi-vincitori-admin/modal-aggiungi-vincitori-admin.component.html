@@ -1,0 +1,63 @@
+<div class="modal-body">
+  <form>
+    <div class="mb-3">
+      <label for="compagno1" class="form-label text-dark"
+        >Seleziona giocatore 1</label
+      >
+      <select
+        id="compagno1"
+        class="form-select"
+        [(ngModel)]="utenteSelezionato"
+        name="compagno1"
+        required
+      >
+        <option [ngValue]="null" disabled>Seleziona partecipante 1</option>
+        <option *ngFor="let utente of utentiInput" [ngValue]="utente">
+          {{ utente.nome }}
+        </option>
+      </select>
+
+      <label for="compagno2" class="form-label text-dark"
+        >Seleziona giocatore 2</label
+      >
+      <select
+        id="compagno2"
+        class="form-select"
+        [(ngModel)]="utenteSelezionato2"
+        name="compagno2"
+        required
+      >
+        <option [ngValue]="null" disabled>Seleziona partecipante 2</option>
+        <ng-container *ngFor="let utente of utentiInput">
+          <option *ngIf="utente !== utenteSelezionato" [ngValue]="utente">
+            {{ utente.nome }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3">
+      <button
+        type="button"
+        class="btn btn-primary rounded-5 shadow-0 text-success"
+        (click)="confermaVittoria()"
+      >
+        Vittoria
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary rounded-5 shadow-0 text-success"
+        (click)="confermaSconfitta()"
+      >
+        Sconfitta
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary rounded-5 text-success shadow-none"
+        (click)="annulla()"
+      >
+        Annulla
+      </button>
+    </div>
+  </form>
+</div>

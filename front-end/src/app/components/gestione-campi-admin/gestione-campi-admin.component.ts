@@ -204,33 +204,41 @@ export class GestioneCampiAdminComponent implements OnInit {
   }
 
   apriModaleEliminaSlot(id: number) {
-    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
-      modalClass: 'modal-dialog-centered',
-      data: {
-        messaggio:
-          "ATTENZIONE, vuoi eliminare lo slot Orario? L'eliminazione comporterà la cancellazione di tutte le prenotazioni relative allo slot di questo campo",
-      },
-    });
+    setTimeout(() => {
+      this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
+        modalClass: 'modal-dialog-centered',
+        data: {
+          messaggio:
+            "ATTENZIONE, vuoi eliminare lo slot Orario? L'eliminazione comporterà la cancellazione di tutte le prenotazioni relative allo slot di questo campo",
+        },
+      });
 
-    this.modalRef.onClose.subscribe((result: string) => {
-      if (result === 'conferma') {
-        this.campoSrv.eliminaSlotOrario(id).subscribe(
-          () => {
-            console.log('Slot orario eliminato correttamente');
-            this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
-              modalClass: 'modal-dialog-centered',
-              data: {
-                messaggio: 'Slot orario eliminato correttamente',
-              },
-            });
-            this.caricaDisponibilita();
-          },
-          (error) => {
-            console.error("Errore durante l'eliminazione dello slot:", error);
-          }
-        );
-      }
-    });
+      this.modalRef.onClose.subscribe((result: string) => {
+        if (result === 'conferma') {
+          this.campoSrv.eliminaSlotOrario(id).subscribe(
+            () => {
+              console.log('Slot orario eliminato correttamente');
+              // Chiudi la modale di conferma
+              this.modalRef!.close();
+
+              // Apri la modale di informazione dopo un breve ritardo
+              setTimeout(() => {
+                this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
+                  modalClass: 'modal-dialog-centered',
+                  data: {
+                    messaggio: 'Slot orario eliminato correttamente',
+                  },
+                });
+                this.caricaDisponibilita();
+              }, 300); // Ritardo di 300 millisecondi tra la chiusura e l'apertura della modale di informazione
+            },
+            (error) => {
+              console.error("Errore durante l'eliminazione dello slot:", error);
+            }
+          );
+        }
+      });
+    }, 300); // Ritardo di 300 millisecondi prima dell'apertura della modale di conferma
   }
 
   apriModaleEliminaTuttiSlotCampo(id: number) {

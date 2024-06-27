@@ -108,4 +108,13 @@ export class PartitaService {
     const url = `${this.baseURL}partite/aggiungi-vincitori2/${partitaId}?tipoRisultato=${tipoRisultato}`;
     return this.http.put<any>(url, compagno);
   }
+
+  aggiungiVincitoriAllaPartitaAdmin(
+    partitaId: number,
+    compagni: User[] | null,
+    tipoRisultato: string
+  ) {
+    const url = `${this.baseURL}partite/aggiungi-vincitori-admin/${partitaId}?tipoRisultato=${tipoRisultato}`;
+    return this.http.put<any>(url, compagni);
+  }
 }

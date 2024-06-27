@@ -8,6 +8,8 @@ import { Partita } from 'src/app/models/partita.interface';
 import { PartitaService } from 'src/app/services/partita.service';
 import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
 import { ModalInfoComponent } from '../modal-info/modal-info.component';
+import { ModalAggiungiVincitoriAdminComponent } from '../modal-aggiungi-vincitori-admin/modal-aggiungi-vincitori-admin.component';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-gestione-partite-admin',
@@ -19,12 +21,13 @@ export class GestionePartiteAdminComponent implements OnInit {
   model!: NgbDateStruct;
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
+  modalRef3: MdbModalRef<ModalAggiungiVincitoriAdminComponent> | null = null;
   oggi = new Date().toISOString().split('T')[0];
   partitaBloccata = false;
 
   dataSelezionata: string = '';
   dataOggi = false;
-  mostraDatePicker: boolean = false;
+
   partite: Partita[] = [];
   caricamento = false;
 
@@ -32,7 +35,8 @@ export class GestionePartiteAdminComponent implements OnInit {
     private partitaSrv: PartitaService,
     private modalSrv: MdbModalService,
     private router: Router,
-    private authSrv: AuthService
+    private authSrv: AuthService,
+    private userSrv: UserService
   ) {}
 
   ngOnInit() {
@@ -48,26 +52,16 @@ export class GestionePartiteAdminComponent implements OnInit {
       this.partitaSrv
         .getPartitePerData(this.dataSelezionata)
         .subscribe((data) => {
-          this.partite = data
-            .filter((partita) =>
-              this.isFutureDate(
-                partita.dataPrenotazione,
-                partita.slotOrario.inizio
-              )
-            )
-            .sort((a, b) => this.ordinaPartite(a, b));
+          const partiteFiltrate = data.sort((a, b) => this.ordinaPartite(a, b));
+
+          this.partite = partiteFiltrate;
         });
     } else {
       this.dataOggi = true;
       this.partitaSrv.getPartiteOggi().subscribe((data) => {
-        this.partite = data
-          .filter((partita) =>
-            this.isFutureDate(
-              partita.dataPrenotazione,
-              partita.slotOrario.inizio
-            )
-          )
-          .sort((a, b) => this.ordinaPartite(a, b));
+        const partiteFiltrate = data.sort((a, b) => this.ordinaPartite(a, b));
+
+        this.partite = partiteFiltrate;
       });
     }
   }
@@ -79,7 +73,7 @@ export class GestionePartiteAdminComponent implements OnInit {
     if (timeComparison !== 0) {
       return timeComparison;
     }
-    return a.id! - b.id!; // Ordina per ID se le date e orari sono uguali
+    return a.id! - b.id!;
   }
 
   aggiungi(partita: Partita) {
@@ -277,6 +271,72 @@ export class GestionePartiteAdminComponent implements OnInit {
   bloccaESbloccaPartecipazione(id: number): void {
     this.partitaSrv.completaPartita(id).subscribe(() => {
       this.caricaPartite();
+    });
+  }
+
+  apriModaleRisultato2(partita: Partita) {
+    this.modalRef3 = this.modalSrv.open(ModalAggiungiVincitoriAdminComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        utentiInput: partita.utentiPrenotati,
+      },
+    });
+
+    this.modalRef3.onClose.subscribe((result) => {
+      if (result.tipo === 'vittoria' || result.tipo === 'sconfitta') {
+        this.userSrv.setDatiModalAdmin(result);
+
+        this.modalRef3!.close();
+
+        setTimeout(() => {
+          this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
+            modalClass: 'modal-dialog-centered',
+            data: {
+              messaggio: `Confermi il risultato: "${result.tipo}" per ${result.compagni[0].nome} ${result.compagni[0].cognome} e ${result.compagni[1].nome}  ${result.compagni[1].cognome} ?`,
+            },
+          });
+
+          this.modalRef.onClose.subscribe((confermato: boolean) => {
+            if (confermato) {
+              const datiModalAdmin = this.userSrv.getDatiModalAdmin();
+              if (
+                datiModalAdmin &&
+                datiModalAdmin.tipo &&
+                datiModalAdmin.compagni
+              ) {
+                this.partitaSrv
+                  .aggiungiVincitoriAllaPartitaAdmin(
+                    partita.id!,
+                    datiModalAdmin.compagni,
+                    datiModalAdmin.tipo
+                  )
+                  .subscribe(
+                    (response) => {
+                      console.log('Vincitori aggiunti con successo:', response);
+                      this.apriModaleConfermaRegistrazioneRisultato();
+                      this.caricaPartite();
+                    },
+                    (error) => {
+                      console.error(
+                        "Errore durante l'aggiunta del risultato",
+                        error
+                      );
+                    }
+                  );
+              }
+            }
+          });
+        }, 100);
+      }
+    });
+  }
+
+  apriModaleConfermaRegistrazioneRisultato() {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Hai confermato il risultato',
+      },
     });
   }
 }

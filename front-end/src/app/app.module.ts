@@ -39,6 +39,8 @@ import { GestionePartiteAdminComponent } from './components/gestione-partite-adm
 import { UsersComponent } from './components/users/users.component';
 import { FilterUsers } from './pipes/filter-users.pipe';
 import { ModalAggiungiVincitoriComponent } from './components/modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
+import { ModalAggiungiVincitoriAdminComponent } from './components/modal-aggiungi-vincitori-admin/modal-aggiungi-vincitori-admin.component';
+import { EllipsisPipe } from './pipes/ellipsis.pipe';
 
 const routes: Route[] = [
   {
@@ -132,6 +134,8 @@ const routes: Route[] = [
     UsersComponent,
     FilterUsers,
     ModalAggiungiVincitoriComponent,
+    ModalAggiungiVincitoriAdminComponent,
+    EllipsisPipe,
   ],
   imports: [
     BrowserModule,

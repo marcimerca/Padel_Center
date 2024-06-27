@@ -33,4 +33,14 @@ export class UserService {
   getDatiModal(): { tipo: string; compagno?: User } | null {
     return this.datiModal;
   }
+
+  private datiModalAdmin: { tipo: string; compagni?: User[] } | null = null;
+
+  setDatiModalAdmin(data: { tipo: string; compagni?: User[] }) {
+    this.datiModalAdmin = data;
+  }
+
+  getDatiModalAdmin(): { tipo: string; compagni?: User[] } | null {
+    return this.datiModalAdmin;
+  }
 }

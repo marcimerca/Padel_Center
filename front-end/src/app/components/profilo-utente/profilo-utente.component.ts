@@ -182,6 +182,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
       (utente) => utente.id === this.user!.id
     );
   }
+
   apriModaleInfoCircolo() {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
@@ -304,7 +305,6 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
   }
 
   apriModaleRisultato2(partita: Partita) {
-    // Apri la modale per aggiungere i vincitori
     this.modalRef3 = this.modalSrv.open(ModalAggiungiVincitoriComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
@@ -314,52 +314,59 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
       },
     });
 
-    // Ascolta l'evento onClose dalla modale per aggiungere i vincitori
     this.modalRef3.onClose.subscribe((result) => {
-      // Gestisci il risultato della prima modale (aggiungi vincitori)
       if (result.tipo === 'vittoria' || result.tipo === 'sconfitta') {
-        // Passa i dati alla modale di conferma tramite il servizio di dati condiviso
         this.userSrv.setDatiModal(result);
 
-        // Apri la modale di conferma
-        this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
-          modalClass: 'modal-dialog-centered',
-          data: {
-            messaggio: `Confermi il risultato: ${result.tipo}?`,
-          },
-        });
+        this.modalRef3!.close();
 
-        // Sottoscrivi una volta per ricevere i dati dalla modale di conferma
-        this.modalRef.onClose.subscribe((confermato: boolean) => {
-          // Se confermato, aggiungi i vincitori
-          if (confermato) {
-            const datiModal = this.userSrv.getDatiModal();
-            if (datiModal && datiModal.tipo && datiModal.compagno) {
-              this.partitaSrv
-                .aggiungiVincitoriAllaPartita2(
-                  partita.id!,
-                  datiModal.compagno,
-                  datiModal.tipo
-                )
-                .subscribe(
-                  (response) => {
-                    console.log('Vincitori aggiunti con successo:', response);
-                    this.caricaPartite(); // Aggiorna la lista delle partite dopo aver aggiunto i vincitori
-                  },
-                  (error) => {
-                    console.error(
-                      "Errore durante l'aggiunta dei vincitori:",
-                      error
-                    );
-                  }
-                );
+        setTimeout(() => {
+          this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
+            modalClass: 'modal-dialog-centered',
+            data: {
+              messaggio: `Confermi il risultato: ${result.tipo}?`,
+            },
+          });
+
+          this.modalRef.onClose.subscribe((confermato: boolean) => {
+            if (confermato) {
+              const datiModal = this.userSrv.getDatiModal();
+              if (datiModal && datiModal.tipo && datiModal.compagno) {
+                this.partitaSrv
+                  .aggiungiVincitoriAllaPartita2(
+                    partita.id!,
+                    datiModal.compagno,
+                    datiModal.tipo
+                  )
+                  .subscribe(
+                    (response) => {
+                      console.log('Vincitori aggiunti con successo:', response);
+                      this.apriModaleConfermaRegistrazioneRisultato();
+                      this.caricaPartite();
+                    },
+                    (error) => {
+                      console.error(
+                        "Errore durante l'aggiunta dei vincitori:",
+                        error
+                      );
+                    }
+                  );
+              }
             }
-          }
-        });
+          });
+        }, 100);
       }
     });
   }
 
+  apriModaleConfermaRegistrazioneRisultato() {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Hai confermato il risultato',
+      },
+    });
+  }
   utenteHaVinto(partita: Partita): boolean {
     return (
       partita.giocatoriVincenti &&
@@ -374,14 +381,16 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.partitePassate.forEach((partita) => {
       if (this.utenteHaVinto(partita)) {
         this.conteggioPartiteVinte++;
-      } else if (partita.giocatoriVincenti.length < 2) {
+      } else if (
+        !this.utenteHaVinto(partita) &&
+        partita.giocatoriVincenti.length == 2
+      ) {
         this.conteggioPartitePerse++;
       }
     });
   }
 
   ngOnDestroy() {
-    // Assicurati di disporre la sottoscrizione per evitare memory leaks
     if (this.datiModalSubscription) {
       this.datiModalSubscription.unsubscribe();
     }

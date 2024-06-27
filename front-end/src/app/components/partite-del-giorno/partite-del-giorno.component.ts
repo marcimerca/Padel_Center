@@ -103,14 +103,16 @@ export class PartiteDelGiornoComponent implements OnInit {
     this.partitaSrv.aggiungiAPartita(datiDaInviare).subscribe(
       () => {
         this.partitaSrv.getPartiteOggi().subscribe((data) => {
+          this.caricamento = false;
+          setTimeout(() => {
+            this.apriModale2();
+          }, 200);
+
+          setTimeout(() => {
+            this.router.navigate(['/profilo-utente']);
+          }, 2000);
           this.partite = data;
         });
-        this.caricamento = false;
-        this.apriModale2();
-
-        setTimeout(() => {
-          this.router.navigate(['/profilo-utente']);
-        }, 1000);
       },
       (error) => {
         console.error("Errore durante l'aggiunta della partita:", error);
