@@ -25,6 +25,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     public AuthDataDto authenticateUserAndCreateToken(UserLoginDto userLoginDto) {
         Optional<User> userOptional = userService.getUserByEmail(userLoginDto.getEmail());
 

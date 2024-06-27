@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -22,14 +25,36 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    public String register(@RequestBody @Validated UserDto userDto, BindingResult bindingResult) {
+  /*  @PostMapping(value = "/register", consumes = "multipart/form-data")
+    public String register(@RequestBody @Validated UserDto userDto, BindingResult bindingResult) throws IOException {
 
 
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).
                     reduce("", (s, s2) -> s + s2));
         }
+
+        return userService.saveUser(userDto);
+    }
+*/
+
+    @PostMapping(value = "/register", consumes = "multipart/form-data")
+    public String registerUser(
+            @RequestParam("username") String username,
+            @RequestParam("nome") String nome,
+            @RequestParam("cognome") String cognome,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam(value = "avatar", required = false) MultipartFile avatar) throws IOException {
+
+
+        UserDto userDto = new UserDto();
+        userDto.setUsername(username);
+        userDto.setNome(nome);
+        userDto.setCognome(cognome);
+        userDto.setEmail(email);
+        userDto.setPassword(password);
+        userDto.setAvatar(avatar);
 
         return userService.saveUser(userDto);
     }

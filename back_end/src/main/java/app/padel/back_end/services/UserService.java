@@ -8,12 +8,16 @@ import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.PrenotazioneRepository;
 import app.padel.back_end.repositories.UserRepository;
+import com.cloudinary.Cloudinary;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,30 +35,37 @@ public class UserService {
     @Autowired
     public PrenotazioneService prenotazioneService;
 
-    public String saveUser(UserDto userDto) {
-       Optional<User> userOptional = getUserByEmail(userDto.getEmail());
-       if(userOptional.isPresent()){
-           throw new BadRequestException("Email già presente nel sistema.");
-       }
-        Optional<User> userOptionalUsername = getUserByUsername(userDto.getUsername());
+    @Autowired
+    private Cloudinary cloudinary;
 
-       if(userOptionalUsername.isPresent()){
-           throw new BadRequestException("Username già presente nel sistema.");
-       }
+
+    public String saveUser(UserDto userDto) throws IOException {
+        Optional<User> userOptional = getUserByEmail(userDto.getEmail());
+        if (userOptional.isPresent()) {
+            throw new BadRequestException("Email già presente nel sistema.");
+        }
+
+        Optional<User> userOptionalUsername = getUserByUsername(userDto.getUsername());
+        if (userOptionalUsername.isPresent()) {
+            throw new BadRequestException("Username già presente nel sistema.");
+        }
 
         User user = new User();
         user.setUsername(userDto.getUsername());
-        user.setNome((userDto.getNome()));
-        user.setCognome((userDto.getCognome()));
-        user.setEmail((userDto.getEmail()));
-        user.setAvatar(userDto.getAvatar());
+        user.setNome(userDto.getNome());
+        user.setCognome(userDto.getCognome());
+        user.setEmail(userDto.getEmail());
         user.setRuolo(Ruolo.USER);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        if (userDto.getAvatar() != null && !userDto.getAvatar().isEmpty()) {
+            String url = (String) cloudinary.uploader().upload(userDto.getAvatar().getBytes(), Collections.emptyMap()).get("url");
+            user.setAvatar(url);
+        }
+
         userRepository.save(user);
-        return "Utente con username" + user.getUsername() + " inserito correttamente.";
-
+        return "Utente con username " + user.getUsername() + " inserito correttamente.";
     }
-
     public List<User> getAllUsers() {
         ;
         return userRepository.findAll();
@@ -71,7 +82,7 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public User updateUserByAdmin(int id, UserDto userDto) {
+    public User updateUserByAdmin(int id, UserDto userDto) throws IOException {
         Optional<User> userOptional = getUserById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -80,6 +91,11 @@ public class UserService {
             user.setUsername(userDto.getUsername());
             user.setEmail(userDto.getEmail());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+            if (userDto.getAvatar() != null && !userDto.getAvatar().isEmpty()) {
+                String url = (String) cloudinary.uploader().upload(userDto.getAvatar().getBytes(), Collections.emptyMap()).get("url");
+                user.setAvatar(url);
+            }
             userRepository.save(user);
             return user;
         } else {
@@ -121,18 +137,18 @@ public class UserService {
     }
 
 
-/*
+
     public String patchAvatarUtente(MultipartFile foto) throws IOException {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String url = (String) cloudinary.uploader().upload(foto.getBytes(), Collections.emptyMap()).get("url");
 
         loggedUser.setAvatar(url);
-        utenteRepository.save(loggedUser);
+        userRepository.save(loggedUser);
         return "Foto avatar con url " + url + " salvata e associata correttamente all'utente con id " + loggedUser.getId();
 
     }
-*/
+
 
 }
 

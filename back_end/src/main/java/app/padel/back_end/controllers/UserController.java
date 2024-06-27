@@ -10,7 +10,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +44,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User updateUserByAdmin(@PathVariable int id, @RequestBody @Validated UserDto userDto, BindingResult bindingResult) {
+    public User updateUserByAdmin(@PathVariable int id, @RequestBody @Validated UserDto userDto, BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage()).
                     reduce("", (s, s2) -> s + s2));
@@ -74,4 +76,8 @@ public class UserController {
         return userService.existsByEmail(email);
     }
 
+    @PatchMapping("/carica-foto")
+    public String patchFotoUser( @RequestBody MultipartFile avatar) throws IOException {
+        return userService.patchAvatarUtente(avatar);
+    }
 }

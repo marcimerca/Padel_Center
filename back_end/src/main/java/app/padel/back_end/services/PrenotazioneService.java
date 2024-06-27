@@ -11,6 +11,9 @@ import app.padel.back_end.repositories.SlotOrarioRepository;
 import app.padel.back_end.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,9 @@ public class PrenotazioneService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private JavaMailSenderImpl javaMailSender;
 
 
     public String savePartita(PrenotazioneDto prenotazioneDto) {
@@ -383,6 +389,8 @@ public class PrenotazioneService {
             partita.getGiocatoriVincenti().removeAll(partita.getUtentiPrenotati());
             partita.getGiocatoriVincenti().addAll(compagni);
 
+
+
         } else if ("sconfitta".equals(tipoRisultato)) {
 
             partita.getGiocatoriVincenti().removeAll(partita.getUtentiPrenotati());
@@ -395,8 +403,30 @@ public class PrenotazioneService {
 
         prenotazioneRepository.save(partita);
 
+
+        String subject = "Registrazione risultato";
+        String text = "Registrazione risultato avvenuta con successo: La partita del " + partita.getDataPrenotazione() +
+                " (" + partita.getSlotOrario().getInizio() + " - " + partita.getSlotOrario().getFine() + ") è stata vinta da " +
+                partita.getGiocatoriVincenti().get(0).getNome()+ " " + partita.getGiocatoriVincenti().get(0).getCognome() + " e " +
+                partita.getGiocatoriVincenti().get(1).getNome() + " " + partita.getGiocatoriVincenti().get(1).getCognome();
+
+        partita.getUtentiPrenotati().forEach(user -> {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getEmail());
+            message.setSubject(subject);
+            message.setText(text);
+            sendEmail(message); // invio asincrono
+        });
+
         return partita;
     }
+
+
+    @Async
+    public void sendEmail(SimpleMailMessage message) {
+        javaMailSender.send(message);
+    }
+
 
 
 
