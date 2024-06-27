@@ -192,7 +192,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     });
   }
 
-  formatattaData(data: string): string {
+  formattaData(data: string): string {
     return new Intl.DateTimeFormat('it-IT', {
       day: '2-digit',
       month: 'long',
@@ -388,6 +388,18 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
         this.conteggioPartitePerse++;
       }
     });
+  }
+  ConvertiOrarioAData(timeString: string): Date {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, seconds, 0);
+    return date;
+  }
+
+  OraPassata(partita: Partita): boolean {
+    const currentTime = new Date();
+    const endTime = this.ConvertiOrarioAData(partita.slotOrario.fine);
+    return currentTime >= endTime;
   }
 
   ngOnDestroy() {

@@ -3,15 +3,15 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="card mb-4 trasparenza">
-          <div class="card-body text-center">
+          <div class="card-body text-center d-flex">
             <img
-              src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
-              alt="Avatar"
-              class="rounded-circle img-fluid"
-              style="width: 150px"
+              style="object-fit: cover; height: 200px; width: 200px"
+              class="rounded-circle"
+              alt="avatar1"
+              [src]="user!.avatar"
             />
-            <h5 class="my-3">{{ user?.username }}</h5>
           </div>
+          <h5 class="my-3">{{ user?.username }}</h5>
         </div>
       </div>
       <div class="col-lg-8">
@@ -76,7 +76,7 @@
             class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
           >
             <h5 class="card-title m-0">
-              {{ formatattaData(partita.dataPrenotazione) }}<br />
+              {{ formattaData(partita.dataPrenotazione) }}<br />
               {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
               {{ partita.slotOrario.fine | slice : 0 : 5 }}
             </h5>
@@ -224,6 +224,9 @@
 
 <div class="container text-start mt-3">
   <h2 class="text-primary">Partite passate</h2>
+  <h4 *ngIf="partitePassate.length <= 0">
+    Nessuna partita presente in questa sezione.
+  </h4>
   <div class="row">
     <div *ngFor="let partita of partitePassate" class="mb-3 col-md-6">
       <div
@@ -236,7 +239,7 @@
             class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
           >
             <h5 class="card-title m-0">
-              {{ formatattaData(partita.dataPrenotazione) }}<br />
+              {{ formattaData(partita.dataPrenotazione) }}<br />
               {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
               {{ partita.slotOrario.fine | slice : 0 : 5 }}
             </h5>
@@ -259,7 +262,12 @@
                 <span>Vinta</span>
               </ng-container>
               <ng-template #partitaNonVinta>
-                <ng-container *ngIf="partita.utentiPrenotati.length == 4">
+                <ng-container
+                  *ngIf="
+                    partita.utentiPrenotati.length == 4 &&
+                    partita.giocatoriVincenti.length > 0
+                  "
+                >
                   <span>Persa</span>
                 </ng-container>
                 <!-- <ng-container *ngIf="partita.utentiPrenotati.length < 4">
@@ -356,6 +364,7 @@
             <button
               *ngIf="partita.utentiPrenotati.length == 4"
               style="width: 220px"
+              [disabled]="!OraPassata(partita)"
               [ngClass]="{
                 'disabled btn-large ': partita.giocatoriVincenti.length == 2
               }"

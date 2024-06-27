@@ -28,6 +28,12 @@ export class AuthService {
       );
   }
 
+  registerConFoto(formData: FormData) {
+    return this.http.post(`${this.baseURL}auth/register`, formData, {
+      responseType: 'text',
+    });
+  }
+
   login(data: { email: string; password: string }) {
     return this.http.post<AuthData>(`${this.baseURL}auth/login`, data).pipe(
       tap(async (data) => {
@@ -59,5 +65,9 @@ export class AuthService {
     return this.http.get<boolean>(
       `${this.baseURL}users/check-email?email=${email}`
     );
+  }
+
+  caricaFotoUtente(foto: File) {
+    return this.http.patch(`${this.baseURL}users/carica-foto`, foto);
   }
 }

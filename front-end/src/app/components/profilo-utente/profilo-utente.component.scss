@@ -9,6 +9,10 @@
   backdrop-filter: blur(10px);
   border-radius: 30px;
 }
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
 
 // .avatar-text {
 //   display: flex;

@@ -8,6 +8,7 @@ import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 })
 export class ModalConfermaComponent {
   @Input() messaggio: string = '';
+
   constructor(public modalRef: MdbModalRef<ModalConfermaComponent>) {}
 
   conferma() {

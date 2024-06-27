@@ -298,6 +298,7 @@ export class GestionePartiteAdminComponent implements OnInit {
 
           this.modalRef.onClose.subscribe((confermato: boolean) => {
             if (confermato) {
+              this.caricamento = true;
               const datiModalAdmin = this.userSrv.getDatiModalAdmin();
               if (
                 datiModalAdmin &&
@@ -313,6 +314,7 @@ export class GestionePartiteAdminComponent implements OnInit {
                   .subscribe(
                     (response) => {
                       console.log('Vincitori aggiunti con successo:', response);
+                      this.caricamento = false;
                       this.apriModaleConfermaRegistrazioneRisultato();
                       this.caricaPartite();
                     },

@@ -20,10 +20,7 @@
                       </div>
                     </div>
                   </div>
-                  <form
-                    [formGroup]="registerForm"
-                    (ngSubmit)="register(registerForm)"
-                  >
+                  <form [formGroup]="registerForm" (ngSubmit)="register()">
                     <div class="row gy-3 overflow-hidden">
                       <div class="col-12">
                         <div class="form-floating mb-4 position-relative">
@@ -196,6 +193,48 @@
                           />
                           <label for="password" class="form-label"
                             >Password</label
+                          >
+                          <div class="mess-errore">
+                            <span
+                              *ngIf="
+                                getFormControl('password')?.invalid &&
+                                getFormControl('password')?.touched
+                              "
+                            >
+                              <ng-container
+                                *ngIf="getErrorsControl('password', 'required')"
+                              >
+                                <p class="text-danger">
+                                  Il campo password è obbligatorio
+                                </p>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="getErrorsControl('password', 'pattern')"
+                              >
+                                <p class="text-danger">
+                                  La password deve essere lunga almeno 8
+                                  caratteri, contenere una lettera maiuscola,
+                                  una minuscola, un numero e un carattere
+                                  speciale.
+                                </p>
+                              </ng-container>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-5 position-relative">
+                          <input
+                            (change)="onFileChange($event)"
+                            type="file"
+                            class="form-control rounded-5"
+                            name="avatar"
+                            id="avatar"
+                            autocomplete="avatar"
+                            placeholder="Foto..."
+                          />
+                          <label for="avatar" class="form-label"
+                            >Foto profilo</label
                           >
                           <div class="mess-errore">
                             <span

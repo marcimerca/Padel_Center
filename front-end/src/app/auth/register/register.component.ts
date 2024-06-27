@@ -21,6 +21,7 @@ import { ModalInfoComponent } from 'src/app/components/modal-info/modal-info.com
 export class RegisterComponent implements OnInit {
   modalRef: MdbModalRef<ModalInfoComponent> | null = null;
   registerForm!: FormGroup;
+  avatarFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -28,22 +29,21 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private modalSrv: MdbModalService
   ) {}
-
   ngOnInit() {
     this.registerForm = this.fb.group({
-      username: this.fb.control(null, [
-        Validators.required,
-        Validators.minLength(5),
-      ]),
-      nome: this.fb.control(null, [Validators.required]),
-      cognome: this.fb.control(null, Validators.required),
-      email: this.fb.control(null, [Validators.required, Validators.email]),
-      password: this.fb.control(null, [
-        Validators.required,
-        Validators.pattern(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-        ),
-      ]),
+      username: [null, [Validators.required, Validators.minLength(5)]],
+      nome: [null, [Validators.required]],
+      cognome: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      password: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+          ),
+        ],
+      ],
     });
   }
 
@@ -55,39 +55,55 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.get(name);
   }
 
-  register(form: FormGroup) {
-    const emailControl = this.registerForm.get('email');
-    const email = emailControl?.value;
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      this.avatarFile = event.target.files[0];
+    }
+  }
 
-    this.authSrv.checkEmailExists(email).subscribe((emailExists: boolean) => {
-      if (emailExists) {
-        emailControl?.setErrors({ alreadyExists: true });
-      } else {
-        this.authSrv.register(form.value).subscribe(
-          () => {
-            this.modalRef = this.modalSrv.open(ModalInfoComponent, {
-              modalClass: 'modal-dialog-centered',
-              data: {
-                messaggio: 'Registrazione avvenuta correttamente',
-              },
-            });
-            setTimeout(() => {
-              this.router.navigate(['/login']);
-            }, 1000);
-          },
-          (error) => {
-            this.modalRef = this.modalSrv.open(ModalInfoComponent, {
-              modalClass: 'modal-dialog-centered',
-              data: {
-                messaggio:
-                  error.error ||
-                  "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
-              },
-            });
-            this.registerForm.get('password')?.setValue('');
+  register() {
+    if (this.registerForm.valid) {
+      const emailControl = this.registerForm.get('email');
+      const email = emailControl?.value;
+
+      this.authSrv.checkEmailExists(email).subscribe((emailExists: boolean) => {
+        if (emailExists) {
+          emailControl?.setErrors({ alreadyExists: true });
+        } else {
+          const formData = new FormData();
+          formData.append('username', this.registerForm.get('username')?.value);
+          formData.append('nome', this.registerForm.get('nome')?.value);
+          formData.append('cognome', this.registerForm.get('cognome')?.value);
+          formData.append('email', this.registerForm.get('email')?.value);
+          formData.append('password', this.registerForm.get('password')?.value);
+          if (this.avatarFile) {
+            formData.append('avatar', this.avatarFile);
           }
-        );
-      }
-    });
+
+          this.authSrv.registerConFoto(formData).subscribe(
+            () => {
+              this.modalRef = this.modalSrv.open(ModalInfoComponent, {
+                modalClass: 'modal-dialog-centered',
+                data: { messaggio: 'Registrazione avvenuta correttamente' },
+              });
+              setTimeout(() => {
+                this.router.navigate(['/login']);
+              }, 1000);
+            },
+            (error) => {
+              this.modalRef = this.modalSrv.open(ModalInfoComponent, {
+                modalClass: 'modal-dialog-centered',
+                data: {
+                  messaggio:
+                    error.error ||
+                    'Si è verificato un errore durante la registrazione. Riprova più tardi.',
+                },
+              });
+              this.registerForm.get('password')?.setValue('');
+            }
+          );
+        }
+      });
+    }
   }
 }

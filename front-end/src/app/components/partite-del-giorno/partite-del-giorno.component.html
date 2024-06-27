@@ -1,12 +1,9 @@
-<div
-  class="position-fixed top-50 start-50 translate-middle"
-  *ngIf="caricamento"
->
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
+<div class="container my-4 position-relative bg-primary">
+  <div class="spinner-overlay" *ngIf="caricamento">
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
-</div>
-<div class="container my-4">
   <div class="row g-0 justify-content-start">
     <div class="col-5 col-md-4 d-flex border-end border-success">
       <div class="card custom-border-radius w-100 p-3 bg-primary trasparenza">
@@ -95,9 +92,24 @@
                 </button>
                 <div class="mt-2 text-center avatar-text nome h6">
                   <span
-                    >{{
-                      partita.utentiPrenotati[j].nome.toUpperCase().charAt(0)
+                    class="d-block d-md-inline"
+                    title="{{
+                      partita.utentiPrenotati[j].nome.charAt(0).toUpperCase() +
+                        partita.utentiPrenotati[j].nome.slice(1) +
+                        ' ' +
+                        partita.utentiPrenotati[j].cognome
+                          .charAt(0)
+                          .toUpperCase() +
+                        partita.utentiPrenotati[j].cognome
+                          .slice(1)
+                          .toLowerCase()
+                    }}"
+                  >
+                    {{
+                      partita.utentiPrenotati[j].nome.charAt(0).toUpperCase()
                     }}.
+                  </span>
+                  <span class="d-inline">
                     {{
                       partita.utentiPrenotati[j].cognome
                         .charAt(0)
@@ -105,8 +117,8 @@
                         partita.utentiPrenotati[j].cognome
                           .slice(1)
                           .toLowerCase()
-                    }}</span
-                  >
+                    }}
+                  </span>
                 </div>
               </ng-container>
               <ng-template #placeholderAvatar>
