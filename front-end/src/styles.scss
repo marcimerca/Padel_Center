@@ -7,9 +7,9 @@
 // @import "../node_modules/mdb-angular-ui-kit/assets/scss/free/functions";
 
 $text: #eee9e9;
-$background: #023c83;
+$background: #002451;
 $primary: #eeee62;
-$secondary: #d6d659;
+$secondary: #c69818;
 $accent: #e9f416;
 $warning: #ffc199;
 $success: #12468a;
@@ -55,7 +55,6 @@ body {
 .btn {
   transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   &:hover {
-    background-color: $primary;
     color: $text;
     transform: scale(1.1);
   }
@@ -65,7 +64,6 @@ body {
   border-color: $secondary !important;
   color: $background !important;
   &:hover {
-    background-color: $primary !important;
     border-color: darken($secondary, 10%) !important;
   }
 }
