@@ -1,5 +1,6 @@
 package app.padel.back_end.services;
 
+import app.padel.back_end.dto.AuthDataDto;
 import app.padel.back_end.dto.UserDto;
 import app.padel.back_end.entities.Partita;
 import app.padel.back_end.entities.User;
@@ -8,6 +9,7 @@ import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.PrenotazioneRepository;
 import app.padel.back_end.repositories.UserRepository;
+import app.padel.back_end.security.JwtTool;
 import com.cloudinary.Cloudinary;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,10 @@ public class UserService {
 
     @Autowired
     private Cloudinary cloudinary;
+
+    @Autowired
+    private JwtTool jwtTool;
+
 
 
     public String saveUser(UserDto userDto) throws IOException {
@@ -105,7 +111,7 @@ public class UserService {
 
     }
 
-    public User updateUser(int id, UserDto userDto) {
+ /*   public User updateUser(UserDto userDto) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         loggedUser.setNome(userDto.getNome());
         loggedUser.setCognome(userDto.getCognome());
@@ -114,6 +120,56 @@ public class UserService {
         loggedUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(loggedUser);
         return loggedUser;
+    }
+*/
+
+
+    public AuthDataDto updateUser(UserDto userDto) throws IOException {
+
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+        if (!loggedUser.getEmail().equals(userDto.getEmail())) {
+            Optional<User> emailUser = getUserByEmail(userDto.getEmail());
+            if (emailUser.isPresent() && emailUser.get().getId() != (loggedUser.getId())) {
+                throw new BadRequestException("Email già presente nel sistema.");
+            }
+        }
+
+        if (!loggedUser.getUsername().equals(userDto.getUsername())) {
+            Optional<User> usernameUser = getUserByUsername(userDto.getUsername());
+            if (usernameUser.isPresent() && usernameUser.get().getId() != (loggedUser.getId())) {
+                throw new BadRequestException("Username già presente nel sistema.");
+            }
+        }
+
+        loggedUser.setUsername(userDto.getUsername());
+        loggedUser.setNome(userDto.getNome());
+        loggedUser.setCognome(userDto.getCognome());
+        loggedUser.setEmail(userDto.getEmail());
+
+        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+            loggedUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
+
+        if (userDto.getAvatar() != null && !userDto.getAvatar().isEmpty()) {
+            String url = (String) cloudinary.uploader().upload(userDto.getAvatar().getBytes(), Collections.emptyMap()).get("url");
+            loggedUser.setAvatar(url);
+        }
+
+        userRepository.save(loggedUser);
+
+        AuthDataDto authDataDto = new AuthDataDto();
+        authDataDto.setAccessToken(jwtTool.createToken(loggedUser));
+        authDataDto.setRuolo(loggedUser.getRuolo());
+        authDataDto.setNome(loggedUser.getNome());
+        authDataDto.setCognome(loggedUser.getCognome());
+        authDataDto.setEmail(loggedUser.getEmail());
+        authDataDto.setUsername(loggedUser.getUsername());
+        authDataDto.setId(loggedUser.getId());
+        authDataDto.setAvatar(loggedUser.getAvatar());
+
+        return authDataDto;
     }
 
 
@@ -134,6 +190,10 @@ public class UserService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 
 

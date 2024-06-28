@@ -3,6 +3,7 @@ package app.padel.back_end.app_config;
 import app.padel.back_end.entities.User;
 import com.cloudinary.Cloudinary;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ import java.util.Properties;
 @EnableWebSecurity
 @EnableMethodSecurity
 @EnableAsync
-public class AppConfig {
+public class AppConfig  {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -105,6 +106,9 @@ public class AppConfig {
         return new Cloudinary(config);
 
     }
+
+
+
 
 
 
