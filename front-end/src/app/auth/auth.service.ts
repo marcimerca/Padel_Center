@@ -12,7 +12,7 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class AuthService {
   baseURL = environment.baseURL;
-  private authSub = new BehaviorSubject<AuthData | null>(null);
+  public authSub = new BehaviorSubject<AuthData | null>(null);
   user$ = this.authSub.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -61,9 +61,24 @@ export class AuthService {
     this.authSub.next(user);
   }
 
+  updateUser(data: FormData) {
+    return this.http.put<AuthData>(`${this.baseURL}users/update`, data).pipe(
+      tap((updatedUser) => {
+        this.authSub.next(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+      })
+    );
+  }
+
   checkEmailExists(email: string) {
     return this.http.get<boolean>(
       `${this.baseURL}users/check-email?email=${email}`
+    );
+  }
+
+  checkUsernameExists(username: string) {
+    return this.http.get<boolean>(
+      `${this.baseURL}users/check-username?username=${username}`
     );
   }
 

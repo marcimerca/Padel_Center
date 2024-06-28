@@ -41,6 +41,7 @@ import { FilterUsers } from './pipes/filter-users.pipe';
 import { ModalAggiungiVincitoriComponent } from './components/modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
 import { ModalAggiungiVincitoriAdminComponent } from './components/modal-aggiungi-vincitori-admin/modal-aggiungi-vincitori-admin.component';
 import { EllipsisPipe } from './pipes/ellipsis.pipe';
+import { ModalUpdateUserComponent } from './components/modal-update-user/modal-update-user.component';
 
 const routes: Route[] = [
   {
@@ -136,6 +137,7 @@ const routes: Route[] = [
     ModalAggiungiVincitoriComponent,
     ModalAggiungiVincitoriAdminComponent,
     EllipsisPipe,
+    ModalUpdateUserComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,9 @@
 <div
-  class="position-fixed top-50 start-50 translate-middle"
+  class="d-flex justify-content-center text-primary align-items-center position-fixed z-3"
   *ngIf="caricamento"
+  style="z-index: 1050; top: 50vh; left: 50vw; transform: translate(-50%, -50%)"
 >
-  <div class="spinner-border text-primary" role="status">
+  <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
@@ -53,36 +54,30 @@
         </thead>
         <tbody>
           <tr *ngFor="let slot of getNumMaxSlotsArray()">
-            <td
-              *ngFor="let campo of campiDisp"
-              class="p-0"
-              [ngClass]="{
-                'bg-dark': verificaBottoneDisabilitato(
-                  campo.slotOrari[slot.index].inizio
-                ),
-                'cursor-not-allowed':
-                  verificaBottoneDisabilitato(
-                    campo.slotOrari[slot.index].inizio
-                  ) || campo.slotOrari[slot.index].occupato
-              }"
-            >
+            <td *ngFor="let campo of campiDisp" class="p-0">
               <div
                 *ngIf="campo.slotOrari[slot.index]; else emptySlot"
                 class="h-100 w-100"
               >
                 <div
                   (click)="
-                    !verificaBottoneDisabilitato(
-                      campo.slotOrari[slot.index].inizio
-                    ) &&
-                      !campo.slotOrari[slot.index].occupato &&
-                      apriModale(
-                        campo.slotOrari[slot.index].id!,
-                        dataSelezionata,
-                        campo.slotOrari[slot.index].inizio,
-                        campo.slotOrari[slot.index].fine
-                      )
+                    apriModale(
+                      campo.slotOrari[slot.index].id!,
+                      dataSelezionata,
+                      campo.slotOrari[slot.index].inizio,
+                      campo.slotOrari[slot.index].fine
+                    )
                   "
+                  [ngClass]="{
+                    'bg-dark': verificaBottoneDisabilitato(
+                      campo.slotOrari[slot.index].inizio
+                    ),
+
+                    selezionati: isSlotSelected(campo.slotOrari[slot.index]),
+                    'rounded-bottom-3': true,
+                    'position-relative': true,
+                    'd-flex align-items-center justify-content-center h-100': true
+                  }"
                   class="rounded-bottom-3 position-relative d-flex align-items-center justify-content-center h-100"
                 >
                   <span
@@ -102,7 +97,6 @@
                     class="d-flex align-items-center justify-content-center w-100"
                   >
                     {{ campo.slotOrari[slot.index].inizio | slice : 0 : 5 }} -
-                    <!-- <span class="span-ora">&nbsp;-&nbsp;</span> -->
                     {{ campo.slotOrari[slot.index].fine | slice : 0 : 5 }}
                   </span>
                   <span
@@ -143,3 +137,5 @@
     </div>
   </div>
 </div>
+
+<!-- <> -->

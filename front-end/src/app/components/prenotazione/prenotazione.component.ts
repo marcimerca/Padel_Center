@@ -99,10 +99,6 @@ export class PrenotazioneComponent implements OnInit {
         console.log('Partita aggiunta con successo');
         this.caricamento = false;
         this.apriModale2();
-
-        setTimeout(() => {
-          this.router.navigate(['/profilo-utente']);
-        }, 1000);
       },
       (error) => {
         console.error("Errore durante l'aggiunta della partita:", error);
@@ -162,6 +158,13 @@ export class PrenotazioneComponent implements OnInit {
       data: {
         messaggio: 'La partita è stata creata con successo',
       },
+    });
+    this.modalRef2.onClose.subscribe(() => {
+      this.caricamento = true;
+      setTimeout(() => {
+        this.router.navigate(['/profilo-utente']);
+      }, 600);
+      this.caricamento = false;
     });
   }
 

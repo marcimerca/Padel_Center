@@ -297,8 +297,8 @@ export class GestionePartiteAdminComponent implements OnInit {
           });
 
           this.modalRef.onClose.subscribe((confermato: boolean) => {
+            this.caricamento = true;
             if (confermato) {
-              this.caricamento = true;
               const datiModalAdmin = this.userSrv.getDatiModalAdmin();
               if (
                 datiModalAdmin &&
@@ -315,10 +315,12 @@ export class GestionePartiteAdminComponent implements OnInit {
                     (response) => {
                       console.log('Vincitori aggiunti con successo:', response);
                       this.caricamento = false;
+
                       this.apriModaleConfermaRegistrazioneRisultato();
                       this.caricaPartite();
                     },
                     (error) => {
+                      this.caricamento = false;
                       console.error(
                         "Errore durante l'aggiunta del risultato",
                         error

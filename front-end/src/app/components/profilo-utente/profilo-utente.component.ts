@@ -12,6 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.interface';
 import { ModalAggiungiVincitoriComponent } from '../modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
 import { Subscription, switchMap } from 'rxjs';
+import { ModalUpdateUserComponent } from '../modal-update-user/modal-update-user.component';
 
 @Component({
   selector: 'app-profilo-utente',
@@ -20,17 +21,18 @@ import { Subscription, switchMap } from 'rxjs';
 })
 export class ProfiloUtenteComponent implements OnInit, OnDestroy {
   userId: string = '';
-
   user!: AuthData | User | null;
   conteggioPartiteVinte: number = 0;
   conteggioPartitePerse: number = 0;
   partiteDaGiocare: Partita[] = [];
   partitePassate: Partita[] = [];
   partitaCompleta = true;
+  caricamento: boolean = false;
 
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
   modalRef3: MdbModalRef<ModalAggiungiVincitoriComponent> | null = null;
+  modalRefUpdate: MdbModalRef<ModalUpdateUserComponent> | null = null;
 
   datiModalSubscription: Subscription | null = null;
 
@@ -49,7 +51,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
         this.userId = id;
         this.userSrv.getUserById(parseInt(id)).subscribe((userData) => {
           this.user = userData;
-          this.caricaPartite(); // Passa l'oggetto user direttamente
+          this.caricaPartite();
         });
       } else {
         this.authSrv.user$.subscribe((user) => {
@@ -65,15 +67,18 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
   caricaPartite() {
     let caricaPartiteObservable;
 
-    if ('accessToken' in this.user!) {
+    if (this.user && 'accessToken' in this.user) {
       caricaPartiteObservable = this.partitaSrv.findPartiteByLoggedUser(
         this.user.id
       );
-    } else {
+    } else if (this.user) {
       caricaPartiteObservable = this.partitaSrv.findPartiteByUserId(
-        this.user!.id
+        this.user.id
       );
+    } else {
+      return;
     }
+
     caricaPartiteObservable.subscribe((partite) => {
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -115,8 +120,61 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
             new Date(b.dataPrenotazione + 'T' + b.slotOrario.inizio).getTime() -
             new Date(a.dataPrenotazione + 'T' + a.slotOrario.inizio).getTime()
         );
+
       this.calcolaConteggioPartiteVinteEPersa();
     });
+  }
+
+  apriModaleUpdate() {
+    this.modalRefUpdate = this.modalSrv.open(ModalUpdateUserComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        user: this.user,
+      },
+    });
+
+    this.modalRefUpdate.onClose.subscribe(
+      (result: AuthData | null) => {
+        this.caricamento = true;
+        if (result) {
+          this.user = result;
+          localStorage.setItem('user', JSON.stringify(result));
+          setTimeout(() => {
+            this.apriModaleConfermaUpdate();
+            this.caricamento = false;
+          }, 200);
+        } else {
+          this.caricamento = false;
+        }
+      },
+      (error) => {
+        this.caricamento = false;
+        this.modaleErrore();
+      }
+    );
+  }
+
+  modaleErrore() {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Errore durante il salvataggio delle modifiche',
+      },
+    });
+  }
+
+  apriModaleConfermaUpdate() {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        messaggio: 'Modifiche salvate correttamente',
+      },
+    });
+  }
+  ngOnDestroy() {
+    if (this.datiModalSubscription) {
+      this.datiModalSubscription.unsubscribe();
+    }
   }
 
   annullaPrenotazione(partitaId: number) {
@@ -160,7 +218,6 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
   verificaDataOggi(dateStr: string, timeStr: string): boolean {
     const date = new Date(dateStr + 'T' + timeStr);
     const now = new Date();
-
     return (
       date.getDate() === now.getDate() &&
       date.getMonth() === now.getMonth() &&
@@ -171,9 +228,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
   verificaPiu24H(dateStr: string, timeStr: string): boolean {
     const date = new Date(dateStr + 'T' + timeStr);
     const now = new Date();
-
     const timeDiff = date.getTime() - now.getTime();
-
     return timeDiff > 24 * 60 * 60 * 1000;
   }
 
@@ -222,6 +277,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   apriModaleConfermaEliminazionePartita() {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
@@ -240,6 +296,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   apriModaleConfermaRisultato(partitaId: number) {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
@@ -254,6 +311,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   apriModaleRisultato(partita: Partita) {
     this.modalRef3 = this.modalSrv.open(ModalAggiungiVincitoriComponent, {
       modalClass: 'modal-dialog-centered',
@@ -292,11 +350,9 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
           .subscribe(
             (response) => {
               console.log('Vincitori aggiunti con successo:', response);
-              // Esegui altre azioni necessarie dopo aver aggiunto i vincitori
             },
             (error) => {
               console.error("Errore durante l'aggiunta dei vincitori:", error);
-              // Gestisci l'errore in modo appropriato
             }
           );
       }
@@ -317,7 +373,6 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.modalRef3.onClose.subscribe((result) => {
       if (result.tipo === 'vittoria' || result.tipo === 'sconfitta') {
         this.userSrv.setDatiModal(result);
-
         this.modalRef3!.close();
 
         setTimeout(() => {
@@ -367,6 +422,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
       },
     });
   }
+
   utenteHaVinto(partita: Partita): boolean {
     return (
       partita.giocatoriVincenti &&
@@ -383,12 +439,13 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
         this.conteggioPartiteVinte++;
       } else if (
         !this.utenteHaVinto(partita) &&
-        partita.giocatoriVincenti.length == 2
+        partita.giocatoriVincenti.length === 2
       ) {
         this.conteggioPartitePerse++;
       }
     });
   }
+
   ConvertiOrarioAData(timeString: string): Date {
     const [hours, minutes, seconds] = timeString.split(':').map(Number);
     const date = new Date();
@@ -400,11 +457,5 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     const currentTime = new Date();
     const endTime = this.ConvertiOrarioAData(partita.slotOrario.fine);
     return currentTime >= endTime;
-  }
-
-  ngOnDestroy() {
-    if (this.datiModalSubscription) {
-      this.datiModalSubscription.unsubscribe();
-    }
   }
 }
