@@ -126,6 +126,14 @@ body {
   .span-ora {
     display: none;
   }
+  .disposizione {
+    width: auto;
+  }
+}
+@media (min-width: 576px) {
+  .disposizione {
+    width: 25% !important;
+  }
 }
 
 table .btn {
@@ -144,16 +152,34 @@ table .btn {
   padding: 0;
 }
 
-.table-responsive-sm {
-  overflow-x: auto;
-  position: relative;
+// .table-responsive-sm {
+//   overflow-x: auto;
+//   position: relative;
+// }
+
+// .table-responsive-sm::after {
+//   content: "";
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   width: 10px;
+//   height: 100%;
+// }
+
+.background {
+  background-color: $background !important;
 }
 
-.table-responsive-sm::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 10px;
-  height: 100%;
+.highlight {
+  scale: 1.08;
+  transition: scale 0.1s ease-in-out;
 }
+/* scroll.component.css */
+.table-rounded {
+  border-radius: 0.25rem !important;
+}
+
+// .custom-table {
+//   table-layout: fixed;
+//   width: 100%;
+// }

@@ -48,6 +48,7 @@
             style="height: 80px"
           >
             <h5 class="card-title m-0">
+              {{ formatattaDataParole(partita.dataPrenotazione) }}<br />
               {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
               {{ partita.slotOrario.fine | slice : 0 : 5 }}
             </h5>
@@ -55,13 +56,27 @@
               class="vr bg-primary position-absolute start-50"
               style="top: -15px; height: 100%; width: 2px"
             ></div>
-            <h5 class="card-subtitle text-primary m-0">
-              {{ partita.slotOrario.campo.nomeCampo }} <br />
+            <div class="d-flex flex-column justify-content-center gap-1">
+              <h5 class="card-subtitle text-primary">
+                {{ partita.slotOrario.campo.nomeCampo }}
+              </h5>
               <span
-                *ngIf="partita.numGiocatoriAttuali == partita.numMaxGiocatori"
-                >Partita completa</span
+                [ngClass]="{
+                    'bg-secondary':
+                      partita.numGiocatoriAttuali < partita.numMaxGiocatori,
+                    'bg-primary':
+                      partita.numGiocatoriAttuali == partita.numMaxGiocatori,
+                    
+                  }"
+                class="badge rounded-pill text-success rounded-pill d-block"
+                style="width: 130px"
+                >{{
+                  partita.numGiocatoriAttuali === partita.numMaxGiocatori
+                    ? "Partita completa"
+                    : "Partita incompleta"
+                }}</span
               >
-            </h5>
+            </div>
           </div>
 
           <div class="d-flex justify-content-center mt-4 mb-2">

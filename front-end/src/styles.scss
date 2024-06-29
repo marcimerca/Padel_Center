@@ -53,10 +53,11 @@ body {
 }
 
 .btn {
+  box-shadow: none !important;
   transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   &:hover {
     color: $text;
-    transform: scale(1.1);
+    transform: scale(1.03);
   }
 }
 .btn-secondary {

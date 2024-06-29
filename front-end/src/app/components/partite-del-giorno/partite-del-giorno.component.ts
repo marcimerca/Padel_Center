@@ -110,8 +110,8 @@ export class PartiteDelGiornoComponent implements OnInit {
 
           setTimeout(() => {
             this.router.navigate(['/profilo-utente']);
-          }, 2000);
-          this.partite = data;
+            this.partite = data;
+          }, 1000);
         });
       },
       (error) => {

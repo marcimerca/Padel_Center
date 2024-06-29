@@ -65,6 +65,7 @@
             class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
           >
             <h5 class="card-title m-0">
+              {{ formatattaDataParole(partita.dataPrenotazione) }}<br />
               {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
               {{ partita.slotOrario.fine | slice : 0 : 5 }}
             </h5>
@@ -72,9 +73,27 @@
               class="vr bg-primary position-absolute start-50"
               style="top: -15px; height: 100%; width: 2px"
             ></div>
-            <h5 class="card-subtitle text-primary m-0">
-              {{ partita.slotOrario.campo.nomeCampo }}
-            </h5>
+            <div class="d-flex flex-column justify-content-center gap-1">
+              <h5 class="card-subtitle text-primary">
+                {{ partita.slotOrario.campo.nomeCampo }}
+              </h5>
+              <span
+                [ngClass]="{
+                    'bg-secondary':
+                      partita.numGiocatoriAttuali < partita.numMaxGiocatori,
+                    'bg-primary':
+                      partita.numGiocatoriAttuali == partita.numMaxGiocatori,
+                    
+                  }"
+                class="badge rounded-pill text-success rounded-pill d-block"
+                style="width: 130px"
+                >{{
+                  partita.numGiocatoriAttuali === partita.numMaxGiocatori
+                    ? "Partita completa"
+                    : "Partita incompleta"
+                }}</span
+              >
+            </div>
           </div>
           <div class="d-flex justify-content-center mt-4 mb-2">
             <div
@@ -155,7 +174,6 @@
                     'custom-filter': partita.numGiocatoriAttuali == 4
                   }"
                   *ngIf="!partitaBloccata"
-                  (click)="apriModale(partita)"
                   class="btn btn-success rounded-circle position-relative btn-floating shadow"
                   style="width: 50px; height: 50px"
                 >
@@ -166,7 +184,13 @@
                     style="object-fit: cover"
                   />
                   <span
-                    *ngIf="partita.numGiocatoriAttuali != 4"
+                    *ngIf="
+                      partita.numGiocatoriAttuali != 4 &&
+                      isFutureDate(
+                        partita.dataPrenotazione,
+                        partita.slotOrario.inizio
+                      )
+                    "
                     class="position-absolute top-0 end-0 border border-secondary badge bg-success text-primary rounded-pill d-flex justify-content-center align-items-center"
                     style="
                       width: 20px;

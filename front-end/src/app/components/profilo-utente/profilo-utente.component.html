@@ -110,13 +110,27 @@
                 class="vr bg-primary position-absolute start-50"
                 style="top: -15px; height: 100%; width: 2px"
               ></div>
-              <h5 class="card-subtitle text-primary m-0">
-                {{ partita.slotOrario.campo.nomeCampo }} <br />
+              <div class="d-flex flex-column justify-content-center gap-1">
+                <h5 class="card-subtitle text-primary">
+                  {{ partita.slotOrario.campo.nomeCampo }}
+                </h5>
                 <span
-                  *ngIf="partita.numGiocatoriAttuali == partita.numMaxGiocatori"
-                  >Partita completa</span
+                  [ngClass]="{
+                    'bg-secondary':
+                      partita.numGiocatoriAttuali < partita.numMaxGiocatori,
+                    'bg-primary':
+                      partita.numGiocatoriAttuali == partita.numMaxGiocatori,
+                    
+                  }"
+                  class="badge rounded-pill text-success rounded-pill d-block"
+                  style="width: 130px"
+                  >{{
+                    partita.numGiocatoriAttuali === partita.numMaxGiocatori
+                      ? "Partita completa"
+                      : "Partita incompleta"
+                  }}</span
                 >
-              </h5>
+              </div>
             </div>
             <div class="d-flex justify-content-center mt-4 mb-2">
               <div
@@ -275,34 +289,27 @@
                 class="vr bg-primary position-absolute start-50"
                 style="top: -15px; height: 100%; width: 2px"
               ></div>
-              <h5 class="card-subtitle text-primary m-0">
-                {{ partita.slotOrario.campo.nomeCampo }} <br />
+              <div class="d-flex flex-column justify-content-center gap-1">
+                <h5 class="card-subtitle text-primary">
+                  {{ partita.slotOrario.campo.nomeCampo }}
+                </h5>
                 <span
-                  *ngIf="
-                    partita.numGiocatoriAttuali == partita.numMaxGiocatori &&
-                    partita.giocatoriVincenti.length < 2
-                  "
-                  >Partita completa</span
+                  [ngClass]="{
+                    'bg-secondary':
+                      partita.numGiocatoriAttuali < partita.numMaxGiocatori,
+                    'bg-primary':
+                      partita.numGiocatoriAttuali == partita.numMaxGiocatori,
+                    
+                  }"
+                  class="badge rounded-pill text-success rounded-pill d-block p-1"
+                  style="width: 130px"
+                  >{{
+                    partita.numGiocatoriAttuali === partita.numMaxGiocatori
+                      ? "Partita completa"
+                      : "Partita incompleta"
+                  }}</span
                 >
-                <ng-container
-                  *ngIf="utenteHaVinto(partita); else partitaNonVinta"
-                >
-                  <span>Vinta</span>
-                </ng-container>
-                <ng-template #partitaNonVinta>
-                  <ng-container
-                    *ngIf="
-                      partita.utentiPrenotati.length == 4 &&
-                      partita.giocatoriVincenti.length > 0
-                    "
-                  >
-                    <span>Persa</span>
-                  </ng-container>
-                  <!-- <ng-container *ngIf="partita.utentiPrenotati.length < 4">
-                    <span>Non disponibile</span>
-                  </ng-container> -->
-                </ng-template>
-              </h5>
+              </div>
             </div>
             <div class="d-flex justify-content-center mt-4 mb-2">
               <div

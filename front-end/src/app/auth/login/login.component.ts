@@ -35,7 +35,7 @@ export class LoginComponent {
           data: {
             messaggio:
               error.error ||
-              "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
+              'Si è verificato un errore durante il login Riprova più tardi.',
           },
         });
       }

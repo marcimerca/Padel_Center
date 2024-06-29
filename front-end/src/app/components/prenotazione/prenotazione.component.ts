@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CampoDisponibilita } from 'src/app/models/campo-disponibilita.interface';
 import { Campo } from 'src/app/models/campo.interface';
@@ -189,5 +189,16 @@ export class PrenotazioneComponent implements OnInit {
   }
   isSlotSelected(slot: SlotDisponibilita): boolean {
     return this.slotSelezionati.some((s) => s.id === slot.id);
+  }
+
+  scrollToCampo(campoId: number): void {
+    const elemento = document.getElementById(campoId.toString());
+    if (elemento) {
+      elemento.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      elemento.classList.add('highlight');
+      setTimeout(() => {
+        elemento.classList.remove('highlight');
+      }, 2000); // Rimuove la classe dopo 2 secondi
+    }
   }
 }
