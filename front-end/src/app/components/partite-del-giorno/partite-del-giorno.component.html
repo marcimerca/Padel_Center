@@ -1,13 +1,13 @@
-<div class="container my-4 position-relative bg-primary">
+<div class="container my-4 position-relative">
   <div class="spinner-overlay" *ngIf="caricamento">
     <div class="spinner-border text-light" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
   <div class="row g-0 justify-content-start">
-    <div class="col-5 col-md-4 d-flex border-end border-success">
-      <div class="card custom-border-radius w-100 p-3 bg-primary trasparenza">
-        <label for="data" class="text-success mb-2">Scegli data</label>
+    <div class="col-6 col-md-4 d-flex border-end border-success">
+      <div class="card custom-border-radius w-100 p-3 bg-success">
+        <label for="data" class="text-primary mb-2">Scegli data</label>
         <input
           type="date"
           name="data"
@@ -18,12 +18,11 @@
         />
       </div>
     </div>
-
-    <div class="col-5 col-md-3 d-flex">
+    <div class="col-6 col-md-3 d-flex">
       <div class="d-flex align-items-center justify-content-center h-100 w-100">
         <a
           [routerLink]="['/prenotazione']"
-          class="custom-border-radius-2 btn btn-primary rounded-top-end text-success shadow-none h-100 w-100 d-flex align-items-center justify-content-center"
+          class="custom-border-radius-2 border-start border-primary btn btn-success text-primary rounded-top-end shadow-none h-100 w-100 d-flex align-items-center justify-content-center"
         >
           Crea Partita
         </a>
@@ -32,7 +31,7 @@
   </div>
 </div>
 
-<div class="container text-start mt-3" *ngIf="partite">
+<div class="container text-start mt-3 min-vh-100" *ngIf="partite">
   <h1 *ngIf="dataOggi" class="mb-3 text-primary">Partite del giorno</h1>
   <h1 *ngIf="!dataOggi" class="mb-3 text-primary">
     Partite del {{ formatattaDataParole(dataSelezionata) }}

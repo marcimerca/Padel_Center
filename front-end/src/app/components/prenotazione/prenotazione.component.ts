@@ -121,7 +121,7 @@ export class PrenotazioneComponent implements OnInit {
 
   formatattaData(data: string): string {
     return new Intl.DateTimeFormat('it-IT', {
-      day: '2-digit',
+      day: 'numeric',
       month: 'long',
       year: 'numeric',
     }).format(new Date(data));
@@ -174,13 +174,18 @@ export class PrenotazioneComponent implements OnInit {
   verificaBottoneDisabilitato(orarioInizio: string): boolean {
     const oggi = new Date();
     const oraCorrente = oggi.getHours();
-    const [oraSlot] = orarioInizio.split(':').map(Number);
+    const minutiCorrenti = oggi.getMinutes();
+    const [oraSlot, minutiSlot] = orarioInizio.split(':').map(Number);
 
     if (this.dataOggi) {
-      return oraCorrente >= oraSlot;
+      return (
+        oraCorrente > oraSlot ||
+        (oraCorrente === oraSlot && minutiCorrenti >= minutiSlot)
+      );
     }
     return false;
   }
+
   getNumMaxSlotsArray(): any[] {
     let maxSlots = 0;
     this.campiDisp.forEach((campo) => {

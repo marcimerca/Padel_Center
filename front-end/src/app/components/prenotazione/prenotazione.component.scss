@@ -1,13 +1,13 @@
 @import "../../../styles.scss";
 
-body {
-  background-color: #fbfbfb;
-}
-@media (min-width: 991.98px) {
-  main {
-    padding-left: 240px;
-  }
-}
+// body {
+//   background-color: #fbfbfb;
+// }
+// @media (min-width: 991.98px) {
+//   main {
+//     padding-left: 240px;
+//   }
+// }
 
 /* Sidebar */
 .sidebar {
@@ -50,8 +50,8 @@ body {
   border-radius: 20px;
 }
 .cursor-not-allowed {
-  pointer-events: none;
-  cursor: not-allowed;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
 }
 #sidebar.active {
   min-width: 80px;
@@ -103,6 +103,20 @@ body {
   background-color: $primary !important;
 }
 
+.custom-border-radius {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0;
+}
+
+.custom-border-radius-2 {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
 .custom-table tbody tr {
   height: 40px;
 }
@@ -113,10 +127,6 @@ body {
 .custom-table tbody td:hover:not(.cursor-not-allowed) {
   cursor: pointer;
   background-color: $primary;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
 }
 
 @media (max-width: 576px) {
@@ -129,21 +139,25 @@ body {
   .disposizione {
     width: auto;
   }
+  .main-container {
+    width: 100%;
+  }
 }
 @media (min-width: 576px) {
   .disposizione {
-    width: 25% !important;
+    width: 20% !important;
+    display: flex;
   }
 }
 
-table .btn {
-  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-  &:hover {
-    background-color: $success;
-    color: $text;
-    transform: scale(1.1);
-  }
-}
+// table .btn {
+//   transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+//   &:hover {
+//     background-color: $success;
+//     color: $text;
+//     transform: scale(1.1);
+//   }
+// }
 
 .table td,
 .table th {
@@ -151,9 +165,10 @@ table .btn {
   text-align: center;
   padding: 0;
 }
-.table td {
-  border-radius: 10px;
-}
+// .table tbody tr:last-child td:last-child {
+//   border-bottom-left-radius: 20px;
+//   border-bottom-right-radius: 20px;
+// }
 
 // .table-responsive-sm {
 //   overflow-x: auto;
@@ -174,18 +189,41 @@ table .btn {
 }
 
 .highlight {
-  scale: 1.08;
-  transition: scale 0.1s ease-in-out;
+  scale: 1.04;
+  transition: transform 0.01s ease-in-out;
+  will-change: transform;
 }
-/* scroll.component.css */
+.table td {
+  border-radius: 10px;
+  background-color: white;
+}
 
-// .custom-table {
-//   table-layout: fixed;
-//   width: 100%;
-// }
+.cursor-not-allowed {
+  pointer-events: none;
+  cursor: not-allowed;
+}
 
-// .prova {
-//   background-color: $background ;
-// }
+.background {
+  background-color: #f8f9fa;
+}
 
-/* scroll.component.css */
+.table td {
+  border-radius: 10px;
+  background-color: white;
+}
+
+.cursor-not-allowed {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.background {
+  background-color: #f8f9fa;
+}
+
+.badge {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}

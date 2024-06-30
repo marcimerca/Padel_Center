@@ -54,3 +54,10 @@
 .btn-large {
   width: 250px !important;
 }
+
+.card {
+  transition: transform 0.3s ease, scale 0.3s ease;
+}
+.card:hover {
+  scale: 1.03;
+}

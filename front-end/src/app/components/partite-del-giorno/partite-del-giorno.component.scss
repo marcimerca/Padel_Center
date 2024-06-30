@@ -1,10 +1,10 @@
-.trasparenza {
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  z-index: 900;
-}
+// .trasparenza {
+//   background-color: rgba(255, 255, 255, 0.05);
+//   padding: 20px;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   backdrop-filter: blur(10px);
+//   z-index: 900;
+// }
 
 .custom-border-radius {
   border-top-left-radius: 10px;
@@ -49,7 +49,7 @@
 //   align-items: center;
 // }
 .spinner-overlay {
-  z-index: 1050; /* Bootstrap modals use 1050 by default */
+  z-index: 1050;
   position: absolute;
   top: 50%;
   left: 50%;
