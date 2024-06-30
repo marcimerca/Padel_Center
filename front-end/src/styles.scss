@@ -57,7 +57,7 @@ body {
   transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   &:hover {
     color: $text;
-    transform: scale(1.03);
+    transform: scale(1.04);
   }
 }
 .btn-secondary {
@@ -74,4 +74,10 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
+.table {
+  transition: transform 0.3s ease, scale 0.3s ease;
+}
+.table:hover {
+  scale: 1.03;
 }
