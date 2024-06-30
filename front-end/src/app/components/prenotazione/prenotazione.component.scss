@@ -151,6 +151,9 @@ table .btn {
   text-align: center;
   padding: 0;
 }
+.table td {
+  border-radius: 10px;
+}
 
 // .table-responsive-sm {
 //   overflow-x: auto;
@@ -175,11 +178,14 @@ table .btn {
   transition: scale 0.1s ease-in-out;
 }
 /* scroll.component.css */
-.table-rounded {
-  border-radius: 0.25rem !important;
-}
 
 // .custom-table {
 //   table-layout: fixed;
 //   width: 100%;
 // }
+
+// .prova {
+//   background-color: $background ;
+// }
+
+/* scroll.component.css */

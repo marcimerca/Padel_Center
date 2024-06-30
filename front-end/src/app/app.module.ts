@@ -42,6 +42,7 @@ import { ModalAggiungiVincitoriComponent } from './components/modal-aggiungi-vin
 import { ModalAggiungiVincitoriAdminComponent } from './components/modal-aggiungi-vincitori-admin/modal-aggiungi-vincitori-admin.component';
 import { EllipsisPipe } from './pipes/ellipsis.pipe';
 import { ModalUpdateUserComponent } from './components/modal-update-user/modal-update-user.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 const routes: Route[] = [
   {
@@ -138,6 +139,7 @@ const routes: Route[] = [
     ModalAggiungiVincitoriAdminComponent,
     EllipsisPipe,
     ModalUpdateUserComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

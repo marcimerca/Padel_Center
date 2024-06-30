@@ -93,7 +93,7 @@
     <div class="row">
       <div *ngFor="let partita of partiteDaGiocare" class="mb-3 col-md-6">
         <div
-          class="card trasparenza rounded-5 p-1 d-flex shadow position-relative"
+          class="card bg-success rounded-6 p-1 p-md-2 d-flex shadow position-relative shadow-3-primary"
         >
           <div
             class="card-body p-2 text-start my-3 d-flex flex-column justify-content-center"
@@ -272,7 +272,7 @@
     <div class="row">
       <div *ngFor="let partita of partitePassate" class="mb-3 col-md-6">
         <div
-          class="card trasparenza rounded-5 p-1 d-flex shadow position-relative"
+          class="card bg-success rounded-5 p-1 d-flex shadow position-relative"
         >
           <div
             class="card-body p-2 text-start my-3 d-flex flex-column justify-content-center"
@@ -294,6 +294,10 @@
                   {{ partita.slotOrario.campo.nomeCampo }}
                 </h5>
                 <span
+                  *ngIf="
+                    partita.numGiocatoriAttuali === partita.numMaxGiocatori &&
+                    partita.giocatoriVincenti.length < 2
+                  "
                   [ngClass]="{
                     'bg-secondary':
                       partita.numGiocatoriAttuali < partita.numMaxGiocatori,
@@ -301,13 +305,26 @@
                       partita.numGiocatoriAttuali == partita.numMaxGiocatori,
                     
                   }"
-                  class="badge rounded-pill text-success rounded-pill d-block p-1"
+                  class="badge rounded-pill text-success rounded-pill d-block"
                   style="width: 130px"
                   >{{
                     partita.numGiocatoriAttuali === partita.numMaxGiocatori
                       ? "Partita completa"
                       : "Partita incompleta"
                   }}</span
+                >
+                <span
+                  *ngIf="partita.giocatoriVincenti.length == 2"
+                  [ngClass]="{
+                    'bg-secondary':
+                      !utenteHaVinto(partita),
+                    'bg-primary':
+                     utenteHaVinto(partita),
+                    
+                  }"
+                  class="badge rounded-pill text-success rounded-pill d-block"
+                  style="width: 130px"
+                  >{{ utenteHaVinto(partita) ? "Vinta" : "Persa" }}</span
                 >
               </div>
             </div>
@@ -409,7 +426,7 @@
                 [ngClass]="{
                   'disabled btn-large ': partita.giocatoriVincenti.length == 2
                 }"
-                class="btn btn-success btn-sm text-primary shadow-none custom-button"
+                class="btn btn-primary btn-sm text-success shadow-none custom-button"
                 (click)="apriModaleRisultato2(partita)"
               >
                 {{
@@ -421,7 +438,7 @@
               <button
                 *ngIf="partita.utentiPrenotati.length < 4"
                 style="width: 250px"
-                class="btn btn-success btn-sm text-primary shadow-none custom-button disabled"
+                class="btn btn-secondary btn-sm text-success shadow-none custom-button disabled"
               >
                 Risultato Non disponibile
               </button>

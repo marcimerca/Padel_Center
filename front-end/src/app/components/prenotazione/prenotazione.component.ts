@@ -36,6 +36,7 @@ export class PrenotazioneComponent implements OnInit {
     private modalSrv: MdbModalService
   ) {}
   ngOnInit() {
+    this.caricamento = true;
     this.campoSrv.getCampi().subscribe((campi) => {
       this.campi = campi;
     });
@@ -67,12 +68,14 @@ export class PrenotazioneComponent implements OnInit {
         .getCampiConDisponibilita(this.dataSelezionata)
         .subscribe((data) => {
           this.campiDisp = data;
+          this.caricamento = false;
           console.log(this.campiDisp);
         });
     } else {
       this.dataOggi = true;
       this.campoSrv.getCampiConDisponibilita(oggi).subscribe((data) => {
         this.campiDisp = data;
+        this.caricamento = false;
         console.log(this.campiDisp);
       });
     }
