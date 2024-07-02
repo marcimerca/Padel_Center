@@ -369,6 +369,21 @@ public class PrenotazioneService {
 
         prenotazioneRepository.save(partita);
 
+
+        String subject = "Registrazione risultato";
+        String text = "Registrazione risultato avvenuta con successo: La partita del " + partita.getDataPrenotazione() +
+                " (" + partita.getSlotOrario().getInizio() + " - " + partita.getSlotOrario().getFine() + ") è stata vinta da " +
+                partita.getGiocatoriVincenti().get(0).getNome()+ " " + partita.getGiocatoriVincenti().get(0).getCognome() + " e " +
+                partita.getGiocatoriVincenti().get(1).getNome() + " " + partita.getGiocatoriVincenti().get(1).getCognome();
+
+        partita.getUtentiPrenotati().forEach(user -> {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getEmail());
+            message.setSubject(subject);
+            message.setText(text);
+            sendEmail(message);
+        });
+
         return partita;
     }
 
@@ -415,7 +430,7 @@ public class PrenotazioneService {
             message.setTo(user.getEmail());
             message.setSubject(subject);
             message.setText(text);
-            sendEmail(message); // invio asincrono
+            sendEmail(message);
         });
 
         return partita;
