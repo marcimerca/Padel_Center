@@ -1,8 +1,8 @@
 <div class="container my-4 position-relative w-100">
   <div class="row g-0 justify-content-start">
     <div class="col-5 col-md-4 d-flex border-end border-success">
-      <div class="card custom-border-radius w-100 p-3 bg-primary trasparenza">
-        <label for="data" class="text-success mb-2">Scegli data</label>
+      <div class="card custom-border-radius w-100 p-3 bg-success text-primary">
+        <label for="data" class="mb-2">Scegli data</label>
         <input
           type="date"
           name="data"
@@ -16,7 +16,7 @@
       <div class="d-flex align-items-center justify-content-center h-100 w-100">
         <a
           [routerLink]="['/prenotazione']"
-          class="custom-border-radius-2 btn btn-primary rounded-top-end text-success shadow-none h-100 w-100 d-flex align-items-center justify-content-center"
+          class="custom-border-radius-2 btn btn-success rounded-top-end text-primary border-start border-primary shadow-none h-100 w-100 d-flex align-items-center justify-content-center"
         >
           Crea Partita
         </a>
@@ -47,7 +47,7 @@
     </div>
     <div *ngFor="let partita of partite" class="mb-3 col-md-6">
       <div
-        class="card trasparenza rounded-5 p-1 d-flex shadow position-relative z-0"
+        class="card bg-success rounded-5 p-1 d-flex shadow position-relative z-0"
       >
         <button
           type="button"
@@ -217,7 +217,7 @@
             <button
               style="width: 220px"
               [ngClass]="{ disabled: partita.utentiPrenotati.length < 4 }"
-              class="btn btn-success btn-sm text-primary shadow-none custom-button"
+              class="btn btn-primary btn-sm text-success shadow-none custom-button"
               (click)="apriModaleRisultato2(partita)"
             >
               Registra risultato

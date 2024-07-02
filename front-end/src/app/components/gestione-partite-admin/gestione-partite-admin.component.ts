@@ -122,7 +122,7 @@ export class GestionePartiteAdminComponent implements OnInit {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Confermi di voler partecipare alla partita?',
+        titolo: 'Confermi di voler partecipare alla partita?',
       },
     });
 
@@ -197,7 +197,7 @@ export class GestionePartiteAdminComponent implements OnInit {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Sei stato aggiunto correttamente alla partita',
+        titolo: 'Sei stato aggiunto correttamente alla partita',
       },
     });
   }
@@ -206,7 +206,7 @@ export class GestionePartiteAdminComponent implements OnInit {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Partita eliminata correttamente',
+        titolo: 'Partita eliminata correttamente',
       },
     });
   }
@@ -223,7 +223,7 @@ export class GestionePartiteAdminComponent implements OnInit {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Vuoi eliminare la partita?',
+        titolo: 'Vuoi eliminare la partita?',
       },
     });
 
@@ -248,7 +248,7 @@ export class GestionePartiteAdminComponent implements OnInit {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Prenotazione eliminata correttamente',
+        titolo: 'Prenotazione eliminata correttamente',
       },
     });
   }
@@ -257,7 +257,7 @@ export class GestionePartiteAdminComponent implements OnInit {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Vuoi annullare la prenotazione?',
+        titolo: 'Vuoi annullare la prenotazione?',
       },
     });
 
@@ -292,7 +292,7 @@ export class GestionePartiteAdminComponent implements OnInit {
           this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
             modalClass: 'modal-dialog-centered',
             data: {
-              messaggio: `Confermi il risultato: "${result.tipo}" per ${result.compagni[0].nome} ${result.compagni[0].cognome} e ${result.compagni[1].nome}  ${result.compagni[1].cognome} ?`,
+              titolo: `Confermi il risultato: "${result.tipo}" per ${result.compagni[0].nome} ${result.compagni[0].cognome} e ${result.compagni[1].nome}  ${result.compagni[1].cognome} ?`,
             },
           });
 
@@ -329,6 +329,7 @@ export class GestionePartiteAdminComponent implements OnInit {
                   );
               }
             }
+            this.caricamento = false;
           });
         }, 100);
       }
@@ -339,8 +340,11 @@ export class GestionePartiteAdminComponent implements OnInit {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Hai confermato il risultato',
+        titolo: 'Hai confermato il risultato',
       },
+    });
+    this.modalRef2.onClose.subscribe(() => {
+      this.caricamento = false;
     });
   }
 }

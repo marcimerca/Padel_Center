@@ -189,7 +189,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Vuoi annullare la prenotazione?',
+        titolo: 'Vuoi annullare la prenotazione?',
       },
     });
 
@@ -229,7 +229,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     const date = new Date(dateStr + 'T' + timeStr);
     const now = new Date();
     const timeDiff = date.getTime() - now.getTime();
-    return timeDiff > 24 * 60 * 60 * 1000;
+    return timeDiff >= 24 * 60 * 60 * 1000; // 24 ore in millisecondi
   }
 
   verificaUtenteGiaAggiunto(partita: Partita): boolean {
@@ -379,12 +379,13 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
           this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
             modalClass: 'modal-dialog-centered',
             data: {
-              messaggio: `Confermi il risultato: ${result.tipo}?`,
+              titolo: `Confermi il risultato: ${result.tipo}?`,
             },
           });
 
           this.modalRef.onClose.subscribe((confermato: boolean) => {
             if (confermato) {
+              this.caricamento = true;
               const datiModal = this.userSrv.getDatiModal();
               if (datiModal && datiModal.tipo && datiModal.compagno) {
                 this.partitaSrv
@@ -396,10 +397,13 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
                   .subscribe(
                     (response) => {
                       console.log('Vincitori aggiunti con successo:', response);
+
+                      this.caricamento = false;
                       this.apriModaleConfermaRegistrazioneRisultato();
                       this.caricaPartite();
                     },
                     (error) => {
+                      this.caricamento = false;
                       console.error(
                         "Errore durante l'aggiunta dei vincitori:",
                         error
@@ -407,6 +411,8 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
                     }
                   );
               }
+            } else {
+              this.caricamento = false;
             }
           });
         }, 100);
@@ -425,7 +431,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
 
   utenteHaVinto(partita: Partita): boolean {
     return (
-      partita.giocatoriVincenti &&
+      partita.giocatoriVincenti.length > 0 &&
       partita.giocatoriVincenti.some((v) => v.id === this.user?.id)
     );
   }

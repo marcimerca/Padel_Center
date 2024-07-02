@@ -1,24 +1,124 @@
 <div class="p-3 p-md-4 p-xl-5 background-container">
-  <div class="container">
+  <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-12 col-xxl-11">
         <div
-          class="border-light-subtle rounded-8 shadow-lg trasparenza d-flex justify-content-between border border-2 border-opacity-50 border-info p-0"
+          class="border-light-subtle shadow-lg rounded-8 d-flex justify-content-between border border-2 border-opacity-50 border-info p-0 trasparenza"
         >
-          <div class="row g-0">
+          <div class="row g-0 flex-grow-1">
+            <div
+              class="col-12 col-md-6 d-none d-md-flex align-items-center justify-content-center"
+            >
+              <div class="text-center text-white">
+                <div class="mb-4">
+                  <h1 class="text-primary">PADEL CENTER</h1>
+                  <h3>Fai il login o registrati per iniziare a giocare!</h3>
+                  <button
+                    *ngIf="isLogin"
+                    class="btn btn-primary text-success me-2"
+                    (click)="toggleForm()"
+                  >
+                    Registrati
+                  </button>
+                  <button
+                    *ngIf="!isLogin"
+                    class="btn btn-primary text-success"
+                    (click)="toggleForm()"
+                  >
+                    Login
+                  </button>
+                </div>
+
+                <img
+                  src="../../../assets/CENTER.png"
+                  alt=""
+                  class="img-fluid"
+                />
+              </div>
+            </div>
+
             <div
               class="col-12 col-md-6 d-flex align-items-center justify-content-center"
             >
-              <div class="col-12 col-lg-11 col-xl-10">
-                <div class="card-body p-3 p-md-4 p-xl-5">
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="mb-5">
-                        <div class="text-center mb-4">
-                          <h2 class="h4">Registrati</h2>
+              <div
+                class="card-body p-3 p-md-4 p-xl-5 w-100"
+                style="height: 50rem"
+              >
+                <div *ngIf="isLogin" class="auth-section">
+                  <div class="text-center mb-5">
+                    <h2 class="h4">Login</h2>
+                  </div>
+                  <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+                    <div class="row gy-3 overflow-hidden form-group">
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="email"
+                            class="form-control rounded-5"
+                            name="email"
+                            id="email"
+                            placeholder="la@tuaemail.com"
+                            ngModel
+                            autocomplete="email"
+                            required
+                          />
+                          <label for="email" class="form-label">Email</label>
                         </div>
                       </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="password"
+                            class="form-control rounded-5"
+                            name="password"
+                            id="password"
+                            ngModel
+                            autocomplete="password"
+                            placeholder="Password"
+                            required
+                          />
+                          <label for="password" class="form-label"
+                            >Password</label
+                          >
+                        </div>
+                      </div>
+
+                      <div class="col-12 p-2 text-center">
+                        <ng-container *ngIf="!isLoading; else loadingSpinner">
+                          <button
+                            class="btn btn-primary rounded-5 shadow-0 btn-lg text-success w-100"
+                            type="submit"
+                          >
+                            Login
+                          </button>
+                        </ng-container>
+                        <ng-template #loadingSpinner>
+                          <div
+                            class="spinner-border text-primary"
+                            role="status"
+                          >
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </ng-template>
+                      </div>
                     </div>
+                  </form>
+                  <div class="row">
+                    <div class="col-12">
+                      <p class="mb-0 mt-5 text-center">
+                        Non hai un account?
+                        <a (click)="toggleForm()" class="link-primary"
+                          >Registrati</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Register Section -->
+                <div *ngIf="!isLogin" class="auth-section">
+                  <div class="text-center mb-1">
+                    <h2 class="h4">Registrati</h2>
                   </div>
                   <form [formGroup]="registerForm" (ngSubmit)="register()">
                     <div class="row gy-3 overflow-hidden">
@@ -179,8 +279,8 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-12">
-                        <div class="form-floating mb-5 position-relative">
+                      <div class="col-12 mb-5">
+                        <div class="form-floating position-relative">
                           <input
                             type="password"
                             class="form-control rounded-5"
@@ -222,10 +322,11 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-12">
-                        <div class="form-floating mb-5 position-relative">
+                      <hr />
+                      <div class="col-12 mb-4">
+                        <div class="form-floating position-relative">
                           <input
-                            (change)="onFileChange($event)"
+                            (change)="caricaFile($event)"
                             type="file"
                             class="form-control rounded-5"
                             name="avatar"
@@ -237,35 +338,14 @@
                             >Foto profilo</label
                           >
                           <div class="mess-errore">
-                            <span
-                              *ngIf="
-                                getFormControl('password')?.invalid &&
-                                getFormControl('password')?.touched
-                              "
-                            >
-                              <ng-container
-                                *ngIf="getErrorsControl('password', 'required')"
-                              >
-                                <p class="text-danger">
-                                  Il campo password è obbligatorio
-                                </p>
-                              </ng-container>
-                              <ng-container
-                                *ngIf="getErrorsControl('password', 'pattern')"
-                              >
-                                <p class="text-danger">
-                                  La password deve essere lunga almeno 8
-                                  caratteri, contenere una lettera maiuscola,
-                                  una minuscola, un numero e un carattere
-                                  speciale.
-                                </p>
-                              </ng-container>
+                            <span *ngIf="fileError">
+                              <p class="text-danger">{{ fileError }}</p>
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      <div class="col-12 mt-5">
+                      <div class="col-12">
                         <div>
                           <button
                             class="btn btn-primary btn-lg text-success rounded-5 w-100"
@@ -280,18 +360,19 @@
                   </form>
                   <div class="row">
                     <div class="col-12">
-                      <p class="mb-0 mt-5 text-center">
+                      <p class="mb-0 mt-2 text-center">
                         Hai già un account?
                         <a
-                          [routerLink]="['/login']"
-                          routerLinkActive="active"
+                          (click)="toggleForm()"
                           class="link-primary"
+                          style="cursor: pointer"
                           >Login</a
                         >
                       </p>
                     </div>
                   </div>
                 </div>
+                <!-- End of Register Section -->
               </div>
             </div>
           </div>

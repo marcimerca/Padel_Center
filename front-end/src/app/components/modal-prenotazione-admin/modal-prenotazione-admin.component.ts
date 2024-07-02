@@ -8,7 +8,7 @@ import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
   styleUrls: ['./modal-prenotazione-admin.component.scss'],
 })
 export class ModalPrenotazioneAdminComponent {
-  @Input() messaggio: string = '';
+  @Input() titolo: string = '';
   constructor(public modalRef: MdbModalRef<ModalPrenotazioneAdminComponent>) {}
   @Output() onClose = new EventEmitter<string>();
 

@@ -137,8 +137,9 @@ export class GestioneCampiAdminComponent implements OnInit {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
+        titolo: 'Eliminazione Campo',
         messaggio:
-          "ATTENZIONE, vuoi eliminare il campo? L'eliminazione comporterà la cancellazione di tutte le prenotazioni relative al campo",
+          "Vuoi eliminare il campo? L'eliminazione comporterà la cancellazione di tutte le prenotazioni relative al campo",
       },
     });
 
@@ -208,8 +209,9 @@ export class GestioneCampiAdminComponent implements OnInit {
       this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
         modalClass: 'modal-dialog-centered',
         data: {
+          titolo: 'Eliminazione slot',
           messaggio:
-            "ATTENZIONE, vuoi eliminare lo slot Orario? L'eliminazione comporterà la cancellazione di tutte le prenotazioni relative allo slot di questo campo",
+            "Vuoi eliminare lo slot orario? L'eliminazione comporterà la cancellazione di tutte le prenotazioni relative allo slot di questo campo",
         },
       });
 
@@ -218,10 +220,8 @@ export class GestioneCampiAdminComponent implements OnInit {
           this.campoSrv.eliminaSlotOrario(id).subscribe(
             () => {
               console.log('Slot orario eliminato correttamente');
-              // Chiudi la modale di conferma
-              this.modalRef!.close();
 
-              // Apri la modale di informazione dopo un breve ritardo
+              this.modalRef!.close();
               setTimeout(() => {
                 this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
                   modalClass: 'modal-dialog-centered',
@@ -230,7 +230,7 @@ export class GestioneCampiAdminComponent implements OnInit {
                   },
                 });
                 this.caricaDisponibilita();
-              }, 300); // Ritardo di 300 millisecondi tra la chiusura e l'apertura della modale di informazione
+              }, 300);
             },
             (error) => {
               console.error("Errore durante l'eliminazione dello slot:", error);
@@ -238,15 +238,16 @@ export class GestioneCampiAdminComponent implements OnInit {
           );
         }
       });
-    }, 300); // Ritardo di 300 millisecondi prima dell'apertura della modale di conferma
+    }, 300);
   }
 
   apriModaleEliminaTuttiSlotCampo(id: number) {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
+        titolo: 'Eliminazione di tutti gli slot',
         messaggio:
-          "ATTENZIONE, vuoi eliminare tutti gli slot orari del campo? L'eliminazione comporterà la cancellazione di tutte le prenotazioni di questo campo",
+          "Vuoi eliminare tutti gli slot orari del campo? L'eliminazione comporterà la cancellazione di tutte le prenotazioni di questo campo",
       },
     });
 

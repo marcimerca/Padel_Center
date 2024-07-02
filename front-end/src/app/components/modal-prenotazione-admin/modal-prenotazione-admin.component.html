@@ -1,53 +1,56 @@
-<div class="rounded-5">
-  <div class="modal-header border-success bg-success">
-    <h5 class="modal-title" id="exampleModalLabel">
-      {{ messaggio }}
-    </h5>
-    <button
-      type="button"
-      class="btn-close btn-primary"
-      aria-label="Close"
-      (click)="annulla()"
-    ></button>
+<div class="modal-content rounded-5 bg-success">
+  <div class="modal-header border-success bg-success text-white rounded-top-5">
+    <div class="d-flex align-items-center w-100">
+      <h5 class="modal-title flex-grow-1" id="exampleModalLabel">
+        <i class="bi bi-pencil-square me-2"></i> {{ titolo }}
+      </h5>
+      <i
+        (click)="annulla()"
+        class="bi bi-x-lg text-white fs-4"
+        aria-label="Close"
+        style="cursor: pointer"
+      ></i>
+    </div>
   </div>
-
-  <form
-    class="bg-success p-3"
-    #prenotazioneForm="ngForm"
-    (ngSubmit)="prenotaAdmin(prenotazioneForm)"
-  >
-    <div class="row gy-3 form-group">
-      <div class="col-12">
-        <div class="form-floating mb-3">
-          <input
-            type="text"
-            class="form-control rounded-5"
-            name="motivoPrenotazione"
-            id="motivoPrenotazione"
-            placeholder="Motivo Prenotazione..."
-            ngModel
-            required
-          />
-          <label for="motivoPrenotazione" class="form-label"
-            >Motivo Prenotazione</label
-          >
+  <div class="modal-body mt-0">
+    <form
+      class="bg-success rounded-5"
+      #prenotazioneForm="ngForm"
+      (ngSubmit)="prenotaAdmin(prenotazioneForm)"
+    >
+      <div class="row gy-3 form-group">
+        <div class="col-12">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control rounded-5"
+              name="motivoPrenotazione"
+              id="motivoPrenotazione"
+              placeholder="Motivo Prenotazione..."
+              ngModel
+              required
+            />
+            <label for="motivoPrenotazione" class="form-label"
+              >Motivo Prenotazione</label
+            >
+          </div>
         </div>
       </div>
-    </div>
-    <div class="bg-success d-flex justify-content-center gap-3">
-      <button
-        class="btn btn-primary rounded-5 shadow-0 text-success"
-        type="submit"
-      >
-        Prenota
-      </button>
-      <button
-        (click)="annulla()"
-        type="button"
-        class="btn btn-primary rounded-5 text-success shadow-none"
-      >
-        Annulla
-      </button>
-    </div>
-  </form>
+      <div class="bg-success d-flex justify-content-center gap-3">
+        <button
+          class="btn btn-primary rounded-5 shadow-0 text-success"
+          type="submit"
+        >
+          Prenota
+        </button>
+        <button
+          (click)="annulla()"
+          type="button"
+          class="btn btn-primary rounded-5 text-success shadow-none"
+        >
+          Annulla
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

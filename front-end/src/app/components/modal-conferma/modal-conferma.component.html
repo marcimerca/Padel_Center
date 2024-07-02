@@ -1,32 +1,38 @@
-<div class="rounded-5">
-  <div class="modal-header border-success bg-success">
-    <div class="d-flex align-items-start">
-      <h5 class="modal-title" id="exampleModalLabel">
-        {{ messaggio }}
+<div class="modal-content rounded-5">
+  <div class="modal-header border-success bg-success text-white">
+    <div class="d-flex align-items-start w-100">
+      <h5 class="modal-title flex-grow-1" id="exampleModalLabel">
+        {{ titolo }}
       </h5>
+      <i
+        (click)="modalRef.close()"
+        class="bi bi-x-lg text-white fs-4"
+        aria-label="Close"
+        style="cursor: pointer"
+      ></i>
     </div>
-    <button
-      type="button"
-      class="btn-close btn-primary"
-      aria-label="Close"
-      (click)="modalRef.close()"
-    ></button>
+  </div>
+  <div class="modal-body bg-success pt-0">
+    <p class="mb-0">
+      {{ messaggio }}
+    </p>
   </div>
   <div class="modal-footer bg-success d-flex justify-content-center gap-3">
     <button
       (click)="conferma()"
       type="button"
       class="btn btn-primary text-success shadow-none"
-      style="width: 50px"
+      style="width: 100px"
     >
-      SI
+      Sì
     </button>
     <button
       type="button"
-      class="btn btn-primary text-success shadow-none"
+      class="btn btn-secondary text-success shadow-none"
       (click)="annulla()"
+      style="width: 100px"
     >
-      ANNULLA
+      Annulla
     </button>
   </div>
 </div>

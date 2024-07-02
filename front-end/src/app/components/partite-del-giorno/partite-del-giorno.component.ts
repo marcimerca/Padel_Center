@@ -145,7 +145,7 @@ export class PartiteDelGiornoComponent implements OnInit {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Confermi di voler partecipare alla partita?',
+        titolo: 'Confermi di voler partecipare alla partita?',
       },
     });
 

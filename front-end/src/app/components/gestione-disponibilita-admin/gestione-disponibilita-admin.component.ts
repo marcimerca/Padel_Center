@@ -22,6 +22,7 @@ export class GestioneDisponibilitaAdminComponent {
   dataOggi = false;
   numeroSlot: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   caricamento = false;
+  hoverCampo: { [key: string]: boolean } = {};
 
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
@@ -151,10 +152,14 @@ export class GestioneDisponibilitaAdminComponent {
   verificaBottoneDisabilitato(orarioInizio: string): boolean {
     const oggi = new Date();
     const oraCorrente = oggi.getHours();
-    const [oraSlot] = orarioInizio.split(':').map(Number);
+    const minutiCorrenti = oggi.getMinutes();
+    const [oraSlot, minutiSlot] = orarioInizio.split(':').map(Number);
 
     if (this.dataOggi) {
-      return oraCorrente >= oraSlot;
+      return (
+        oraCorrente > oraSlot ||
+        (oraCorrente === oraSlot && minutiCorrenti >= minutiSlot)
+      );
     }
     return false;
   }
@@ -163,7 +168,7 @@ export class GestioneDisponibilitaAdminComponent {
     this.modalRef3 = this.modalSrv.open(ModalPrenotazioneAdminComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Inserire il motivo della prenotazione',
+        titolo: 'Inserire il motivo della prenotazione',
       },
     });
 
@@ -181,7 +186,7 @@ export class GestioneDisponibilitaAdminComponent {
       this.modalRef3 = this.modalSrv.open(ModalPrenotazioneAdminComponent, {
         modalClass: 'modal-dialog-centered',
         data: {
-          messaggio: 'Inserire il motivo della prenotazione',
+          titolo: 'Inserire il motivo della prenotazione',
         },
       });
 
@@ -250,7 +255,7 @@ export class GestioneDisponibilitaAdminComponent {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Hai creato correttamente la tua prenotazione',
+        titolo: 'Hai creato correttamente la tua prenotazione',
       },
     });
   }
@@ -259,7 +264,7 @@ export class GestioneDisponibilitaAdminComponent {
       this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
         modalClass: 'modal-dialog-centered',
         data: {
-          messaggio: 'Vuoi cancellare la prenotazione?',
+          titolo: 'Vuoi cancellare la prenotazione?',
         },
       });
 

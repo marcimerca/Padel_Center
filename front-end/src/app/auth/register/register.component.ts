@@ -6,6 +6,7 @@ import {
   Validators,
   AbstractControl,
   EmailValidator,
+  NgForm,
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -22,7 +23,9 @@ export class RegisterComponent implements OnInit {
   modalRef: MdbModalRef<ModalInfoComponent> | null = null;
   registerForm!: FormGroup;
   avatarFile: File | null = null;
-
+  fileError: string | null = null;
+  isLogin: boolean = true;
+  isLoading: boolean = false;
   constructor(
     private fb: FormBuilder,
     private authSrv: AuthService,
@@ -44,9 +47,30 @@ export class RegisterComponent implements OnInit {
           ),
         ],
       ],
+      avatar: [null],
     });
   }
 
+  caricaFile(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.fileError = 'Solo immagini sono consentite.';
+        this.avatarFile = null;
+      } else if (file.size > 5 * 1024 * 1024) {
+        this.fileError =
+          'Il file è troppo grande. La dimensione massima consentita è di 5MB.';
+        this.avatarFile = null;
+      } else {
+        this.fileError = null;
+        this.avatarFile = file;
+      }
+    }
+  }
+
+  toggleForm() {
+    this.isLogin = !this.isLogin;
+  }
   getErrorsControl(name: string, error: string) {
     return this.registerForm.get(name)?.errors![error];
   }
@@ -107,7 +131,7 @@ export class RegisterComponent implements OnInit {
                       },
                     });
                     setTimeout(() => {
-                      this.router.navigate(['/login']);
+                      this.isLogin = true;
                     }, 1000);
                   },
                   (error) => {
@@ -127,5 +151,32 @@ export class RegisterComponent implements OnInit {
         }
       });
     }
+  }
+
+  login(form: NgForm) {
+    this.isLoading = true;
+    this.authSrv.login(form.value).subscribe(
+      (user) => {
+        setTimeout(() => {
+          this.isLoading = false;
+          if (user.ruolo === 'ADMIN') {
+            this.router.navigate(['admin-dashboard']);
+          } else {
+            this.router.navigate(['partite-del-giorno']);
+          }
+        }, 1000);
+      },
+      (error) => {
+        this.isLoading = false;
+        this.modalRef = this.modalSrv.open(ModalInfoComponent, {
+          modalClass: 'modal-dialog-centered',
+          data: {
+            messaggio:
+              error.error ||
+              'Si è verificato un errore durante il login. Riprova più tardi.',
+          },
+        });
+      }
+    );
   }
 }

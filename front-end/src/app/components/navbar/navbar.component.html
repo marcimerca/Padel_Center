@@ -1,14 +1,9 @@
 <nav class="navbar bg-success navbar-expand-lg trasparenza sticky-top">
   <div class="container">
-    <!-- <a class="nav-link navbar-brand text-info" [routerLink]="['/']"
-      >Padel App</a
-    > -->
-    <a
-      *ngIf="user?.ruolo === 'ADMIN'"
-      class="nav-link navbar-brand text-info"
-      [routerLink]="['/admin-dashboard']"
-      >Dashboard</a
+    <a class="nav-link navbar-brand text-info" [routerLink]="['/']"
+      >Padel Center</a
     >
+
     <button
       class="navbar-toggler"
       type="button"
@@ -38,17 +33,18 @@
             class="nav-link"
             [routerLink]="['/register']"
             routerLinkActive="active"
-            >Registrati</a
+            >Registrati / Login</a
           >
         </li>
-        <li class="nav-item" *ngIf="!user">
+
+        <!-- <li class="nav-item" *ngIf="!user">
           <a
             class="nav-link"
             [routerLink]="['/login']"
             routerLinkActive="active"
             >Login</a
           >
-        </li>
+        </li> -->
         <li class="nav-item" *ngIf="user && user?.ruolo === 'USER'">
           <a
             class="nav-link"
@@ -73,11 +69,65 @@
             >Profilo</a
           >
         </li>
+        <div *ngIf="user?.ruolo === 'ADMIN'">
+          <li class="nav-item d-md-none">
+            <a
+              class="nav-link"
+              [routerLink]="['gestione-disponibilita']"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-calendar4-week me-2"></i>
+              Gestione disponibilità
+            </a>
+          </li>
+          <li class="dropdown-divider mb-3 bg-primary"></li>
+        </div>
+        <div *ngIf="user?.ruolo === 'ADMIN'">
+          <li class="nav-item d-md-none" *ngIf="user?.ruolo === 'ADMIN'">
+            <a
+              class="nav-link"
+              [routerLink]="['gestione-campi']"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-square-half me-2"></i>
+              Campi da gioco
+            </a>
+          </li>
+          <li class="dropdown-divider mb-3 bg-primary"></li>
+        </div>
+        <div *ngIf="user?.ruolo === 'ADMIN'">
+          <li class="nav-item d-md-none" *ngIf="user?.ruolo === 'ADMIN'">
+            <a
+              class="nav-link"
+              [routerLink]="['gestione-partite']"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-trophy me-2"></i>
+              Partite
+            </a>
+          </li>
+          <li class="dropdown-divider mb-3 bg-primary"></li>
+        </div>
+        <div *ngIf="user?.ruolo === 'ADMIN'">
+          <li class="nav-item d-md-none" *ngIf="user?.ruolo === 'ADMIN'">
+            <a
+              class="nav-link"
+              [routerLink]="['gestione-users']"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-people me-2"></i>
+              Utenti
+            </a>
+          </li>
+          <li class="dropdown-divider bg-primary mb-3"></li>
+        </div>
       </ul>
-      <h5 *ngIf="user" class="me-4">Benvenuto {{ user.nome }}</h5>
-      <button *ngIf="user" class="btn btn-secondary me-2" (click)="logout()">
-        Logout
-      </button>
+      <div class="d-flex align-items-center">
+        <h5 *ngIf="user" class="m-0 me-3">Benvenuto {{ user.nome }}</h5>
+        <button *ngIf="user" class="btn btn-secondary me-2" (click)="logout()">
+          Logout
+        </button>
+      </div>
     </div>
   </div>
 </nav>

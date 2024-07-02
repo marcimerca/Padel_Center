@@ -1,62 +1,67 @@
-<div class="rounded-5">
-  <div class="modal-header border-success bg-success">
-    <h5 class="modal-title" id="exampleModalLabel">
-      {{ messaggio }}
-    </h5>
-    <button
-      type="button"
-      class="btn-close btn-primary"
-      aria-label="Close"
-      (click)="annulla()"
-    ></button>
+<div class="modal-content rounded-5 bg-success">
+  <div class="modal-header border-success bg-success text-white rounded-top-5">
+    <div class="d-flex align-items-center w-100">
+      <h5 class="modal-title flex-grow-1" id="exampleModalLabel">
+        <i class="bi bi-clock me-2"></i> {{ messaggio }}
+      </h5>
+      <i
+        (click)="annulla()"
+        class="bi bi-x-lg text-white fs-4"
+        aria-label="Close"
+        style="cursor: pointer"
+      ></i>
+    </div>
   </div>
-
-  <form
-    class="bg-success p-3"
-    #creaSlotForm="ngForm"
-    (ngSubmit)="creaSlot(creaSlotForm)"
-  >
-    <div class="row gy-3 form-group">
-      <div class="col-12">
-        <div class="form-floating mb-3">
-          <input
-            type="text"
-            class="form-control rounded-5"
-            name="inizio"
-            id="inizio"
-            placeholder="Inizio..."
-            ngModel
-            required
-            pattern="^([01]\d|2[0-3]):([0-5]\d)$"
-          />
-          <label for="inizio" class="form-label"
-            >Inizio dello slot orario</label
-          >
-          <div
-            *ngIf="
-              creaSlotForm.submitted && !creaSlotForm.controls['inizio'].valid
-            "
-            class="text-danger"
-          >
-            L'orario deve essere nel formato: 09:00.
+  <div class="modal-body mt-0 p-0">
+    <form
+      class="bg-success rounded-5"
+      #creaSlotForm="ngForm"
+      (ngSubmit)="creaSlot(creaSlotForm)"
+    >
+      <div class="row gy-3 form-group p-3">
+        <div class="col-12">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control rounded-5"
+              name="inizio"
+              id="inizio"
+              placeholder="Inizio..."
+              ngModel
+              required
+              pattern="^([01]\d|2[0-3]):([0-5]\d)$"
+            />
+            <label for="inizio" class="form-label"
+              >Inizio dello slot orario</label
+            >
+            <div
+              *ngIf="
+                creaSlotForm.submitted && !creaSlotForm.controls['inizio'].valid
+              "
+              class="text-danger"
+            >
+              L'orario deve essere nel formato: 09:00.
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="bg-success d-flex justify-content-center gap-3">
-      <button
-        class="btn btn-primary rounded-5 shadow-0 text-success"
-        type="submit"
-      >
-        Crea
-      </button>
-      <button
-        (click)="annulla()"
-        type="button"
-        class="btn btn-primary rounded-5 text-success shadow-none"
-      >
-        Annulla
-      </button>
-    </div>
-  </form>
+      <div class="modal-footer bg-success d-flex justify-content-center gap-3">
+        <button
+          class="btn btn-primary rounded-5 shadow-0 text-success"
+          type="submit"
+          style="width: 100px"
+        >
+          Crea
+        </button>
+        <button
+          (click)="annulla()"
+          type="button"
+          class="btn btn-secondary rounded-5 text-success shadow-none"
+          style="width: 100px"
+        >
+          Annulla
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

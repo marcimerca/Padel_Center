@@ -10,6 +10,7 @@ import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
 import { ModalInfoComponent } from '../modal-info/modal-info.component';
 import { SlotDisponibilita } from 'src/app/models/slot-disponibilita.interface';
+import { Partita } from 'src/app/models/partita.interface';
 
 @Component({
   selector: 'app-prenotazione',
@@ -141,7 +142,7 @@ export class PrenotazioneComponent implements OnInit {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: `Confermi di voler creare la partita per il ${dataPartitaFormattata}, dalle ${inizio.slice(
+        titolo: `Confermi di voler creare la partita per il ${dataPartitaFormattata}, dalle ${inizio.slice(
           0,
           5
         )} alle ${fine.slice(0, 5)} ?`,

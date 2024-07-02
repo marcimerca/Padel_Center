@@ -7,6 +7,6 @@ import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
   styleUrls: ['./modal-info.component.scss'],
 })
 export class ModalInfoComponent {
-  @Input() messaggio: string = '';
+  @Input() titolo: string = '';
   constructor(public modalRef: MdbModalRef<ModalInfoComponent>) {}
 }

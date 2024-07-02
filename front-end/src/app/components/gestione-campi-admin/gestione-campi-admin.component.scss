@@ -141,6 +141,9 @@ body {
   td {
     font-size: 12px;
   }
+  .mobile button {
+    font-size: 12px;
+  }
 }
 
 table .btn {
@@ -149,16 +152,25 @@ table .btn {
     transform: scale(1.1);
   }
 }
-
-@media (min-width: 992px) {
-  .campo-col {
-    width: 50% !important;
+@media (min-width: 576px) {
+  .desktop {
+    display: block;
+    width: 40% !important;
+  }
+  .mobile {
+    display: none;
   }
 }
 
-@media (max-width: 576) {
+@media (max-width: 576px) {
   .campo-col {
     width: 100% !important;
+  }
+  .desktop {
+    display: none !important;
+  }
+  .mobile {
+    display: block;
   }
 }
 
@@ -180,3 +192,13 @@ table .btn {
 // .background-color {
 //   background-color: $background !important;
 // }
+.delete-btn {
+  display: none;
+}
+
+.slot-orario:hover .delete-btn {
+  display: block;
+}
+.hover-none:hover {
+  display: none;
+}

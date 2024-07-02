@@ -1,12 +1,4 @@
 <div class="container min-vh-100 mb-5">
-  <div
-    class="d-flex justify-content-center text-primary align-items-center position-fixed top-50 start-50 z-3"
-    *ngIf="caricamento"
-  >
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </div>
   <div>
     <div class="container py-5">
       <div class="row">
@@ -83,11 +75,24 @@
       </div>
     </div>
   </div>
-
+  <div
+    class="d-flex justify-content-center text-primary align-items-center position-fixed z-3"
+    *ngIf="caricamento"
+    style="
+      z-index: 1050;
+      top: 50vh;
+      left: 50vw;
+      transform: translate(-50%, -50%);
+    "
+  >
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
   <!-- Parte delle partite da giocare -->
-  <div class="container text-start mt-3">
+  <div class="container text-start mt-3 z-0">
     <h2 class="text-primary">Partite da giocare</h2>
-    <h4 *ngIf="partitePassate.length <= 0">
+    <h4 *ngIf="partiteDaGiocare.length <= 0">
       Nessuna partita presente in questa sezione.
     </h4>
     <div class="row">
@@ -225,13 +230,13 @@
             </div>
             <div class="d-flex justify-content-center gap-1 gap-md-3 mt-3">
               <button
-                style="width: 220px"
-                *ngIf="
-                  verificaPiu24H(
+                [ngClass]="{
+                  disabled: !verificaPiu24H(
                     partita.dataPrenotazione,
                     partita.slotOrario.inizio
-                  ) || user!.ruolo == 'ADMIN'
-                "
+                  )
+                }"
+                style="width: 220px"
                 class="btn btn-secondary btn-sm text-primary shadow-none custom-button"
                 (click)="apriModale(partita.id!)"
               >
@@ -239,6 +244,7 @@
               </button>
 
               <button
+                *ngIf="partita.utentiPrenotati.length < 4"
                 style="width: 220px"
                 class="btn btn-sm custom-button"
                 [ngClass]="{
@@ -261,10 +267,23 @@
       </div>
     </div>
   </div>
-
+  <div
+    class="d-flex justify-content-center text-primary align-items-center position-fixed z-3"
+    *ngIf="caricamento"
+    style="
+      z-index: 1050;
+      top: 50vh;
+      left: 50vw;
+      transform: translate(-50%, -50%);
+    "
+  >
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
   <!-- Parte delle partite passate -->
 
-  <div class="container text-start mt-3">
+  <div class="container text-start mt-3 z-0">
     <h2 class="text-primary">Partite passate</h2>
     <h4 *ngIf="partitePassate.length <= 0">
       Nessuna partita presente in questa sezione.
@@ -420,12 +439,12 @@
             </div>
             <div class="d-flex justify-content-center gap-1 gap-md-3 mt-3">
               <button
-                *ngIf="partita.utentiPrenotati.length == 4"
-                style="width: 220px"
                 [disabled]="!OraPassata(partita)"
                 [ngClass]="{
                   'disabled btn-large ': partita.giocatoriVincenti.length == 2
                 }"
+                *ngIf="partita.utentiPrenotati.length == 4"
+                style="width: 220px"
                 class="btn btn-primary btn-sm text-success shadow-none custom-button"
                 (click)="apriModaleRisultato2(partita)"
               >

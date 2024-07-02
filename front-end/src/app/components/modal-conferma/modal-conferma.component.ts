@@ -7,6 +7,7 @@ import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
   styleUrls: ['./modal-conferma.component.scss'],
 })
 export class ModalConfermaComponent {
+  @Input() titolo: string = '';
   @Input() messaggio: string = '';
 
   constructor(public modalRef: MdbModalRef<ModalConfermaComponent>) {}

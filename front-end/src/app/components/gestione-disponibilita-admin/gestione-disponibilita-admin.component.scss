@@ -106,7 +106,10 @@ body {
 }
 
 .custom-table tbody tr {
-  height: 40px;
+  height: 45px;
+}
+.background {
+  background-color: $background;
 }
 
 .custom-table tbody td {
@@ -115,10 +118,8 @@ body {
 .custom-table tbody td:hover {
   cursor: pointer;
   background-color: $primary !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
+  border: 0 !important;
 }
 @media (max-width: 576px) {
   td {
@@ -139,9 +140,7 @@ body {
 table .btn {
   transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   &:hover {
-    background-color: $success;
     color: $text;
-    transform: scale(1.1);
   }
 }
 
@@ -157,11 +156,31 @@ table .btn {
   position: relative;
 }
 
-.table-responsive-sm::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 10px;
-  height: 100%;
+// .table-responsive-sm::after {
+//   content: "";
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   width: 10px;
+//   height: 100%;
+//   border: 3px solid red($color: #000000);
+// }
+
+.layout-desktop {
+  display: block;
+}
+
+.layout-mobile {
+  display: none;
+}
+
+/* Layout per mobile */
+@media (max-width: 768px) {
+  .layout-desktop {
+    display: none;
+  }
+
+  .layout-mobile {
+    display: block;
+  }
 }

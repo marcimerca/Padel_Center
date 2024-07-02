@@ -23,9 +23,14 @@ export class LoginComponent {
   login(form: NgForm) {
     this.isLoading = true;
     this.authSrv.login(form.value).subscribe(
-      () => {
+      (user) => {
         setTimeout(() => {
-          this.router.navigate(['partite-del-giorno']);
+          this.isLoading = false;
+          if (user.ruolo === 'ADMIN') {
+            this.router.navigate(['admin-dashboard']);
+          } else {
+            this.router.navigate(['partite-del-giorno']);
+          }
         }, 1000);
       },
       (error) => {
@@ -35,7 +40,7 @@ export class LoginComponent {
           data: {
             messaggio:
               error.error ||
-              'Si è verificato un errore durante il login Riprova più tardi.',
+              'Si è verificato un errore durante il login. Riprova più tardi.',
           },
         });
       }

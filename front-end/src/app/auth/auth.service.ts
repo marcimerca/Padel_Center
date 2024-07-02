@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { Register } from '../models/register.interface';
 import { catchError, tap } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,8 @@ export class AuthService {
   baseURL = environment.baseURL;
   public authSub = new BehaviorSubject<AuthData | null>(null);
   user$ = this.authSub.asObservable();
+  jwtHelper = new JwtHelperService();
+  timeOut: any;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -49,7 +52,16 @@ export class AuthService {
   logout() {
     this.authSub.next(null);
     localStorage.removeItem('user');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
+  }
+  autoLogout(user: AuthData) {
+    const dateExpiration = this.jwtHelper.getTokenExpirationDate(
+      user.accessToken
+    ) as Date;
+    const millisecondsExp = dateExpiration.getTime() - new Date().getTime();
+    this.timeOut = setTimeout(() => {
+      this.logout();
+    }, millisecondsExp);
   }
 
   restore() {
