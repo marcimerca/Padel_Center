@@ -43,6 +43,7 @@ import { ModalAggiungiVincitoriAdminComponent } from './components/modal-aggiung
 import { EllipsisPipe } from './pipes/ellipsis.pipe';
 import { ModalUpdateUserComponent } from './components/modal-update-user/modal-update-user.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Route[] = [
   {
@@ -105,6 +106,10 @@ const routes: Route[] = [
       },
     ],
   },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
   // {
   //   path: 'gestione-disponibilita',
   //   component: GestioneDisponibilitaAdminComponent,
@@ -140,6 +145,7 @@ const routes: Route[] = [
     EllipsisPipe,
     ModalUpdateUserComponent,
     FooterComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
