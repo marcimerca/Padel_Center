@@ -3,7 +3,7 @@ import { environment } from '../environments/environment.development';
 import { AuthData } from '../models/auth-data.interface';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { Register } from '../models/register.interface';
 import { catchError, tap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -82,13 +82,13 @@ export class AuthService {
     );
   }
 
-  checkEmailExists(email: string) {
+  checkEmailEsistente(email: string) {
     return this.http.get<boolean>(
       `${this.baseURL}users/check-email?email=${email}`
     );
   }
 
-  checkUsernameExists(username: string) {
+  checkUsernameEsistente(username: string) {
     return this.http.get<boolean>(
       `${this.baseURL}users/check-username?username=${username}`
     );
