@@ -1,17 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-  AbstractControl,
-  EmailValidator,
-  NgForm,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { ModalConfermaComponent } from 'src/app/components/modal-conferma/modal-conferma.component';
 import { ModalInfoComponent } from 'src/app/components/modal-info/modal-info.component';
 
 @Component({
@@ -93,63 +84,68 @@ export class RegisterComponent implements OnInit {
       const usernameControl = this.registerForm.get('username');
       const username = usernameControl?.value;
 
-      this.authSrv.checkEmailExists(email).subscribe((emailExists: boolean) => {
-        if (emailExists) {
-          emailControl?.setErrors({ alreadyExists: true });
-        } else {
-          this.authSrv
-            .checkUsernameExists(username)
-            .subscribe((usernameExists: boolean) => {
-              if (usernameExists) {
-                usernameControl?.setErrors({ alreadyExists: true });
-              } else {
-                const formData = new FormData();
-                formData.append(
-                  'username',
-                  this.registerForm.get('username')?.value
-                );
-                formData.append('nome', this.registerForm.get('nome')?.value);
-                formData.append(
-                  'cognome',
-                  this.registerForm.get('cognome')?.value
-                );
-                formData.append('email', this.registerForm.get('email')?.value);
-                formData.append(
-                  'password',
-                  this.registerForm.get('password')?.value
-                );
-                if (this.avatarFile) {
-                  formData.append('avatar', this.avatarFile);
-                }
-
-                this.authSrv.registerConFoto(formData).subscribe(
-                  () => {
-                    this.modalRef = this.modalSrv.open(ModalInfoComponent, {
-                      modalClass: 'modal-dialog-centered',
-                      data: {
-                        messaggio: 'Registrazione avvenuta correttamente',
-                      },
-                    });
-                    setTimeout(() => {
-                      this.isLogin = true;
-                    }, 1000);
-                  },
-                  (error) => {
-                    this.modalRef = this.modalSrv.open(ModalInfoComponent, {
-                      modalClass: 'modal-dialog-centered',
-                      data: {
-                        messaggio:
-                          error.error ||
-                          'Si è verificato un errore durante la registrazione. Riprova più tardi.',
-                      },
-                    });
-                    this.registerForm.get('password')?.setValue('');
+      this.authSrv
+        .checkEmailEsistente(email)
+        .subscribe((emailExists: boolean) => {
+          if (emailExists) {
+            emailControl?.setErrors({ alreadyExists: true });
+          } else {
+            this.authSrv
+              .checkUsernameEsistente(username)
+              .subscribe((usernameExists: boolean) => {
+                if (usernameExists) {
+                  usernameControl?.setErrors({ alreadyExists: true });
+                } else {
+                  const formData = new FormData();
+                  formData.append(
+                    'username',
+                    this.registerForm.get('username')?.value
+                  );
+                  formData.append('nome', this.registerForm.get('nome')?.value);
+                  formData.append(
+                    'cognome',
+                    this.registerForm.get('cognome')?.value
+                  );
+                  formData.append(
+                    'email',
+                    this.registerForm.get('email')?.value
+                  );
+                  formData.append(
+                    'password',
+                    this.registerForm.get('password')?.value
+                  );
+                  if (this.avatarFile) {
+                    formData.append('avatar', this.avatarFile);
                   }
-                );
-              }
-            });
-        }
-      });
+
+                  this.authSrv.registerConFoto(formData).subscribe(
+                    () => {
+                      this.modalRef = this.modalSrv.open(ModalInfoComponent, {
+                        modalClass: 'modal-dialog-centered',
+                        data: {
+                          messaggio: 'Registrazione avvenuta correttamente',
+                        },
+                      });
+                      setTimeout(() => {
+                        this.isLogin = true;
+                      }, 1000);
+                    },
+                    (error) => {
+                      this.modalRef = this.modalSrv.open(ModalInfoComponent, {
+                        modalClass: 'modal-dialog-centered',
+                        data: {
+                          messaggio:
+                            error.error ||
+                            'Si è verificato un errore durante la registrazione. Riprova più tardi.',
+                        },
+                      });
+                      this.registerForm.get('password')?.setValue('');
+                    }
+                  );
+                }
+              });
+          }
+        });
     }
   }
 
