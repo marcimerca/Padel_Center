@@ -12,11 +12,6 @@
   border-radius: 20px;
 }
 
-.cursor-not-allowed {
-  pointer-events: none !important;
-  cursor: not-allowed !important;
-}
-
 .selezionati {
   background-color: $primary !important;
 }
@@ -48,7 +43,12 @@
   background-color: $primary;
 }
 
-.custom-table tbody td.cursor-not-allowed:hover {
+.custom-table tbody td .cursor-not-allowed {
+  pointer-events: none;
+  cursor: not-allowed !important;
+}
+
+.custom-table tbody td .cursor-not-allowed:hover {
   background-color: inherit !important; // Mantieni il colore di sfondo originale
 }
 
@@ -109,11 +109,6 @@
   background-color: white;
 }
 
-.cursor-not-allowed {
-  pointer-events: none !important;
-  cursor: not-allowed !important;
-}
-
 .badge {
   display: inline-flex;
   justify-content: center;
@@ -123,14 +118,4 @@
 
 .table:hover {
   scale: 1.03;
-}
-
-.custom-table tbody td:hover {
-  cursor: pointer;
-  background-color: $primary;
-}
-
-.custom-table tbody td.cursor-not-allowed:hover {
-  cursor: not-allowed !important;
-  background-color: inherit !important; // Mantieni il colore di sfondo originale
 }

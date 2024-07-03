@@ -111,7 +111,7 @@ export class PrenotazioneComponent implements OnInit {
         this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
           modalClass: 'modal-dialog-centered',
           data: {
-            messaggio:
+            titolo:
               error.error ||
               "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
           },
@@ -160,7 +160,7 @@ export class PrenotazioneComponent implements OnInit {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'La partita è stata creata con successo',
+        titolo: 'La partita è stata creata con successo',
       },
     });
     this.modalRef2.onClose.subscribe(() => {
