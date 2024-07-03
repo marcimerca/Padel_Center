@@ -69,51 +69,53 @@ export class ModalUpdateUserComponent {
       const usernameControl = this.updateForm.get('username');
       const username = usernameControl?.value;
 
-      this.authSrv.checkEmailExists(email).subscribe((emailExists: boolean) => {
-        if (emailExists && email !== this.user.email) {
-          emailControl?.setErrors({ alreadyExists: true });
-        } else {
-          this.authSrv
-            .checkUsernameExists(username)
-            .subscribe((usernameExists: boolean) => {
-              if (usernameExists && username !== this.user.username) {
-                usernameControl?.setErrors({ alreadyExists: true });
-              } else {
-                const formData = new FormData();
-                formData.append('id', this.user.id.toString());
-                formData.append(
-                  'username',
-                  this.updateForm.get('username')?.value
-                );
-                formData.append('nome', this.updateForm.get('nome')?.value);
-                formData.append(
-                  'cognome',
-                  this.updateForm.get('cognome')?.value
-                );
-                formData.append('email', this.updateForm.get('email')?.value);
-                if (this.updateForm.get('password')?.value) {
+      this.authSrv
+        .checkEmailEsistente(email)
+        .subscribe((emailExists: boolean) => {
+          if (emailExists && email !== this.user.email) {
+            emailControl?.setErrors({ alreadyExists: true });
+          } else {
+            this.authSrv
+              .checkUsernameEsistente(username)
+              .subscribe((usernameExists: boolean) => {
+                if (usernameExists && username !== this.user.username) {
+                  usernameControl?.setErrors({ alreadyExists: true });
+                } else {
+                  const formData = new FormData();
+                  formData.append('id', this.user.id.toString());
                   formData.append(
-                    'password',
-                    this.updateForm.get('password')?.value
+                    'username',
+                    this.updateForm.get('username')?.value
+                  );
+                  formData.append('nome', this.updateForm.get('nome')?.value);
+                  formData.append(
+                    'cognome',
+                    this.updateForm.get('cognome')?.value
+                  );
+                  formData.append('email', this.updateForm.get('email')?.value);
+                  if (this.updateForm.get('password')?.value) {
+                    formData.append(
+                      'password',
+                      this.updateForm.get('password')?.value
+                    );
+                  }
+                  if (this.avatarFile) {
+                    formData.append('avatar', this.avatarFile);
+                  }
+
+                  this.authSrv.updateUser(formData).subscribe(
+                    (updatedUser) => {
+                      this.modalRef.close(updatedUser);
+                      this.onClose.emit(updatedUser);
+                    },
+                    (error) => {
+                      this.updateForm.get('password')?.setValue('');
+                    }
                   );
                 }
-                if (this.avatarFile) {
-                  formData.append('avatar', this.avatarFile);
-                }
-
-                this.authSrv.updateUser(formData).subscribe(
-                  (updatedUser) => {
-                    this.modalRef.close(updatedUser);
-                    this.onClose.emit(updatedUser);
-                  },
-                  (error) => {
-                    this.updateForm.get('password')?.setValue('');
-                  }
-                );
-              }
-            });
-        }
-      });
+              });
+          }
+        });
     }
   }
 
