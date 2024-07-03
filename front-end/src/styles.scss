@@ -38,6 +38,7 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 body {
   background-color: $background;
   color: $text;
+  font-family: "Montserrat", sans-serif;
 }
 
 .navbar-nav .nav-link {
