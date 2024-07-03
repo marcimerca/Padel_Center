@@ -55,18 +55,6 @@ export class GestioneDisponibilitaAdminComponent {
     return Array.from({ length: maxSlots }, (_, i) => ({ index: i }));
   }
 
-  mostraDaOggi(): string {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-
-    const formattedDate = `${year}-${this.padNumber(month)}-${this.padNumber(
-      day
-    )}`;
-    return formattedDate;
-  }
-
   padNumber(num: number): string {
     return num < 10 ? `0${num}` : num.toString();
   }
@@ -198,7 +186,9 @@ export class GestioneDisponibilitaAdminComponent {
             this.prenotaAdmin(id, dataPartita, result);
           });
           this.slotSelezionati = [];
-          this.apriModaleConfermaPrenotazione();
+          setTimeout(() => {
+            this.apriModaleConfermaPrenotazione();
+          }, 200);
         } else {
           this.slotSelezionati = [];
         }

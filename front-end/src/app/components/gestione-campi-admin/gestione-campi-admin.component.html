@@ -67,7 +67,6 @@
                 <div *ngIf="campo.slotOrari[slot.index]; else emptySlot">
                   <div
                     [ngClass]="{
-                      selezionati: isSlotSelected(campo.slotOrari[slot.index]),
                       'rounded-bottom-3': true,
                       'position-relative': true,
                       'slot-orario': true
@@ -172,7 +171,6 @@
                 <div *ngIf="campo.slotOrari[slot.index]; else emptySlot">
                   <div
                     [ngClass]="{
-                      selezionati: isSlotSelected(campo.slotOrari[slot.index]),
                       'rounded-bottom-3': true,
                       'position-relative': true,
                       'slot-orario': true

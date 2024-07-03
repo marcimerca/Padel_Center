@@ -11,7 +11,6 @@
             class="form-control"
             (input)="onCambioData()"
             [(ngModel)]="dataSelezionata"
-            [min]="mostraDaOggi()"
           />
         </div>
       </div>
@@ -88,9 +87,9 @@
                     <div
                       (click)="selezionaSlot(campo.slotOrari[slot.index])"
                       [ngClass]="{
-                    'disabled background cursor-not-allowed':
+                    'disabled cursor-not-allowed':
                       verificaBottoneDisabilitato(campo.slotOrari[slot.index].inizio),
-                    selezionati: isSlotSelected(campo.slotOrari[slot.index]),
+                    selezionato: isSlotSelected(campo.slotOrari[slot.index]),
                   }"
                       class="position-relative d-flex align-items-center justify-content-center h-100 rounded-6"
                       style="min-height: 35px"
@@ -129,7 +128,7 @@
                   <ng-template #emptySlot>
                     <div
                       style="min-height: 35px"
-                      class="text-muted background w-100 position-relative d-flex align-items-center justify-content-center h-100"
+                      class="gray w-100 position-relative d-flex align-items-center justify-content-center h-100"
                     >
                       Non disponibile
                     </div>
@@ -216,11 +215,11 @@
                 <div
                   (click)="selezionaSlot(campo.slotOrari[slot.index])"
                   [ngClass]="{
-                    background: verificaBottoneDisabilitato(
+                    gray: verificaBottoneDisabilitato(
                       campo.slotOrari[slot.index].inizio
                     ),
 
-                    selezionati: isSlotSelected(campo.slotOrari[slot.index]),
+                    selezionato: isSlotSelected(campo.slotOrari[slot.index]),
 
                     'position-relative': true,
                     'd-flex align-items-center justify-content-center h-100': true
@@ -272,7 +271,7 @@
               </div>
               <ng-template #emptySlot>
                 <div
-                  class="text-muted background w-100 position-relative d-flex align-items-center justify-content-center h-100"
+                  class="gray w-100 position-relative d-flex align-items-center justify-content-center h-100"
                 >
                   Non disponibile
                 </div>
@@ -298,7 +297,7 @@
           }"
           (click)="apriModaleAnnulla()"
           class="btn btn-secondary btn-custom text-success p-1 p-md-2"
-          style="width: 225px"
+          style="width: 245px"
         >
           Cancella Prenotazione
         </button>
@@ -311,14 +310,14 @@
                 }"
           (click)="selezionaTuttiGliSlot()"
           class="btn btn-primary btn-custom text-success p-1 p-md-2"
-          style="width: 225px"
+          style="width: 245px"
         >
           {{ slotSelezionati.length > 0 ? "Deseleziona" : "Seleziona tutto" }}
         </button>
         <button
           (click)="selezionaTuttiGliSlotNonOccupati()"
           class="btn btn-primary btn-custom text-success p-1 p-md-2"
-          style="width: 225px"
+          style="width: 245px"
         >
           Seleziona non occupati
         </button>
