@@ -1,65 +1,58 @@
-.carousel-inner {
-  max-width: 1200px;
-  margin: auto;
-  margin-top: 50px;
-}
-
-.carousel-caption h5 {
-  color: #fff;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.carousel-caption p {
-  color: #fff;
-  font-size: 1rem;
-}
-
-.welcome-section {
-  background-color: #007bff;
-  color: #fff;
-  padding: 100px 0;
-  text-align: center;
-}
-
-.welcome-section h1 {
-  font-size: 3rem;
-  font-weight: bold;
-}
-
-.content-section {
-  padding: 50px 0;
-  text-align: center;
-}
-
-.content-section h2 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 30px;
-}
-
-.content-section p {
-  font-size: 1.2rem;
-}
-.main-section {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  background-position: center;
-  background-size: cover;
-  color: white;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
-}
-
-.cta-section {
-  background-position: center;
-  background-size: cover;
-  color: white;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
-}
 .trasparenza {
   background-color: rgba(255, 255, 255, 0.05);
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(20px);
+}
+
+.contenitore-img {
+  background-image: url("../../../assets/padel-home.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden !important;
+}
+
+@media (max-width: 768px) {
+  .contenitore-img {
+    height: auto;
+    padding: 0;
+    overflow: hidden !important;
+  }
+  .spazio {
+    margin-top: 50px;
+  }
+
+  .contenitore-img .mask {
+    padding: 20px;
+    margin-top: 40px;
+  }
+
+  .trasparenza {
+    padding: 15px;
+  }
+
+  .white-text h1,
+  .white-text h3,
+  .white-text p {
+    font-size: 1rem;
+  }
+
+  .card-body h5.display-4 {
+    font-size: 1.5rem;
+  }
+
+  .card-body h4 {
+    font-size: 1.2rem;
+  }
+
+  .card-body .review-text,
+  .card-body .review-author {
+    font-size: 0.9rem;
+  }
+
+  .btn-lg {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
 }

@@ -1,97 +1,279 @@
-<!-- Carousel Section -->
-<!-- Carousel Section -->
-<div class="carousel-inner rounded-5 shadow-4-strong">
-  <mdb-carousel [indicators]="true" [animation]="'fade'">
-    <mdb-carousel-item>
-      <img
-        src="../../../assets/donne-che-giocano-a-paddle-tennis-vista-laterale.jpg"
-        class="d-block w-100"
-        alt="First slide"
-      />
-      <div class="carousel-caption d-none d-md-block bg-success">
-        <h1 class="fw-bolder">Padel Center</h1>
-        <button class="btn btn-primary">Registrati</button>
-        <button class="btn btn-secondary">Scopri di più</button>
-      </div>
-    </mdb-carousel-item>
+<div class="contenitore-img text-center mb-5" style="height: 1000px">
+  <div
+    class="mask rgba-black-light d-flex justify-content-center align-items-center"
+  >
+    <div class="container-fluid">
+      <div
+        class="row justify-content-center justify-content-md-between align-items-end"
+      >
+        <div
+          class="col-12 col-md-3 white-text text-center text-md-left trasparenza rounded-6 p-4 mb-4 my-5 mb-md-0 ms-md-3"
+        >
+          <img
+            src="../../../assets/Padel center.png"
+            alt="Padel Center Logo"
+            class="img-fluid mb-3"
+          />
+          <h3><strong>Il tuo circolo di padel</strong></h3>
+          <p>
+            Unisciti a noi per allenarti, divertirti e conoscere nuove persone.
+            <br />
+            Scoprirai quanto puoi diventare forte in poco tempo.
+          </p>
+          <a href="#" class="btn btn-primary text-success btn-lg">Registrati</a>
+        </div>
 
-    <mdb-carousel-item>
-      <img
-        src="../../../assets/padel-home.jpg"
-        class="d-block w-100"
-        alt="Second slide"
-      />
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Second slide label</h5>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        <button class="btn btn-primary">Registrati</button>
-        <button class="btn btn-secondary">Scopri di più</button>
-      </div>
-    </mdb-carousel-item>
+        <div class="col-12 col-md-3 me-2">
+          <div class="card trasparenza p-4 rounded-6 d-none d-md-block">
+            <div class="card-body">
+              <h5 class="mt-4 display-4">Esperienza unica</h5>
 
-    <mdb-carousel-item>
-      <img
-        src="../../../assets/donne-che-giocano-a-paddle-tennis-vista-laterale.jpg"
-        class="d-block w-100"
-        alt="Third slide"
-      />
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Third slide label</h5>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-        <button class="btn btn-primary">Registrati</button>
-        <button class="btn btn-secondary">Scopri di più</button>
+              <div class="review">
+                <h4>Fantastico!</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p class="review-text">
+                  "Ho iniziato a giocare qui a luglio, i campi sono perfetti e
+                  <br />
+                  il circolo è in una zona facilmente raggiungibile."
+                </p>
+                <p class="review-author fst-italic">Mario Rossi</p>
+              </div>
+              <hr />
+              <div class="review">
+                <h4>Perfetto!</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p class="review-text">
+                  "In poco tempo sono migliorata molto e ho giocato in squadra
+                  <br />
+                  con tante persone diverse."
+                </p>
+                <p class="review-author fst-italic">Giulia Verdi</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </mdb-carousel-item>
-  </mdb-carousel>
+    </div>
+  </div>
 </div>
 
-<!-- Additional Content Section -->
-<section class="content-section">
+<section class="content-section py-5">
   <div class="container">
-    <h2>Discover More About Our Club</h2>
-    <p>
-      Explore our facilities, book a court, or join a league. We have something
-      for everyone!
+    <h2 class="text-center mb-4">Perché Scegliere Padel Center?</h2>
+    <p class="text-center mb-5">
+      I nostri campi di padel sono progettati secondo le norme regolamentari.
+      Giocare qui ti permetterà di allenarti al meglio e conoscere nuove
+      persone. Unisciti al nostro club per partecipare a tornei, eventi e
+      allenamenti speciali.
     </p>
+    <div class="text-center">
+      <a
+        [routerLink]="['register']"
+        class="btn btn-primary text-success btn-lg me-2"
+      >
+        Iscriviti Ora
+      </a>
+      <a href="mailto:circolo.padel@gmail.com" class="btn btn-secondary btn-lg"
+        >Contattaci</a
+      >
+    </div>
   </div>
 </section>
+<main>
+  <div class="container">
+    <section>
+      <h2 class="my-5 h3 text-center">Cosa offriamo ?</h2>
+      <div class="row features-small mb-5 mt-3">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-2">
+              <i class="fas fa-globe fa-2x indigo-text"></i>
+            </div>
+            <div class="col-10">
+              <h6 class="feature-title">Strutture All'Avanguardia</h6>
+              <p class="grey-text">
+                I nostri campi sono costruiti con materiali di alta qualità,
+                garantendo una superficie di gioco ottimale e sicura.
+              </p>
+              <div style="height: 15px"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <i class="fas fa-users fa-2x indigo-text"></i>
+            </div>
+            <div class="col-10">
+              <h6 class="feature-title">Eventi Sociali e Tornei</h6>
+              <p class="grey-text">
+                Partecipa ai nostri eventi settimanali e ai tornei mensili per
+                conoscere altri appassionati di padel e migliorare le tue
+                abilità.
+              </p>
+              <div style="height: 15px"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <i class="fas fa-coffee fa-2x indigo-text"></i>
+            </div>
+            <div class="col-10">
+              <h6 class="feature-title">Area Relax</h6>
+              <p class="grey-text">
+                Dopo una partita, rilassati nella nostra area lounge con
+                caffetteria, snack bar e Wi-Fi gratuito.
+              </p>
+              <div style="height: 15px"></div>
+            </div>
+          </div>
+        </div>
 
-<!-- <div class="carousel-inner rounded-5 shadow-4-strong">
-  <mdb-carousel [indicators]="true" [animation]="'fade'">
-    <mdb-carousel-item>
-      <img
-        src="../../../assets/donne-che-giocano-a-paddle-tennis-vista-laterale.jpg"
-        class="d-block w-100"
-        alt="First slide"
-      />
-      <div class="carousel-caption d-none d-md-block">
-        <h5>First slide label</h5>
-        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-      </div>
-    </mdb-carousel-item>
+        <div class="col-md-4 flex-center">
+          <img
+            src="../../../assets/high-angle-palette-balls-field.jpg"
+            alt="MDB Magazine Template displayed on iPhone"
+            class="img-fluid rounded-5"
+          />
+        </div>
 
-    <mdb-carousel-item>
-      <img
-        src="../../../assets/padel-home.jpg"
-        class="d-block w-100"
-        alt="Second slide"
-      />
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Second slide label</h5>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </div>
-    </mdb-carousel-item>
+        <div class="col-md-4 mt-2">
+          <div class="row">
+            <div class="col-2">
+              <i class="fas fa-shield-alt fa-2x indigo-text"></i>
+            </div>
+            <div class="col-10 spazio">
+              <h6 class="feature-title">Sicurezza e Comfort</h6>
+              <p class="grey-text">
+                I nostri impianti sono progettati per garantire la massima
+                sicurezza e comfort a tutti i giocatori.
+              </p>
+              <div style="height: 15px"></div>
+            </div>
+          </div>
 
-    <mdb-carousel-item>
-      <img
-        src="../../../assets/donne-che-giocano-a-paddle-tennis-vista-laterale.jpg"
-        class="d-block w-100"
-        alt="Third slide"
-      />
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Third slide label</h5>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          <div class="row">
+            <div class="col-2">
+              <i class="fas fa-calendar-alt fa-2x indigo-text"></i>
+            </div>
+            <div class="col-10">
+              <h6 class="feature-title">Prenotazioni Facili</h6>
+              <p class="grey-text">
+                Prenota il tuo campo facilmente attraverso la nostra app o il
+                sito web, con conferma immediata.
+              </p>
+              <div style="height: 15px"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              <i class="fas fa-star fa-2x indigo-text"></i>
+            </div>
+            <div class="col-10">
+              <h6 class="feature-title">Recensioni Eccellenti</h6>
+              <p class="grey-text">
+                I nostri membri apprezzano l'atmosfera amichevole e
+                professionale del nostro circolo, con ottime recensioni su tutti
+                i canali.
+              </p>
+              <div style="height: 15px"></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </mdb-carousel-item>
-  </mdb-carousel>
-</div> -->
+    </section>
+
+    <section>
+      <h3 class="h3 text-center mb-5">Perchè il padel?</h3>
+
+      <div class="row">
+        <div class="col-lg-6 col-md-12 px-4 d-flex flex-column gap-4">
+          <div class="row">
+            <div class="col-1 mr-3">
+              <i class="fas fa-smile-beam fa-2x yellow-text"></i>
+            </div>
+            <div class="col-10">
+              <h5 class="feature-title">Divertimento</h5>
+              <p class="grey-text">
+                Il padel è uno sport divertente e coinvolgente, perfetto per
+                passare del tempo piacevole con gli amici.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1 mr-3">
+              <i class="fas fa-heartbeat fa-2x red-text"></i>
+            </div>
+            <div class="col-10">
+              <h5 class="feature-title">Fitness</h5>
+              <p class="grey-text">
+                Giocare a padel è un ottimo modo per mantenersi in forma e
+                migliorare la salute cardiovascolare.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1 mr-3">
+              <i class="fas fa-trophy fa-2x gold-text"></i>
+            </div>
+            <div class="col-10">
+              <h5 class="feature-title">Competizione</h5>
+              <p class="grey-text">
+                Partecipa ai tornei e competizioni per sfidare te stesso e
+                migliorare le tue abilità di gioco.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1 mr-3">
+              <i class="fas fa-book fa-2x blue-text"></i>
+            </div>
+            <div class="col-10">
+              <h5 class="feature-title">Community</h5>
+              <p class="grey-text">
+                Potrai conoscere nuove persone formando sempe squadre diverse.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1 mr-3">
+              <i class="fas fa-graduation-cap fa-2x cyan-text"></i>
+            </div>
+            <div class="col-10">
+              <h5 class="feature-title">Uno sport per tutti</h5>
+              <p class="grey-text">
+                Che tu abbia molta o nessuna esperienza, il padel è uno sport
+                adatto a tutti, e in breve tempo riuscirai a giocare senza
+                problemi.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 mb-5">
+          <div class="embed-responsive embed-responsive-16by9">
+            <img
+              class="img-fluid rounded-5"
+              src="../../../assets/person-getting-ready-play-paddle-tennis-inside.jpg"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
