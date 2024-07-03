@@ -32,7 +32,7 @@
     font-size: 15px;
   }
   .custom-button {
-    font-size: 12px;
+    font-size: 11px;
     padding: 10px;
   }
 }
@@ -60,4 +60,17 @@
 }
 .card:hover {
   scale: 1.03;
+}
+
+.user-avatar {
+  object-fit: cover;
+  height: 200px;
+  width: 200px;
+}
+
+@media (max-width: 576px) {
+  .user-avatar {
+    height: 100px;
+    width: 100px;
+  }
 }

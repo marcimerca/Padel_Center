@@ -1,71 +1,96 @@
 <div class="container min-vh-100 mb-5">
-  <div>
-    <div class="container py-5">
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="card mb-4 trasparenza">
-            <button
-              class="btn btn-primary text-success"
-              (click)="apriModaleUpdate()"
-            >
-              Modifica dati personali
-            </button>
-            <div class="card-body text-center d-flex">
-              <img
-                *ngIf="user?.avatar"
-                style="object-fit: cover; height: 200px; width: 200px"
-                class="rounded-circle"
-                alt="avatar1"
-                [src]="user!.avatar"
-              />
-              <img
-                *ngIf="!user?.avatar"
-                style="object-fit: cover; height: 200px; width: 200px"
-                class="rounded-circle"
-                alt="avatar1"
-                src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
-              />
-            </div>
-            <h5 class="my-3">{{ user?.username }}</h5>
-          </div>
+  <div class="container py-2 py-md-5">
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="col-lg-4 col-12 mb-4">
+        <div
+          class="card bg-success p-3 rounded-6 d-flex justify-content-center text-center"
+        >
+          <img
+            *ngIf="user?.avatar"
+            style="object-fit: cover"
+            class="rounded-circle align-self-center user-avatar"
+            alt="avatar1"
+            [src]="user!.avatar"
+          />
+          <img
+            *ngIf="!user?.avatar"
+            style="object-fit: cover"
+            class="rounded-circle user-avatar"
+            alt="avatar1"
+            src="../../../assets/Profile-Avatar-PNG-Free-Download.png"
+          />
+          <h5 class="my-3">{{ user?.username }}</h5>
+          <button
+            class="btn btn-primary btn-sm text-success d-flex align-items-center justify-content-center"
+            (click)="apriModaleUpdate()"
+          >
+            <span class="me-3 fs-5"><i class="bi bi-pencil-square"></i></span>
+            Modifica dati personali
+          </button>
         </div>
-        <div class="col-lg-8">
-          <div class="card mb-4 trasparenza">
-            <div class="card-body">
-              <div class="row mb-3">
-                <div class="col-sm-3">
-                  <p class="fw-bold mb-0">Nome</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="mb-0">{{ user!.nome | capitalizeFirst }}</p>
+      </div>
+      <div class="col-lg-8 col-12 mb-4">
+        <div class="card bg-success p-3 rounded-6">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-5 col-sm-3">
+                <p class="fw-bold mb-0">
+                  <i class="bi bi-person-fill me-2"></i> Nome
+                </p>
+              </div>
+              <div class="col-7 col-sm-9">
+                <p class="mb-0">{{ user!.nome | capitalizeFirst }}</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-5 col-sm-3">
+                <p class="fw-bold mb-0">
+                  <i class="bi-person-badge me-2"></i> Cognome
+                </p>
+              </div>
+              <div class="col-7 col-sm-9">
+                <p class="mb-0">{{ user!.cognome | capitalizeFirst }}</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-5 col-sm-3">
+                <p class="fw-bold mb-0">
+                  <i class="bi bi-envelope-fill me-2"></i> Email
+                </p>
+              </div>
+              <div class="col-7 col-sm-9">
+                <p class="mb-0">{{ user?.email }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row d-flex justify-content-center">
+              <div class="col-6 col-sm-5">
+                <div class="card bg-primary text-success">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between px-md-1">
+                      <div class="align-self-center">
+                        <i class="bi bi-trophy-fill fs-1"></i>
+                      </div>
+                      <div class="text-end">
+                        <h3>{{ conteggioPartiteVinte }}</h3>
+                        <p class="mb-0">Vittorie</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="row mb-3">
-                <div class="col-sm-3">
-                  <p class="fw-bold mb-0">Cognome</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="mb-0">{{ user!.cognome | capitalizeFirst }}</p>
-                </div>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="fw-bold mb-0">Email</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="mb-0">{{ user?.email }}</p>
-                </div>
-                <div class="col-sm-9">
-                  <hr />
-                  <div>
-                    <h5 class="card-title">Statistiche partite passate</h5>
-                    <p class="card-text">
-                      Partite vinte: {{ conteggioPartiteVinte }}
-                    </p>
-                    <p class="card-text">
-                      Partite perse: {{ conteggioPartitePerse }}
-                    </p>
+              <div class="col-6 col-sm-5">
+                <div class="card bg-secondary">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between px-md-1">
+                      <div class="align-self-center">
+                        <i class="bi bi-emoji-frown-fill fs-1"></i>
+                      </div>
+                      <div class="text-end">
+                        <h3>{{ conteggioPartitePerse }}</h3>
+                        <p class="mb-0">Sconfitte</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -75,6 +100,7 @@
       </div>
     </div>
   </div>
+
   <div
     class="d-flex justify-content-center text-primary align-items-center position-fixed z-3"
     *ngIf="caricamento"
@@ -90,7 +116,7 @@
     </div>
   </div>
   <!-- Parte delle partite da giocare -->
-  <div class="container text-start mt-3 z-0">
+  <div class="container text-start mt-md-3 z-0">
     <h2 class="text-primary">Partite da giocare</h2>
     <h4 *ngIf="partiteDaGiocare.length <= 0">
       Nessuna partita presente in questa sezione.
