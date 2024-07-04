@@ -94,7 +94,7 @@ export class PartitaService {
     compagno: User | null,
     tipoRisultato: string
   ) {
-    const url = `${this.baseURL}partite/aggiungi-vincitori2/${partitaId}?tipoRisultato=${tipoRisultato}`;
+    const url = `${this.baseURL}partite/aggiungi-vincitori/${partitaId}?tipoRisultato=${tipoRisultato}`;
     return this.http.put<any>(url, compagno);
   }
 
