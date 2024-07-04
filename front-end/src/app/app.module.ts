@@ -34,7 +34,6 @@ import { GestioneDisponibilitaAdminComponent } from './components/gestione-dispo
 import { GestioneCampiAdminComponent } from './components/gestione-campi-admin/gestione-campi-admin.component';
 import { ModalCreazioneCampoAdminComponent } from './components/modal-creazione-campo-admin/modal-creazione-campo-admin.component';
 import { ModalAggiuntaSlotAdminComponent } from './components/modal-aggiunta-slot-admin/modal-aggiunta-slot-admin.component';
-import { ModalModificaNomeCampoComponent } from './components/modal-modifica-nome-campo/modal-modifica-nome-campo.component';
 import { GestionePartiteAdminComponent } from './components/gestione-partite-admin/gestione-partite-admin.component';
 import { UsersComponent } from './components/users/users.component';
 import { FilterUsers } from './pipes/filter-users.pipe';
@@ -110,11 +109,6 @@ const routes: Route[] = [
     path: '**',
     component: NotFoundComponent,
   },
-  // {
-  //   path: 'gestione-disponibilita',
-  //   component: GestioneDisponibilitaAdminComponent,
-  //   canActivate: [AdminGuard],
-  // },
 ];
 @NgModule({
   declarations: [
@@ -136,7 +130,6 @@ const routes: Route[] = [
     GestioneCampiAdminComponent,
     ModalCreazioneCampoAdminComponent,
     ModalAggiuntaSlotAdminComponent,
-    ModalModificaNomeCampoComponent,
     GestionePartiteAdminComponent,
     UsersComponent,
     FilterUsers,
