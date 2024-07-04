@@ -89,18 +89,7 @@ export class PartitaService {
     );
   }
 
-  getCampi() {
-    return this.http.get<Campo[]>(`${this.baseURL}campi`);
-  }
-
-  aggiungiVincitori(partitaId: number, vincitori: User[]) {
-    return this.http.put(
-      `${this.baseURL}/partite/aggiungi-vincitori/${partitaId}`,
-      vincitori
-    );
-  }
-
-  aggiungiVincitoriAllaPartita2(
+  aggiungiVincitoriAllaPartita(
     partitaId: number,
     compagno: User | null,
     tipoRisultato: string

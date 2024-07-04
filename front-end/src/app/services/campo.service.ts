@@ -54,33 +54,4 @@ export class CampoService {
   modificaNomeCampo(id: number, nomeCampo: Partial<Campo>) {
     return this.http.put(`${this.baseURL}campi/${id}`, nomeCampo);
   }
-
-  // setSlotOccupato(
-  //   slotId: number,
-  //   dataOccupato: string,
-  //   motivoOccupato: string
-  // ) {
-  //   const url = `${this.baseURL}slot-orari/${slotId}/occupato`;
-  //   const body = {
-  //     dataOccupato: dataOccupato,
-  //     motivoOccupato: motivoOccupato,
-  //   };
-
-  //   return this.http.post<string>(url, body, {
-  //     responseType: 'text' as 'json', // Forza il tipo 'json' in modo da evitare errori di tipo
-  //   });
-  // }
-  // setSlotOccupato(
-  //   slotId: number,
-  //   dataOccupato: string,
-  //   motivoOccupato: string
-  // ) {
-  //   const url = `${this.baseURL}slot-orari/${slotId}/occupato`;
-  //   const body = {
-  //     dataOccupato: dataOccupato,
-  //     motivoOccupato: motivoOccupato,
-  //   };
-
-  //   return this.http.post<string>(url, body);
-  // }
 }
