@@ -105,7 +105,7 @@ export class PartiteDelGiornoComponent implements OnInit {
         this.partitaSrv.getPartiteOggi().subscribe((data) => {
           this.caricamento = false;
           setTimeout(() => {
-            this.apriModale2();
+            this.apriModaleConfermaAggiunta();
           }, 200);
 
           setTimeout(() => {
@@ -120,7 +120,7 @@ export class PartiteDelGiornoComponent implements OnInit {
         this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
           modalClass: 'modal-dialog-centered',
           data: {
-            messaggio:
+            titolo:
               error.error ||
               "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
           },
@@ -135,13 +135,7 @@ export class PartiteDelGiornoComponent implements OnInit {
     );
   }
 
-  isButtonDisabled(slotOrarioInizio: string): boolean {
-    const oraAttuale = new Date().toLocaleTimeString('it-IT', {
-      hour12: false,
-    });
-    return oraAttuale > slotOrarioInizio;
-  }
-  apriModale(partita: Partita) {
+  apriModalePartecipa(partita: Partita) {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
@@ -160,39 +154,7 @@ export class PartiteDelGiornoComponent implements OnInit {
     this.caricaPartite();
   }
 
-  isToday(dateStr: string, timeStr: string): boolean {
-    const date = new Date(dateStr + 'T' + timeStr);
-    const now = new Date();
-
-    return (
-      date.getDate() === now.getDate() &&
-      date.getMonth() === now.getMonth() &&
-      date.getFullYear() === now.getFullYear()
-    );
-  }
-
-  isFutureDate(dateStr: string, timeStr: string): boolean {
-    const date = new Date(dateStr + 'T' + timeStr);
-    return date > new Date();
-  }
-
-  isFutureDateMoreThan24Hours(dateStr: string, timeStr: string): boolean {
-    const date = new Date(dateStr + 'T' + timeStr);
-    const now = new Date();
-
-    const timeDiff = date.getTime() - now.getTime();
-
-    return timeDiff > 24 * 60 * 60 * 1000;
-  }
-  formattaData(data: string): string {
-    const dataConvertita = new Date(data);
-    const day = dataConvertita.getDate();
-    const month = dataConvertita.getMonth() + 1;
-    const year = dataConvertita.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  }
-  formatattaDataParole(data: string): string {
+  formattaDataParole(data: string): string {
     return new Intl.DateTimeFormat('it-IT', {
       day: '2-digit',
       month: 'long',
@@ -216,11 +178,11 @@ export class PartiteDelGiornoComponent implements OnInit {
     return num < 10 ? `0${num}` : num.toString();
   }
 
-  apriModale2() {
+  apriModaleConfermaAggiunta() {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Sei stato aggiunto correttamente alla partita',
+        titolo: 'Sei stato aggiunto correttamente alla partita',
       },
     });
   }

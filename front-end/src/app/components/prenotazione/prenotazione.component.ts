@@ -22,7 +22,6 @@ export class PrenotazioneComponent implements OnInit {
   campiDisp: CampoDisponibilita[] = [];
   dataSelezionata: string = '';
   dataOggi = false;
-  numeroSlot: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   caricamento = false;
   modalRef: MdbModalRef<ModalConfermaComponent> | null = null;
   modalRef2: MdbModalRef<ModalInfoComponent> | null = null;
@@ -102,7 +101,7 @@ export class PrenotazioneComponent implements OnInit {
       () => {
         console.log('Partita aggiunta con successo');
         this.caricamento = false;
-        this.apriModale2();
+        this.apriModaleConfermaCreazionePartita();
       },
       (error) => {
         console.error("Errore durante l'aggiunta della partita:", error);
@@ -120,7 +119,7 @@ export class PrenotazioneComponent implements OnInit {
     );
   }
 
-  formatattaData(data: string): string {
+  formattaDataParole(data: string): string {
     return new Intl.DateTimeFormat('it-IT', {
       day: 'numeric',
       month: 'long',
@@ -128,7 +127,7 @@ export class PrenotazioneComponent implements OnInit {
     }).format(new Date(data));
   }
 
-  apriModale(
+  apriModaleCreazionePartita(
     idSlotOrario: number,
     dataPartita: string,
     inizio: string,
@@ -137,7 +136,7 @@ export class PrenotazioneComponent implements OnInit {
     if (!dataPartita) {
       dataPartita = new Date().toISOString().slice(0, 10);
     }
-    let dataPartitaFormattata = this.formatattaData(dataPartita);
+    let dataPartitaFormattata = this.formattaDataParole(dataPartita);
 
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
@@ -156,7 +155,7 @@ export class PrenotazioneComponent implements OnInit {
     });
   }
 
-  apriModale2() {
+  apriModaleConfermaCreazionePartita() {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
@@ -195,9 +194,6 @@ export class PrenotazioneComponent implements OnInit {
       }
     });
     return Array.from({ length: maxSlots }, (_, i) => ({ index: i }));
-  }
-  isSlotSelected(slot: SlotDisponibilita): boolean {
-    return this.slotSelezionati.some((s) => s.id === slot.id);
   }
 
   scrollToCampo(campoId: number): void {

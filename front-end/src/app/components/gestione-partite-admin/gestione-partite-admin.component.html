@@ -28,7 +28,7 @@
 <div class="container text-start mt-3" *ngIf="partite">
   <h1 *ngIf="dataOggi" class="mb-3 text-primary">Partite del giorno</h1>
   <h1 *ngIf="!dataOggi" class="mb-3 text-primary">
-    Partite del {{ formatattaDataParole(dataSelezionata) }}
+    Partite del {{ formattaDataParole(dataSelezionata) }}
   </h1>
   <div class="row position-relative">
     <div
@@ -65,7 +65,7 @@
             class="position-relative border-bottom d-flex justify-content-between align-items-center border-secondary pb-4 h-100"
           >
             <h5 class="card-title m-0">
-              {{ formatattaDataParole(partita.dataPrenotazione) }}<br />
+              {{ formattaDataParole(partita.dataPrenotazione) }}<br />
               {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
               {{ partita.slotOrario.fine | slice : 0 : 5 }}
             </h5>

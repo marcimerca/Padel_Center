@@ -20,7 +20,6 @@ export class GestioneDisponibilitaAdminComponent {
   campiDisp: CampoDisponibilita[] = [];
   dataSelezionata: string = '';
   dataOggi = false;
-  numeroSlot: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   caricamento = false;
   hoverCampo: { [key: string]: boolean } = {};
 
@@ -53,10 +52,6 @@ export class GestioneDisponibilitaAdminComponent {
       }
     });
     return Array.from({ length: maxSlots }, (_, i) => ({ index: i }));
-  }
-
-  padNumber(num: number): string {
-    return num < 10 ? `0${num}` : num.toString();
   }
 
   caricaDisponibilita() {
@@ -98,7 +93,7 @@ export class GestioneDisponibilitaAdminComponent {
       () => {
         console.log('Partita aggiunta con successo');
         this.caricamento = false;
-        this.apriModale2();
+        this.apriModaleConfermaCreazionePartita();
 
         setTimeout(() => {
           this.router.navigate(['/profilo-utente']);
@@ -111,7 +106,7 @@ export class GestioneDisponibilitaAdminComponent {
         this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
           modalClass: 'modal-dialog-centered',
           data: {
-            messaggio:
+            titolo:
               error.error ||
               "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
           },
@@ -120,7 +115,7 @@ export class GestioneDisponibilitaAdminComponent {
     );
   }
 
-  formatattaData(data: string): string {
+  formattaData(data: string): string {
     return new Intl.DateTimeFormat('it-IT', {
       day: '2-digit',
       month: 'long',
@@ -128,11 +123,11 @@ export class GestioneDisponibilitaAdminComponent {
     }).format(new Date(data));
   }
 
-  apriModale2() {
-    this.modalRef2 = this.modalSrv.open(ModalConfermaComponent, {
+  apriModaleConfermaCreazionePartita() {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'La partita è stata creata con successo',
+        titolo: 'La partita è stata creata con successo',
       },
     });
   }
@@ -150,23 +145,6 @@ export class GestioneDisponibilitaAdminComponent {
       );
     }
     return false;
-  }
-
-  apriModale(idSlotOrario: number, dataPartita: string) {
-    this.modalRef3 = this.modalSrv.open(ModalPrenotazioneAdminComponent, {
-      modalClass: 'modal-dialog-centered',
-      data: {
-        titolo: 'Inserire il motivo della prenotazione',
-      },
-    });
-
-    this.modalRef3.onClose.subscribe((result: string) => {
-      if (result !== 'annulla') {
-        this.prenotaAdmin(idSlotOrario, dataPartita, result);
-      } else {
-        this.slotSelezionati = [];
-      }
-    });
   }
 
   prenotaFasciaOraria(dataPartita: string) {
@@ -346,7 +324,7 @@ export class GestioneDisponibilitaAdminComponent {
     }
   }
 
-  isSlotSelected(slot: SlotDisponibilita): boolean {
+  verificaSlotSelezionato(slot: SlotDisponibilita): boolean {
     return this.slotSelezionati.some((s) => s.id === slot.id);
   }
 

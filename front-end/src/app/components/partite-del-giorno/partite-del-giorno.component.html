@@ -34,7 +34,7 @@
 <div class="container text-start my-4 min-vh-100" *ngIf="partite">
   <h1 *ngIf="dataOggi" class="mb-3 text-primary">Partite del giorno</h1>
   <h1 *ngIf="!dataOggi" class="mb-3 text-primary">
-    Partite del {{ formatattaDataParole(dataSelezionata) }}
+    Partite del {{ formattaDataParole(dataSelezionata) }}
   </h1>
   <div class="row">
     <div *ngFor="let partita of partite" class="mb-3 col-md-6">
@@ -47,7 +47,7 @@
             style="height: 80px"
           >
             <h5 class="card-title m-0">
-              {{ formatattaDataParole(partita.dataPrenotazione) }}<br />
+              {{ formattaDataParole(partita.dataPrenotazione) }}<br />
               {{ partita.slotOrario.inizio | slice : 0 : 5 }} -
               {{ partita.slotOrario.fine | slice : 0 : 5 }}
             </h5>
@@ -137,7 +137,7 @@
               </ng-container>
               <ng-template #placeholderAvatar>
                 <button
-                  (click)="apriModale(partita)"
+                  (click)="apriModalePartecipa(partita)"
                   class="btn btn-success rounded-circle position-relative btn-floating shadow"
                   [ngClass]="{
                     'btn-dark':

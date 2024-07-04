@@ -34,7 +34,6 @@ export class GestionePartiteAdminComponent implements OnInit {
   constructor(
     private partitaSrv: PartitaService,
     private modalSrv: MdbModalService,
-    private router: Router,
     private authSrv: AuthService,
     private userSrv: UserService
   ) {}
@@ -76,76 +75,8 @@ export class GestionePartiteAdminComponent implements OnInit {
     return a.id! - b.id!;
   }
 
-  aggiungi(partita: Partita) {
-    const datiDaInviare = {
-      dataPrenotazione: partita.dataPrenotazione,
-      slotOrarioId: partita.slotOrario.id,
-    };
-    this.caricamento = true;
-
-    this.partitaSrv.aggiungiAPartita(datiDaInviare).subscribe(
-      () => {
-        this.partitaSrv.getPartiteOggi().subscribe((data) => {
-          this.partite = data;
-        });
-        this.caricamento = false;
-        this.apriModale2();
-      },
-      (error) => {
-        console.error("Errore durante l'aggiunta della partita:", error);
-        this.caricamento = false;
-        this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
-          modalClass: 'modal-dialog-centered',
-          data: {
-            messaggio:
-              error.error ||
-              "Si è verificato un errore durante l'aggiunta della partita. Riprova più tardi.",
-          },
-        });
-      }
-    );
-  }
-
-  verificaUtenteGiaAggiunto(partita: Partita): boolean {
-    return partita.utentiPrenotati.some(
-      (utente) => utente.id === this.user!.id
-    );
-  }
-
-  isButtonDisabled(slotOrarioInizio: string): boolean {
-    const oraAttuale = new Date().toLocaleTimeString('it-IT', {
-      hour12: false,
-    });
-    return oraAttuale > slotOrarioInizio;
-  }
-  apriModale(partita: Partita) {
-    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
-      modalClass: 'modal-dialog-centered',
-      data: {
-        titolo: 'Confermi di voler partecipare alla partita?',
-      },
-    });
-
-    this.modalRef.onClose.subscribe((result: string) => {
-      if (result === 'conferma') {
-        this.aggiungi(partita);
-      }
-    });
-  }
-
   onCambioData() {
     this.caricaPartite();
-  }
-
-  isToday(dateStr: string, timeStr: string): boolean {
-    const date = new Date(dateStr + 'T' + timeStr);
-    const now = new Date();
-
-    return (
-      date.getDate() === now.getDate() &&
-      date.getMonth() === now.getMonth() &&
-      date.getFullYear() === now.getFullYear()
-    );
   }
 
   isFutureDate(dateStr: string, timeStr: string): boolean {
@@ -153,53 +84,12 @@ export class GestionePartiteAdminComponent implements OnInit {
     return date > new Date();
   }
 
-  isFutureDateMoreThan24Hours(dateStr: string, timeStr: string): boolean {
-    const date = new Date(dateStr + 'T' + timeStr);
-    const now = new Date();
-
-    const timeDiff = date.getTime() - now.getTime();
-
-    return timeDiff > 24 * 60 * 60 * 1000;
-  }
-  formattaData(data: string): string {
-    const dataConvertita = new Date(data);
-    const day = dataConvertita.getDate();
-    const month = dataConvertita.getMonth() + 1;
-    const year = dataConvertita.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  }
-  formatattaDataParole(data: string): string {
+  formattaDataParole(data: string): string {
     return new Intl.DateTimeFormat('it-IT', {
       day: '2-digit',
       month: 'long',
       year: 'numeric',
     }).format(new Date(data));
-  }
-
-  // mostraDaOggi(): string {
-  //   const today = new Date();
-  //   const year = today.getFullYear();
-  //   const month = today.getMonth() + 1;
-  //   const day = today.getDate();
-
-  //   const formattedDate = `${year}-${this.padNumber(month)}-${this.padNumber(
-  //     day
-  //   )}`;
-  //   return formattedDate;
-  // }
-
-  padNumber(num: number): string {
-    return num < 10 ? `0${num}` : num.toString();
-  }
-
-  apriModale2() {
-    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
-      modalClass: 'modal-dialog-centered',
-      data: {
-        titolo: 'Sei stato aggiunto correttamente alla partita',
-      },
-    });
   }
 
   apriModaleConfermaEliminazionePartita() {

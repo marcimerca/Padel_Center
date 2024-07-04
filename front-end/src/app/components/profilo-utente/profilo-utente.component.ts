@@ -13,6 +13,7 @@ import { User } from 'src/app/models/user.interface';
 import { ModalAggiungiVincitoriComponent } from '../modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
 import { Subscription, switchMap } from 'rxjs';
 import { ModalUpdateUserComponent } from '../modal-update-user/modal-update-user.component';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-profilo-utente',
@@ -41,7 +42,8 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     private partitaSrv: PartitaService,
     private modalSrv: MdbModalService,
     private route: ActivatedRoute,
-    private userSrv: UserService
+    private userSrv: UserService,
+    private modalDatiSrv: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -158,7 +160,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Errore durante il salvataggio delle modifiche',
+        titolo: 'Errore durante il salvataggio delle modifiche',
       },
     });
   }
@@ -167,7 +169,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Modifiche salvate correttamente',
+        titolo: 'Modifiche salvate correttamente',
       },
     });
   }
@@ -181,11 +183,11 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.partitaSrv.annullaPrenotazione(partitaId).subscribe(() => {
       console.log('La prenotazione è stata annullata correttamente');
       this.caricaPartite();
-      this.apriModale2();
+      this.apriModaleConfermaAnnullamentoPrenotazione();
     });
   }
 
-  apriModale(partitaId: number) {
+  apriModaleAnnullaPrenotazione(partitaId: number) {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
@@ -200,29 +202,14 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     });
   }
 
-  apriModale2() {
+  apriModaleConfermaAnnullamentoPrenotazione() {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio:
+        titolo:
           'Hai annullato correttamente la tua prenotazione per la partita',
       },
     });
-  }
-
-  verificaDataFutura(dateStr: string, timeStr: string): boolean {
-    const date = new Date(dateStr + 'T' + timeStr);
-    return date > new Date();
-  }
-
-  verificaDataOggi(dateStr: string, timeStr: string): boolean {
-    const date = new Date(dateStr + 'T' + timeStr);
-    const now = new Date();
-    return (
-      date.getDate() === now.getDate() &&
-      date.getMonth() === now.getMonth() &&
-      date.getFullYear() === now.getFullYear()
-    );
   }
 
   verificaPiu24H(dateStr: string, timeStr: string): boolean {
@@ -242,7 +229,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Numero: 0444/198471',
+        titolo: 'Numero: 0444/198471',
       },
     });
   }
@@ -255,37 +242,37 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     }).format(new Date(data));
   }
 
-  eliminaPartita(partitaId: number) {
-    this.partitaSrv.eliminaPartitaAdmin(partitaId).subscribe(() => {
-      console.log('La prenotazione è stata annullata correttamente');
-      this.caricaPartite();
-      this.apriModaleConfermaEliminazionePartita();
-    });
-  }
+  // eliminaPartita(partitaId: number) {
+  //   this.partitaSrv.eliminaPartitaAdmin(partitaId).subscribe(() => {
+  //     console.log('La prenotazione è stata annullata correttamente');
+  //     this.caricaPartite();
+  //     this.apriModaleConfermaEliminazionePartita();
+  //   });
+  // }
 
-  apriModaleEliminaPartita(partitaId: number) {
-    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
-      modalClass: 'modal-dialog-centered',
-      data: {
-        messaggio: 'Vuoi eliminare la partita?',
-      },
-    });
+  // apriModaleEliminaPartita(partitaId: number) {
+  //   this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
+  //     modalClass: 'modal-dialog-centered',
+  //     data: {
+  //       messaggio: 'Vuoi eliminare la partita?',
+  //     },
+  //   });
 
-    this.modalRef.onClose.subscribe((result: string) => {
-      if (result === 'conferma') {
-        this.eliminaPartita(partitaId);
-      }
-    });
-  }
+  //   this.modalRef.onClose.subscribe((result: string) => {
+  //     if (result === 'conferma') {
+  //       this.eliminaPartita(partitaId);
+  //     }
+  //   });
+  // }
 
-  apriModaleConfermaEliminazionePartita() {
-    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
-      modalClass: 'modal-dialog-centered',
-      data: {
-        messaggio: 'Partita eliminata correttamente',
-      },
-    });
-  }
+  // apriModaleConfermaEliminazionePartita() {
+  //   this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
+  //     modalClass: 'modal-dialog-centered',
+  //     data: {
+  //       messaggio: 'Partita eliminata correttamente',
+  //     },
+  //   });
+  // }
 
   bloccaESbloccaPartecipazione(partita: Partita) {
     this.partitaSrv.completaPartita(partita.id!).subscribe(() => {
@@ -301,7 +288,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Confermi il risultato: ?',
+        titolo: 'Confermi il risultato: ?',
       },
     });
 
@@ -326,7 +313,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
       if (result.tipo === 'vittoria') {
         console.log('Vittoria registrata', result.compagno);
         this.partitaSrv
-          .aggiungiVincitoriAllaPartita2(
+          .aggiungiVincitoriAllaPartita(
             partita.id!,
             result.compagno,
             result.tipo
@@ -342,7 +329,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
       } else if (result.tipo === 'sconfitta') {
         console.log('Sconfitta registrata');
         this.partitaSrv
-          .aggiungiVincitoriAllaPartita2(
+          .aggiungiVincitoriAllaPartita(
             partita.id!,
             result.compagno,
             result.tipo
@@ -372,7 +359,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
 
     this.modalRef3.onClose.subscribe((result) => {
       if (result.tipo === 'vittoria' || result.tipo === 'sconfitta') {
-        this.userSrv.setDatiModal(result);
+        this.modalDatiSrv.setDatiModal(result);
         this.modalRef3!.close();
 
         setTimeout(() => {
@@ -386,10 +373,10 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
           this.modalRef.onClose.subscribe((confermato: boolean) => {
             if (confermato) {
               this.caricamento = true;
-              const datiModal = this.userSrv.getDatiModal();
+              const datiModal = this.modalDatiSrv.getDatiModal();
               if (datiModal && datiModal.tipo && datiModal.compagno) {
                 this.partitaSrv
-                  .aggiungiVincitoriAllaPartita2(
+                  .aggiungiVincitoriAllaPartita(
                     partita.id!,
                     datiModal.compagno,
                     datiModal.tipo
@@ -424,7 +411,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: 'Hai confermato il risultato',
+        titolo: 'Hai confermato il risultato',
       },
     });
   }
@@ -452,16 +439,16 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     });
   }
 
-  ConvertiOrarioAData(timeString: string): Date {
+  convertiOrarioAData(timeString: string): Date {
     const [hours, minutes, seconds] = timeString.split(':').map(Number);
     const date = new Date();
     date.setHours(hours, minutes, seconds, 0);
     return date;
   }
 
-  OraPassata(partita: Partita): boolean {
+  oraPassata(partita: Partita): boolean {
     const currentTime = new Date();
-    const endTime = this.ConvertiOrarioAData(partita.slotOrario.fine);
+    const endTime = this.convertiOrarioAData(partita.slotOrario.fine);
     return currentTime >= endTime;
   }
 }

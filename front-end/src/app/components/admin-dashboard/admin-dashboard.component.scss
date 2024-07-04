@@ -51,11 +51,11 @@ header {
 }
 
 .main-content {
-  margin-left: 15rem; /* Centra il contenuto orizzontalmente */
+  margin-left: 15rem;
 }
 
 .container.mt-2 {
   max-width: 100%;
-  width: calc(100% - 15rem); /* Spazio disponibile per il contenuto */
-  margin: 0 auto; /* Centra il contenuto */
+  width: calc(100% - 15rem);
+  margin: 0 auto;
 }

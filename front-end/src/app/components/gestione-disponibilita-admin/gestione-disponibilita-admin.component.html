@@ -1,5 +1,4 @@
 <div class="container">
-  <!-- Sezione partite del giorno -->
   <div class="container my-4 d-flex flex-column gap-3">
     <div class="d-flex justify-content-start">
       <div class="col-6 col-md-4 d-flex">
@@ -19,7 +18,7 @@
   <div class="container mt-4 mb-4 text-center">
     <h2 *ngIf="dataOggi" class="text-primary mb-4">Disponibilità per oggi</h2>
     <h2 *ngIf="!dataOggi" class="text-primary mb-4">
-      Disponibilità per il {{ formatattaData(dataSelezionata) }}
+      Disponibilità per il {{ formattaData(dataSelezionata) }}
     </h2>
 
     <div class="container-fluid layout-mobile">
@@ -89,7 +88,7 @@
                       [ngClass]="{
                     'disabled cursor-not-allowed':
                       verificaBottoneDisabilitato(campo.slotOrari[slot.index].inizio),
-                    selezionato: isSlotSelected(campo.slotOrari[slot.index]),
+                    selezionato: verificaSlotSelezionato(campo.slotOrari[slot.index]),
                   }"
                       class="position-relative d-flex align-items-center justify-content-center h-100 rounded-6"
                       style="min-height: 35px"
@@ -219,7 +218,9 @@
                       campo.slotOrari[slot.index].inizio
                     ),
 
-                    selezionato: isSlotSelected(campo.slotOrari[slot.index]),
+                    selezionato: verificaSlotSelezionato(
+                      campo.slotOrari[slot.index]
+                    ),
 
                     'position-relative': true,
                     'd-flex align-items-center justify-content-center h-100': true

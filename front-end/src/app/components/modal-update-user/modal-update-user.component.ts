@@ -3,9 +3,7 @@ import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { AuthService } from 'src/app/auth/auth.service';
-import { ModalInfoComponent } from '../modal-info/modal-info.component';
 import { AuthData } from 'src/app/models/auth-data.interface';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-modal-update-user',
@@ -132,27 +130,3 @@ export class ModalUpdateUserComponent {
     this.onClose.emit();
   }
 }
-
-//   update() {
-//     if (this.updateForm.valid) {
-//       const emailControl = this.updateForm.get('email');
-//       const email = emailControl?.value;
-
-//       this.authSrv.checkEmailExists(email).subscribe((emailExists: boolean) => {
-//         if (emailExists && email !== this.user.email) {
-//           emailControl?.setErrors({ alreadyExists: true });
-//         } else {
-//           const formData = new FormData();
-//           formData.append('username', this.updateForm.get('username')?.value);
-//           formData.append('nome', this.updateForm.get('nome')?.value);
-//           formData.append('cognome', this.updateForm.get('cognome')?.value);
-//           formData.append('email', this.updateForm.get('email')?.value);
-//           formData.append('password', this.updateForm.get('password')?.value);
-//           if (this.avatarFile) {
-//             formData.append('avatar', this.avatarFile);
-//           }
-//         }
-//       });
-//     }
-//   }
-// }

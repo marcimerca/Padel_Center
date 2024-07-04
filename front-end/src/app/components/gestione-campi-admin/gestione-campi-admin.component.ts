@@ -100,7 +100,7 @@ export class GestioneCampiAdminComponent implements OnInit {
             this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
               modalClass: 'modal-dialog-centered',
               data: {
-                messaggio: 'Campo aggiunto correttamente',
+                titolo: 'Campo aggiunto correttamente',
               },
             });
             this.caricaDisponibilita();
@@ -135,7 +135,7 @@ export class GestioneCampiAdminComponent implements OnInit {
             this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
               modalClass: 'modal-dialog-centered',
               data: {
-                messaggio: 'Nome del campo modificato correttamente',
+                titolo: 'Il nome del campo è stato modificato correttamente',
               },
             });
             this.caricaDisponibilita();
@@ -169,7 +169,7 @@ export class GestioneCampiAdminComponent implements OnInit {
             this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
               modalClass: 'modal-dialog-centered',
               data: {
-                messaggio: 'Campo eliminato correttamente',
+                titolo: 'Campo eliminato correttamente',
               },
             });
             this.caricaDisponibilita();
@@ -211,7 +211,7 @@ export class GestioneCampiAdminComponent implements OnInit {
             this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
               modalClass: 'modal-dialog-centered',
               data: {
-                messaggio:
+                titolo:
                   error.error ||
                   "Si è verificato un errore durante l'aggiunta dello slot. Riprova più tardi.",
               },
@@ -244,7 +244,7 @@ export class GestioneCampiAdminComponent implements OnInit {
                 this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
                   modalClass: 'modal-dialog-centered',
                   data: {
-                    messaggio: 'Slot orario eliminato correttamente',
+                    titolo: 'Slot orario eliminato correttamente',
                   },
                 });
                 this.caricaDisponibilita();
@@ -279,7 +279,7 @@ export class GestioneCampiAdminComponent implements OnInit {
             this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
               modalClass: 'modal-dialog-centered',
               data: {
-                messaggio:
+                titolo:
                   'Tutti gli slot orari del campo sono stati eliminati correttamente',
               },
             });

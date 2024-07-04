@@ -35,7 +35,7 @@ export class UsersComponent implements OnInit {
     this.userSrv.deleteUser(userId).subscribe(() => {
       console.log('Utente elimianto con successo');
       this.caricaUsers();
-      this.apriModale2();
+      this.apriModaleConfermaEliminazioneUtente();
     });
   }
 
@@ -43,6 +43,7 @@ export class UsersComponent implements OnInit {
     this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
+        titolo: 'Eliminazione utente',
         messaggio:
           "Attenzione, vuoi eliminare l'utente? Verranno eliminate anche tutte le sue prenotazioni",
       },
@@ -55,11 +56,11 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  apriModale2() {
+  apriModaleConfermaEliminazioneUtente() {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        messaggio: "Hai eliminato correttamente l'utente",
+        titolo: "Hai eliminato correttamente l'utente",
       },
     });
   }

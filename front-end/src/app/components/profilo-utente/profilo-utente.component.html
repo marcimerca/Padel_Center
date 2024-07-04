@@ -264,7 +264,7 @@
                 }"
                 style="width: 220px"
                 class="btn btn-secondary btn-sm text-primary shadow-none custom-button"
-                (click)="apriModale(partita.id!)"
+                (click)="apriModaleAnnullaPrenotazione(partita.id!)"
               >
                 Annulla
               </button>
@@ -465,7 +465,7 @@
             </div>
             <div class="d-flex justify-content-center gap-1 gap-md-3 mt-3">
               <button
-                [disabled]="!OraPassata(partita)"
+                [disabled]="!oraPassata(partita)"
                 [ngClass]="{
                   'disabled btn-large ': partita.giocatoriVincenti.length == 2
                 }"

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 import { User } from 'src/app/models/user.interface';
 

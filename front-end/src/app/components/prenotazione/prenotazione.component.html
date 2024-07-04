@@ -34,9 +34,6 @@
     </div>
   </div>
 </div>
-<!-- Spazio -->
-
-<!-- Sezione partite del giorno -->
 
 <div class="mt-4 mb-4 min-vh-100">
   <div class="rounded-8 w-100">
@@ -54,7 +51,7 @@
           Disponibilità per oggi
         </h1>
         <h1 *ngIf="!dataOggi" class="text-primary text-center m-0 p-0">
-          Disponibilità per il {{ formatattaData(dataSelezionata) }}
+          Disponibilità per il {{ formattaDataParole(dataSelezionata) }}
         </h1>
         <div class="d-flex flex-wrap gap-2 justify-content-start">
           <div *ngFor="let campo of campiDisp" class="col-3 col-lg-2">
@@ -113,7 +110,7 @@
                           
                         }"
                         (click)="
-                          apriModale(
+                          apriModaleCreazionePartita(
                             campo.slotOrari[slot.index].id!,
                             dataSelezionata,
                             campo.slotOrari[slot.index].inizio,
@@ -179,102 +176,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div class="table-responsive-sm rounded-5">
-      <table class="table table-striped table-borderless custom-table">
-        <thead>
-          <tr>
-            <th
-              scope="col"
-              *ngFor="let campo of campiDisp"
-              class="fw-bold text-success bg-primary align-items-center"
-            >
-              <div class="d-flex flex-column justify-content-center">
-                <span>{{ campo.nomeCampo }}</span>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let slot of getNumMaxSlotsArray()">
-            <td *ngFor="let campo of campiDisp" class="p-0">
-              <div
-                *ngIf="campo.slotOrari[slot.index]; else emptySlot"
-                class="h-100 w-100"
-              >
-                <div
-                  (click)="
-                    apriModale(
-                      campo.slotOrari[slot.index].id!,
-                      dataSelezionata,
-                      campo.slotOrari[slot.index].inizio,
-                      campo.slotOrari[slot.index].fine
-                    )
-                  "
-                  [ngClass]="{
-                    'bg-dark': verificaBottoneDisabilitato(
-                      campo.slotOrari[slot.index].inizio
-                    ),
-
-                    selezionati: isSlotSelected(campo.slotOrari[slot.index]),
-                    'rounded-bottom-3': true,
-                    'position-relative': true,
-                    'd-flex align-items-center justify-content-center h-100': true
-                  }"
-                  class="rounded-bottom-3 position-relative d-flex align-items-center justify-content-center h-100"
-                >
-                  <span
-                    *ngIf="
-                      campo.slotOrari[slot.index] &&
-                      !campo.slotOrari[slot.index].occupato
-                    "
-                    [ngClass]="{
-                      'text-success': !verificaBottoneDisabilitato(
-                        campo.slotOrari[slot.index].inizio
-                      ),
-                      'text-muted': verificaBottoneDisabilitato(
-                        campo.slotOrari[slot.index].inizio
-                      ),
-                      'd-flex align-items-center justify-content-center': true
-                    }"
-                    class="d-flex align-items-center justify-content-center w-100"
-                  >
-                    {{ campo.slotOrari[slot.index].inizio | slice : 0 : 5 }} -
-                    {{ campo.slotOrari[slot.index].fine | slice : 0 : 5 }}
-                  </span>
-                  <span
-                    *ngIf="
-                      campo.slotOrari[slot.index] &&
-                      campo.slotOrari[slot.index].occupato &&
-                      campo.slotOrari[slot.index].motivoPrenotazione ==
-                        'partita'
-                    "
-                    class="badge bg-primary text-success position-absolute"
-                  >
-                    occupato
-                  </span>
-                  <span
-                    *ngIf="
-                      campo.slotOrari[slot.index] &&
-                      campo.slotOrari[slot.index].occupato &&
-                      campo.slotOrari[slot.index].motivoPrenotazione !=
-                        'partita'
-                    "
-                    class="badge bg-success text-primary position-absolute"
-                  >
-                    {{ campo.slotOrari[slot.index].motivoPrenotazione }}
-                  </span>
-                </div>
-              </div>
-              <ng-template #emptySlot>
-                <div
-                  class="text-muted bg-dark w-100 position-relative d-flex align-items-center justify-content-center h-100"
-                >
-                  Non disponibile
-                </div>
-              </ng-template>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div> -->

@@ -1,11 +1,3 @@
-// .trasparenza {
-//   background-color: rgba(255, 255, 255, 0.05);
-//   padding: 20px;
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//   backdrop-filter: blur(10px);
-//   z-index: 900;
-// }
-
 .custom-border-radius {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -30,10 +22,6 @@
   h5 {
     font-size: 15px;
   }
-  .custom-button {
-    font-size: 12px;
-    padding: 10px;
-  }
 }
 .avatar-wrapper {
   flex-basis: 25%;
@@ -43,11 +31,6 @@
   padding: 0 8px;
 }
 
-// .avatar-text {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// }
 .spinner-overlay {
   z-index: 1050;
   position: absolute;
@@ -60,8 +43,3 @@
   margin-right: 0;
   padding-right: 0;
 }
-// .btn-floating {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// }

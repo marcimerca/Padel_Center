@@ -4,18 +4,6 @@
   background-color: $text !important;
 }
 
-.trasparenza {
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-}
-
-.selezionati {
-  background-color: $primary !important;
-}
-
 .custom-border-radius {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -49,19 +37,14 @@
 }
 
 .custom-table tbody td .cursor-not-allowed:hover {
-  background-color: inherit !important; // Mantieni il colore di sfondo originale
+  background-color: inherit !important;
 }
 
 @media (max-width: 576px) {
   td {
     font-size: 12px;
   }
-  .span-ora {
-    display: none;
-  }
-  .disposizione {
-    width: auto;
-  }
+
   .main-container {
     width: 100%;
   }
@@ -70,16 +53,6 @@
   }
   .custom-button {
     font-size: 10px;
-  }
-}
-
-@media (min-width: 576px) {
-  .disposizione {
-    width: 20% !important;
-    display: flex;
-    table {
-      width: 22% !important;
-    }
   }
 }
 
@@ -92,10 +65,6 @@
   vertical-align: middle;
   text-align: center;
   padding: 0;
-}
-
-.background {
-  background-color: $background !important;
 }
 
 .highlight {
