@@ -111,17 +111,6 @@ public class UserService {
 
     }
 
- /*   public User updateUser(UserDto userDto) {
-        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        loggedUser.setNome(userDto.getNome());
-        loggedUser.setCognome(userDto.getCognome());
-        loggedUser.setUsername(userDto.getUsername());
-        loggedUser.setEmail(userDto.getEmail());
-        loggedUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(loggedUser);
-        return loggedUser;
-    }
-*/
 
 
     public AuthDataDto updateUser(UserDto userDto) throws IOException {

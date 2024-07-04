@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -167,27 +166,15 @@ public class PrenotazioneController {
 
     }
 
+
+
     @PutMapping("/partite/aggiungi-vincitori/{partitaId}")
     public Partita aggiungiVincitoriAllaPartita(
-            @PathVariable int partitaId,
-            @RequestBody List<User> vincitori, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new BadRequestException(bindingResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).
-                    reduce("", (s, s2) -> s + s2));
-        }
-        return prenotazioneService.aggiungiVincitoriAllaPartita(partitaId, vincitori);
-
-
-    }
-
-
-    @PutMapping("/partite/aggiungi-vincitori2/{partitaId}")
-    public Partita aggiungiVincitoriAllaPartita2(
             @PathVariable("partitaId") int partitaId,
             @RequestParam("tipoRisultato") String tipoRisultato,
             @RequestBody User compagno) {
 
-        Partita partitaAggiornata = prenotazioneService.aggiungiVincitoriAllaPartita2(partitaId, compagno, tipoRisultato);
+        Partita partitaAggiornata = prenotazioneService.aggiungiVincitoriAllaPartita(partitaId, compagno, tipoRisultato);
         return partitaAggiornata;
 
     }

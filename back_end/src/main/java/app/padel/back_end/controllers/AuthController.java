@@ -25,18 +25,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-  /*  @PostMapping(value = "/register", consumes = "multipart/form-data")
-    public String register(@RequestBody @Validated UserDto userDto, BindingResult bindingResult) throws IOException {
 
-
-        if (bindingResult.hasErrors()) {
-            throw new BadRequestException(bindingResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).
-                    reduce("", (s, s2) -> s + s2));
-        }
-
-        return userService.saveUser(userDto);
-    }
-*/
 
     @PostMapping(value = "/register", consumes = "multipart/form-data")
     public String registerUser(

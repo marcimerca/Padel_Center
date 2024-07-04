@@ -314,32 +314,11 @@ public class PrenotazioneService {
 
 /*parte vincitori*/
 
-    @Transactional
-    public Partita aggiungiVincitoriAllaPartita(int partitaId, List<User> vincitori) {
-        Optional<Partita> partitaOptional = partitaRepository.findById(partitaId);
-
-        if (!partitaOptional.isPresent()) {
-            throw new NotFoundException("Partita con ID " + partitaId + " non trovata.");
-        }
-
-        Partita partita = partitaOptional.get();
-
-        // Controlla se tutti gli utenti nella lista dei vincitori sono giocatori prenotati
-        if (!partita.getUtentiPrenotati().containsAll(vincitori)) {
-            throw new BadRequestException("Uno o più giocatori non sono prenotati per questa partita.");
-        }
-
-        partita.getGiocatoriVincenti().clear(); // Pulisce la lista dei vincitori attuali
-        partita.getGiocatoriVincenti().addAll(vincitori); // Aggiunge i nuovi vincitori
-        partitaRepository.save(partita); // Salva le modifiche nella partita
-
-        return partita;
-    }
 
 
 
     @Transactional
-    public Partita aggiungiVincitoriAllaPartita2(int partitaId, User compagno, String tipoRisultato) {
+    public Partita aggiungiVincitoriAllaPartita(int partitaId, User compagno, String tipoRisultato) {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

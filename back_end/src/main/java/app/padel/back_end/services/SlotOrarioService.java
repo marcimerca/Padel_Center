@@ -71,7 +71,6 @@ public class SlotOrarioService {
             LocalTime inizio = slotOrarioDto.getInizio();
             LocalTime fine = inizio.plusMinutes(90);
 
-            // Escludi l'attuale slot orario dal controllo di sovrapposizione
             List<SlotOrario> slotSovrapposti = slotOrarioRepository.findByCampoIdAndInizioLessThanAndFineGreaterThan(slotOrario.getCampo().getId(), fine, inizio);
             slotSovrapposti.removeIf(s -> s.getId() == slotOrario.getId());
 
