@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { ModalInfoComponent } from 'src/app/components/modal-info/modal-info.component';
+import { ModalInfoComponent } from 'src/app/components/modals/modal-info/modal-info.component';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 
 @Component({

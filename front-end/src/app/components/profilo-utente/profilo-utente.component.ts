@@ -5,14 +5,14 @@ import { AuthData } from 'src/app/models/auth-data.interface';
 import { Partita } from 'src/app/models/partita.interface';
 import { PartitaService } from 'src/app/services/partita.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
-import { ModalInfoComponent } from '../modal-info/modal-info.component';
+import { ModalConfermaComponent } from '../modals/modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from '../modals/modal-info/modal-info.component';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.interface';
-import { ModalAggiungiVincitoriComponent } from '../modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
+import { ModalAggiungiVincitoriComponent } from '../modals/modal-aggiungi-vincitori/modal-aggiungi-vincitori.component';
 import { Subscription, switchMap } from 'rxjs';
-import { ModalUpdateUserComponent } from '../modal-update-user/modal-update-user.component';
+import { ModalUpdateUserComponent } from '../modals/modal-update-user/modal-update-user.component';
 import { ModalService } from 'src/app/services/modal.service';
 
 @Component({

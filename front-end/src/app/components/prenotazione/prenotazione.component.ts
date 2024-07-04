@@ -7,8 +7,8 @@ import { PartitaService } from 'src/app/services/partita.service';
 
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 
-import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
-import { ModalInfoComponent } from '../modal-info/modal-info.component';
+import { ModalConfermaComponent } from '../modals/modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from '../modals/modal-info/modal-info.component';
 import { SlotDisponibilita } from 'src/app/models/slot-disponibilita.interface';
 import { Partita } from 'src/app/models/partita.interface';
 

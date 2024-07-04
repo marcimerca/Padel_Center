@@ -6,10 +6,11 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { AuthData } from 'src/app/models/auth-data.interface';
 import { Partita } from 'src/app/models/partita.interface';
 import { PartitaService } from 'src/app/services/partita.service';
-import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
-import { ModalInfoComponent } from '../modal-info/modal-info.component';
-import { ModalAggiungiVincitoriAdminComponent } from '../modal-aggiungi-vincitori-admin/modal-aggiungi-vincitori-admin.component';
+import { ModalConfermaComponent } from '../modals/modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from '../modals/modal-info/modal-info.component';
+import { ModalAggiungiVincitoriAdminComponent } from '../modals/modal-aggiungi-vincitori-admin/modal-aggiungi-vincitori-admin.component';
 import { UserService } from 'src/app/services/user.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-gestione-partite-admin',
@@ -35,7 +36,8 @@ export class GestionePartiteAdminComponent implements OnInit {
     private partitaSrv: PartitaService,
     private modalSrv: MdbModalService,
     private authSrv: AuthService,
-    private userSrv: UserService
+    private userSrv: UserService,
+    private modalDatiSrv: ModalService
   ) {}
 
   ngOnInit() {
@@ -174,7 +176,7 @@ export class GestionePartiteAdminComponent implements OnInit {
 
     this.modalRef3.onClose.subscribe((result) => {
       if (result.tipo === 'vittoria' || result.tipo === 'sconfitta') {
-        this.userSrv.setDatiModalAdmin(result);
+        this.modalDatiSrv.setDatiModalAdmin(result);
 
         this.modalRef3!.close();
 
@@ -189,7 +191,7 @@ export class GestionePartiteAdminComponent implements OnInit {
           this.modalRef.onClose.subscribe((confermato: boolean) => {
             this.caricamento = true;
             if (confermato) {
-              const datiModalAdmin = this.userSrv.getDatiModalAdmin();
+              const datiModalAdmin = this.modalDatiSrv.getDatiModalAdmin();
               if (
                 datiModalAdmin &&
                 datiModalAdmin.tipo &&

@@ -3,8 +3,8 @@ import { User } from 'src/app/models/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { FilterUsers } from 'src/app/pipes/filter-users.pipe';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
-import { ModalInfoComponent } from '../modal-info/modal-info.component';
+import { ModalConfermaComponent } from '../modals/modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from '../modals/modal-info/modal-info.component';
 
 @Component({
   selector: 'app-users',

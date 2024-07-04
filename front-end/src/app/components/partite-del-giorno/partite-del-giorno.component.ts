@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { AuthData } from 'src/app/models/auth-data.interface';
 import { AuthService } from 'src/app/auth/auth.service';
-import { ModalInfoComponent } from '../modal-info/modal-info.component';
-import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from '../modals/modal-info/modal-info.component';
+import { ModalConfermaComponent } from '../modals/modal-conferma/modal-conferma.component';
 
 @Component({
   selector: 'app-partite-del-giorno',

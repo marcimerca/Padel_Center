@@ -6,9 +6,9 @@ import { Campo } from 'src/app/models/campo.interface';
 import { SlotDisponibilita } from 'src/app/models/slot-disponibilita.interface';
 import { CampoService } from 'src/app/services/campo.service';
 import { PartitaService } from 'src/app/services/partita.service';
-import { ModalConfermaComponent } from '../modal-conferma/modal-conferma.component';
-import { ModalInfoComponent } from '../modal-info/modal-info.component';
-import { ModalPrenotazioneAdminComponent } from '../modal-prenotazione-admin/modal-prenotazione-admin.component';
+import { ModalConfermaComponent } from '../modals/modal-conferma/modal-conferma.component';
+import { ModalInfoComponent } from '../modals/modal-info/modal-info.component';
+import { ModalPrenotazioneAdminComponent } from '../modals/modal-prenotazione-admin/modal-prenotazione-admin.component';
 
 @Component({
   selector: 'app-gestione-disponibilita-admin',
