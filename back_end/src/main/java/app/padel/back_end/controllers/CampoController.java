@@ -26,7 +26,7 @@ public class CampoController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
-    public String saveCampo(@RequestBody @Validated CampoDto campoDto, BindingResult bindingResult) {
+    public Campo saveCampo(@RequestBody @Validated CampoDto campoDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).
                     reduce("", (s, s2) -> s + s2));

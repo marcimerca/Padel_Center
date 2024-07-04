@@ -3,6 +3,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class UserDto {
@@ -27,6 +28,6 @@ public class UserDto {
     @NotBlank(message = "cognome non può essere null, vuoto, o composto da soli spazi")
     private String cognome;
 
-    private String avatar;
+    private MultipartFile avatar;
 
 }

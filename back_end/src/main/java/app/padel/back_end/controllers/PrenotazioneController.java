@@ -11,6 +11,7 @@ import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.services.PartitaService;
 import app.padel.back_end.services.PrenotazioneService;
 import app.padel.back_end.services.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,6 +36,16 @@ public class PrenotazioneController {
 
     @Autowired
     private UserService userService;
+
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public PrenotazioneController(PartitaService partitaService, PrenotazioneService prenotazioneService, ObjectMapper objectMapper) {
+        this.partitaService = partitaService;
+        this.prenotazioneService = prenotazioneService;
+        this.objectMapper = objectMapper;
+    }
+
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/partite")
@@ -141,5 +152,44 @@ public class PrenotazioneController {
     public String annullaPrenotazioneAdmin(@PathVariable("id") int id) {
         return prenotazioneService.annullaPrenotazioneAdmin(id);
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("/prenotazioni/{idPartita}/{userId}")
+    public String annullaPrenotazionePartitaAdmin(@PathVariable int idPartita, @PathVariable int userId) {
+        return prenotazioneService.annullaPrenotazionePartitaAdmin(idPartita, userId);
+    }
+
+
+    @PutMapping("/partite/{id}/completa")
+    public Partita completaPartita(@PathVariable("id") int id) {
+        return prenotazioneService.bloccaESbloccaPartita(id);
+
+    }
+
+
+
+    @PutMapping("/partite/aggiungi-vincitori/{partitaId}")
+    public Partita aggiungiVincitoriAllaPartita(
+            @PathVariable("partitaId") int partitaId,
+            @RequestParam("tipoRisultato") String tipoRisultato,
+            @RequestBody User compagno) {
+
+        Partita partitaAggiornata = prenotazioneService.aggiungiVincitoriAllaPartita(partitaId, compagno, tipoRisultato);
+        return partitaAggiornata;
+
+    }
+
+
+    @PutMapping("/partite/aggiungi-vincitori-admin/{partitaId}")
+    public Partita aggiungiVincitoriAllaPartitaAdmin(
+            @PathVariable("partitaId") int partitaId,
+            @RequestParam("tipoRisultato") String tipoRisultato,
+            @RequestBody List<User> compagni) {
+
+        Partita partitaAggiornata = prenotazioneService.aggiungiVincitoriAllaPartitaAdmin(partitaId, compagni, tipoRisultato);
+        return partitaAggiornata;
+
+    }
+
 
 }

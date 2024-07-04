@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class SlotOrarioDto {
 
-    @NotNull(message = "inizio non può essere null")
+ /*   @NotNull(message = "inizio non può essere null")*/
     private LocalTime inizio;
 
     @NotNull(message = "campoId non può essere null")

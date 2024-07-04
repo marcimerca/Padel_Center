@@ -6,6 +6,7 @@ import app.padel.back_end.entities.Campo;
 import app.padel.back_end.entities.SlotOrario;
 import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
+import app.padel.back_end.services.CampoService;
 import app.padel.back_end.services.SlotOrarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +23,9 @@ public class SlotOrarioController {
 
     @Autowired
     private SlotOrarioService slotOrarioService;
+
+    @Autowired
+    private CampoService campoService;
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -67,5 +71,14 @@ public class SlotOrarioController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteSlotOrario(@PathVariable int id) {
         return slotOrarioService.deleteSlotOrario(id);
+    }
+
+    @DeleteMapping("/slot-orari/campo/{campoId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String deleteSlotsByCampo(@PathVariable int campoId) {
+        Campo campo = campoService.getCampoById(campoId)
+                .orElseThrow(() -> new NotFoundException("Campo non trovato con id: " + campoId));
+       return slotOrarioService.deleteSlotByCampo(campo);
+
     }
 }

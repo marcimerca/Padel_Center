@@ -1,5 +1,6 @@
 package app.padel.back_end.repositories;
 
+import app.padel.back_end.entities.Campo;
 import app.padel.back_end.entities.Partita;
 import app.padel.back_end.entities.SlotOrario;
 import app.padel.back_end.entities.User;
@@ -14,4 +15,6 @@ public interface PartitaRepository extends JpaRepository<Partita,Integer> {
     public List<Partita> findByDataPrenotazione(LocalDate date);
 
     public List<Partita> findByUtentiPrenotati(User user);
+
+
 }

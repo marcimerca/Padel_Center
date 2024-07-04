@@ -32,5 +32,14 @@ public class Partita extends Prenotazione  {
     private List<User> utentiPrenotati = new ArrayList<>();
 
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "partite_giocatori_vincenti",
+            joinColumns = @JoinColumn(name = "partita_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> giocatoriVincenti = new ArrayList<>();
+
+
 
 }

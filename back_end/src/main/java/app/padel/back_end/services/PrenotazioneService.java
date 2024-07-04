@@ -8,13 +8,19 @@ import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.PartitaRepository;
 import app.padel.back_end.repositories.PrenotazioneRepository;
 import app.padel.back_end.repositories.SlotOrarioRepository;
+import app.padel.back_end.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +37,12 @@ public class PrenotazioneService {
 
     @Autowired
     private SlotOrarioRepository slotOrarioRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private JavaMailSenderImpl javaMailSender;
 
 
     public String savePartita(PrenotazioneDto prenotazioneDto) {
@@ -183,6 +195,28 @@ public class PrenotazioneService {
 
     }
 
+
+    public Partita bloccaESbloccaPartita(int idPartita) {
+        Optional<Partita> partitaOptional = partitaRepository.findById(idPartita);
+
+        if (partitaOptional.isPresent()) {
+            Partita partita = partitaOptional.get();
+
+            if (partita.getNumGiocatoriAttuali() == partita.getNumMaxGiocatori()) {
+                partita.setNumGiocatoriAttuali(partita.getUtentiPrenotati().size());
+                partitaRepository.save(partita);
+               return partita;
+            } else {
+                partita.setNumGiocatoriAttuali(partita.getNumMaxGiocatori());
+                partitaRepository.save(partita);
+                return partita;
+            }
+        } else {
+            throw new NotFoundException("La partita con id " + idPartita + " non è stata trovata");
+        }
+    }
+
+
     public Partita updatePartita(int id, UpdatePartita updatePartitaDto) {
         Optional<Partita> partitaOptional = findPartitaById(id);
 
@@ -193,7 +227,7 @@ public class PrenotazioneService {
                 throw new BadRequestException("Impossibile modificare una partita con data nel passato.");
             }
 
-            // Controllo se il numero massimo di giocatori è stato raggiunto
+
             if (partita.getNumGiocatoriAttuali() + updatePartitaDto.getNuoviUtenti().size() > partita.getNumMaxGiocatori()) {
                 throw new BadRequestException("La partita ha già raggiunto il numero massimo di giocatori.");
             }
@@ -201,7 +235,7 @@ public class PrenotazioneService {
             List<User> utentiAttuali = partita.getUtentiPrenotati();
             for (User nuovoUtente : updatePartitaDto.getNuoviUtenti()) {
                 if (updatePartitaDto.isAggiungiUtente()) {
-                    // Aggiungi un nuovo utente solo se non è già presente nella lista
+
                     if (!utentiAttuali.contains(nuovoUtente)) {
                         utentiAttuali.add(nuovoUtente);
                     } else {
@@ -251,5 +285,143 @@ public class PrenotazioneService {
             throw new NotFoundException("La prenotazione amministrativa con id " + id + " non è stata trovata.");
         }
     }
+
+    public String annullaPrenotazionePartitaAdmin(int idPartita, int userId) {
+        Optional<Partita> partitaOptional = partitaRepository.findById(idPartita);
+        if (partitaOptional.isPresent()) {
+            Partita partita = partitaOptional.get();
+            Optional<User> userOptional = userRepository.findById(userId);
+
+            if(userOptional.isPresent()){
+                partita.setNumGiocatoriAttuali(partita.getNumGiocatoriAttuali() - 1);
+                if(partita.getUtentiPrenotati().isEmpty()){
+                    prenotazioneRepository.delete(partita);
+                    return "Utente rimosso e partita eliminata correttamente";
+                } else {
+                    partita.getUtentiPrenotati().remove(userOptional.get());
+                    prenotazioneRepository.save(partita);
+                    return "Utente rimosso correttamente dalla partita";
+                }
+
+            } else {
+                return "Utente con id " + userId + "non è stato trovato";
+            }
+
+        } else {
+            throw new NotFoundException("La partita con id " + idPartita + " non è stata trovata");
+        }
+    }
+
+/*parte vincitori*/
+
+
+
+
+    @Transactional
+    public Partita aggiungiVincitoriAllaPartita(int partitaId, User compagno, String tipoRisultato) {
+
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Prenotazione> partitaOptional = prenotazioneRepository.findById(partitaId);
+
+        if (!partitaOptional.isPresent()) {
+            throw new NotFoundException("Partita con ID " + partitaId + " non trovata.");
+        }
+
+        Partita partita = (Partita) partitaOptional.get();
+
+
+        if ("vittoria".equals(tipoRisultato)) {
+
+            partita.getGiocatoriVincenti().removeAll(partita.getUtentiPrenotati());
+            partita.getGiocatoriVincenti().add(loggedUser);
+            partita.getGiocatoriVincenti().add(compagno);
+        } else if ("sconfitta".equals(tipoRisultato)) {
+
+            partita.getGiocatoriVincenti().removeAll(partita.getUtentiPrenotati());
+            partita.getGiocatoriVincenti().addAll(partita.getUtentiPrenotati());
+            partita.getGiocatoriVincenti().remove(loggedUser);
+            partita.getGiocatoriVincenti().remove(compagno);
+        } else {
+            throw new IllegalArgumentException("Tipo di risultato non supportato: " + tipoRisultato);
+        }
+
+        prenotazioneRepository.save(partita);
+
+
+        String subject = "Registrazione risultato";
+        String text = "Registrazione risultato avvenuta con successo: La partita del " + partita.getDataPrenotazione() +
+                " (" + partita.getSlotOrario().getInizio() + " - " + partita.getSlotOrario().getFine() + ") è stata vinta da " +
+                partita.getGiocatoriVincenti().get(0).getNome()+ " " + partita.getGiocatoriVincenti().get(0).getCognome() + " e " +
+                partita.getGiocatoriVincenti().get(1).getNome() + " " + partita.getGiocatoriVincenti().get(1).getCognome();
+
+        partita.getUtentiPrenotati().forEach(user -> {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getEmail());
+            message.setSubject(subject);
+            message.setText(text);
+            sendEmail(message);
+        });
+
+        return partita;
+    }
+
+    @Transactional
+    public Partita aggiungiVincitoriAllaPartitaAdmin(int partitaId, List<User> compagni, String tipoRisultato) {
+
+        Optional<Prenotazione> partitaOptional = prenotazioneRepository.findById(partitaId);
+
+        if (!partitaOptional.isPresent()) {
+            throw new NotFoundException("Partita con ID " + partitaId + " non trovata.");
+        }
+
+        Partita partita = (Partita) partitaOptional.get();
+
+
+        if ("vittoria".equals(tipoRisultato)) {
+
+            partita.getGiocatoriVincenti().removeAll(partita.getUtentiPrenotati());
+            partita.getGiocatoriVincenti().addAll(compagni);
+
+
+
+        } else if ("sconfitta".equals(tipoRisultato)) {
+
+            partita.getGiocatoriVincenti().removeAll(partita.getUtentiPrenotati());
+            partita.getGiocatoriVincenti().addAll(partita.getUtentiPrenotati());
+            partita.getGiocatoriVincenti().removeAll(compagni);
+
+        } else {
+            throw new IllegalArgumentException("Tipo di risultato non supportato: " + tipoRisultato);
+        }
+
+        prenotazioneRepository.save(partita);
+
+
+        String subject = "Registrazione risultato";
+        String text = "Registrazione risultato avvenuta con successo: La partita del " + partita.getDataPrenotazione() +
+                " (" + partita.getSlotOrario().getInizio() + " - " + partita.getSlotOrario().getFine() + ") è stata vinta da " +
+                partita.getGiocatoriVincenti().get(0).getNome()+ " " + partita.getGiocatoriVincenti().get(0).getCognome() + " e " +
+                partita.getGiocatoriVincenti().get(1).getNome() + " " + partita.getGiocatoriVincenti().get(1).getCognome();
+
+        partita.getUtentiPrenotati().forEach(user -> {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getEmail());
+            message.setSubject(subject);
+            message.setText(text);
+            sendEmail(message);
+        });
+
+        return partita;
+    }
+
+
+    @Async
+    public void sendEmail(SimpleMailMessage message) {
+        javaMailSender.send(message);
+    }
+
+
+
 
 }

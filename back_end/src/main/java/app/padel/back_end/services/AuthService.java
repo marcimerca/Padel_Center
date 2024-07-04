@@ -25,6 +25,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     public AuthDataDto authenticateUserAndCreateToken(UserLoginDto userLoginDto) {
         Optional<User> userOptional = userService.getUserByEmail(userLoginDto.getEmail());
 
@@ -48,7 +49,7 @@ public class AuthService {
             }
 
         } else {
-            throw new NotFoundException(" L'utente con email " + userLoginDto.getEmail() + "non è stato trovato");
+            throw new NotFoundException(" L'utente con email " + userLoginDto.getEmail() + " non è stato trovato");
         }
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CampoDisponibilitaDto {
 
+    private int id;
     private String nomeCampo;
     private List<SlotDisponibilitaDto> slotOrari;
 }

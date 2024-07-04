@@ -6,6 +6,7 @@ import app.padel.back_end.entities.SlotOrario;
 import app.padel.back_end.exceptions.BadRequestException;
 import app.padel.back_end.exceptions.NotFoundException;
 import app.padel.back_end.repositories.CampoRepository;
+import app.padel.back_end.repositories.PrenotazioneRepository;
 import app.padel.back_end.repositories.SlotOrarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class SlotOrarioService {
 
     @Autowired
     private CampoRepository campoRepository;
+
+    @Autowired
+    private PrenotazioneRepository prenotazioneRepository;
 
     public String saveSlotOrario(SlotOrarioDto slotOrarioDto) {
         Optional<Campo> campoOptional = campoRepository.findById(slotOrarioDto.getCampoId());
@@ -67,7 +71,6 @@ public class SlotOrarioService {
             LocalTime inizio = slotOrarioDto.getInizio();
             LocalTime fine = inizio.plusMinutes(90);
 
-            // Escludi l'attuale slot orario dal controllo di sovrapposizione
             List<SlotOrario> slotSovrapposti = slotOrarioRepository.findByCampoIdAndInizioLessThanAndFineGreaterThan(slotOrario.getCampo().getId(), fine, inizio);
             slotSovrapposti.removeIf(s -> s.getId() == slotOrario.getId());
 
@@ -100,6 +103,23 @@ public class SlotOrarioService {
         } else {
             throw new NotFoundException("Lo slot orario con id " + id + " non è stato trovato");
         }
+    }
+
+
+    @Transactional
+    public String deleteSlotByCampo(Campo campo) {
+
+        if (campo == null) {
+            throw new NotFoundException("Il campo specificato non esiste");
+        }
+
+        List<SlotOrario> slotOrari = slotOrarioRepository.findByCampo(campo);
+        if (slotOrari.isEmpty()) {
+            throw new NotFoundException("Non ci sono slot orari associati a questo campo");
+        }
+        campo.getSlotOrari().forEach((s)->prenotazioneRepository.deleteBySlotOrario(s));
+        slotOrarioRepository.deleteByCampo(campo);
+        return "Tutti gli slot del campo sono stati eliminati";
     }
 
 
