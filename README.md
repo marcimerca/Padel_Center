@@ -66,6 +66,7 @@ In questa pagina l'amministratore può vedere gli slot orari liberi ed occupati 
 - Cancella Prenotazione: annulla una prenotazione precedentemente creata dall'amministratore o da un utente.
 - Seleziona tutto: seleziona tutti gli slot di tutti i campi, sia occupati che non occupati.
 - Seleziona non occupati: seleziona tutti gli slot liberi di tutti i campi.
+- Seleziona: bottone che compare all'hover sul nome del campo, permette di selezionare tutti gli slot liberi di quel campo.
 
 2. **Gestione campi**
 
@@ -75,6 +76,7 @@ L'amministratore qui gestisce i campi da gioco del circolo. Ha una panoramica di
 - Aggiungi slot orario: crea un nuovo slot orario (previa verifica di non sovrapposizione con un altro slot dello stesso campo).
 - Elimina tutti gli slot: elimina tutti gli slot orari del campo.
 - Elimina campo: rimuove il campo con tutti i suoi relativi slot orari.
+- Bottone con il simbolo di una penna: posizionato vicino al nome del campo, apre una modale che permette di modificare il nome del campo.
 
 È possibile inoltre creare un nuovo campo, che verrà inizialmente istanziato senza slot orari, con la possibilità di aggiungerli a seconda delle proprie preferenze.
 
@@ -121,10 +123,6 @@ L'amministratore può cercare un utente tramite la barra di ricerca, visualizzar
 git clone https://github.com/marcimerca/Padel.git
 cd Padel/frontend
 ```
-
-
-
-
 
 ### Installa le dipendenze necessarie
 `npm install`
