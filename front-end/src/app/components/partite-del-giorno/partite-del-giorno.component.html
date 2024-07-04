@@ -1,4 +1,4 @@
-<div class="container my-4 position-relative">
+<header class="container my-4 position-relative">
   <div class="spinner-overlay" *ngIf="caricamento">
     <div class="spinner-border text-light" role="status">
       <span class="visually-hidden">Loading...</span>
@@ -29,9 +29,9 @@
       </div>
     </div>
   </div>
-</div>
+</header>
 
-<div class="container text-start my-4 min-vh-100" *ngIf="partite">
+<main class="container text-start my-4 min-vh-100" *ngIf="partite">
   <h1 *ngIf="dataOggi" class="mb-3 text-primary">Partite del giorno</h1>
   <h1 *ngIf="!dataOggi" class="mb-3 text-primary">
     Partite del {{ formattaDataParole(dataSelezionata) }}
@@ -204,4 +204,4 @@
       </p>
     </div>
   </ng-container>
-</div>
+</main>

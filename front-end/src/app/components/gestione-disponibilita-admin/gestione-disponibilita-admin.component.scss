@@ -67,11 +67,11 @@ table .btn {
 
 @media (max-width: 768px) {
   .layout-desktop {
-    display: none;
+    display: none !important;
   }
 
   .layout-mobile {
-    display: block;
+    display: block !important;
   }
 }
 

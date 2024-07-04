@@ -7,9 +7,14 @@
   z-index: 600;
 }
 
-@media (max-width: 576) {
-  .sidebar {
-    width: 50%;
+@media (min-width: 768px) {
+  .container.mt-2 {
+    max-width: 100%;
+    width: calc(100% - 16rem);
+    margin: 0 auto;
+  }
+  .main-content {
+    margin-left: 16rem;
   }
 }
 
@@ -48,14 +53,4 @@ a {
 
 header {
   width: 16rem;
-}
-
-.main-content {
-  margin-left: 16rem;
-}
-
-.container.mt-2 {
-  max-width: 100%;
-  width: calc(100% - 16rem);
-  margin: 0 auto;
 }

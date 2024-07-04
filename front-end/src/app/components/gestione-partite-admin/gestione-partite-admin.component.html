@@ -1,4 +1,4 @@
-<div class="container my-4 position-relative w-100">
+<header class="container my-4 position-relative w-100">
   <div class="row g-0 justify-content-start">
     <div class="col-5 col-md-4 d-flex border-end border-success">
       <div class="card custom-border-radius w-100 p-3 bg-success text-primary">
@@ -23,9 +23,9 @@
       </div>
     </div>
   </div>
-</div>
+</header>
 
-<div class="container text-start mt-3" *ngIf="partite">
+<main class="container text-start mt-3" *ngIf="partite">
   <h1 *ngIf="dataOggi" class="mb-3 text-primary">Partite del giorno</h1>
   <h1 *ngIf="!dataOggi" class="mb-3 text-primary">
     Partite del {{ formattaDataParole(dataSelezionata) }}
@@ -267,4 +267,4 @@
       />
     </div>
   </ng-container>
-</div>
+</main>
