@@ -123,7 +123,8 @@ export class RegisterComponent implements OnInit {
                       this.modalRef = this.modalSrv.open(ModalInfoComponent, {
                         modalClass: 'modal-dialog-centered',
                         data: {
-                          messaggio: 'Registrazione avvenuta correttamente',
+                          titolo:
+                            'Registrazione avvenuta correttamente, fare il login per accedere al sito',
                         },
                       });
                       setTimeout(() => {
@@ -134,7 +135,7 @@ export class RegisterComponent implements OnInit {
                       this.modalRef = this.modalSrv.open(ModalInfoComponent, {
                         modalClass: 'modal-dialog-centered',
                         data: {
-                          messaggio:
+                          titolo:
                             error.error ||
                             'Si è verificato un errore durante la registrazione. Riprova più tardi.',
                         },
@@ -167,7 +168,7 @@ export class RegisterComponent implements OnInit {
         this.modalRef = this.modalSrv.open(ModalInfoComponent, {
           modalClass: 'modal-dialog-centered',
           data: {
-            messaggio:
+            titolo:
               error.error ||
               'Si è verificato un errore durante il login. Riprova più tardi.',
           },

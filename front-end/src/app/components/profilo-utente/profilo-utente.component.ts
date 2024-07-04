@@ -451,4 +451,34 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     const endTime = this.convertiOrarioAData(partita.slotOrario.fine);
     return currentTime >= endTime;
   }
+
+  apriModaleEliminaProfilo() {
+    this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        titolo: 'Confermi di voler eliminare il profilo?',
+      },
+    });
+
+    this.modalRef.onClose.subscribe((result: string) => {
+      if (result === 'conferma') {
+        this.userSrv.deleteUser(this.user!.id);
+        this.modaleConfermaEliminazione();
+      }
+    });
+  }
+
+  modaleConfermaEliminazione() {
+    this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
+      modalClass: 'modal-dialog-centered',
+      data: {
+        titolo: 'Profilo eliminato correttamente',
+      },
+    });
+    this.logout();
+  }
+
+  logout() {
+    this.authSrv.logout();
+  }
 }
