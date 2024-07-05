@@ -41,7 +41,10 @@
               >Home</a
             >
           </li>
-          <li class="dropdown-divider mb-3 bg-primary"></li>
+          <li
+            *ngIf="user?.ruolo == 'ADMIN'"
+            class="dropdown-divider mb-3 bg-primary"
+          ></li>
           <li class="nav-item" *ngIf="!user">
             <a
               class="nav-link"
@@ -87,7 +90,10 @@
               >Profilo</a
             >
           </li>
-          <li class="dropdown-divider mb-3 bg-primary"></li>
+          <li
+            *ngIf="user?.ruolo == 'ADMIN'"
+            class="dropdown-divider mb-3 bg-primary"
+          ></li>
           <div *ngIf="user?.ruolo === 'ADMIN'">
             <li class="nav-item d-md-none">
               <a

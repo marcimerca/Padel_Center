@@ -42,22 +42,22 @@
         <div class="card bg-success p-3 rounded-6">
           <div class="card-body">
             <div class="row mb-3">
-              <div class="col-5 col-sm-3">
+              <div class="col-6 col-sm-3">
                 <p class="fw-bold mb-0">
                   <i class="bi bi-person-fill me-2"></i> Nome
                 </p>
               </div>
-              <div class="col-7 col-sm-9">
+              <div class="col-6 col-sm-9">
                 <p class="mb-0">{{ user!.nome | capitalizeFirst }}</p>
               </div>
             </div>
             <div class="row mb-3">
-              <div class="col-5 col-sm-3">
+              <div class="col-6 col-sm-3">
                 <p class="fw-bold mb-0">
                   <i class="bi-person-badge me-2"></i> Cognome
                 </p>
               </div>
-              <div class="col-7 col-sm-9">
+              <div class="col-6 col-sm-9">
                 <p class="mb-0">{{ user!.cognome | capitalizeFirst }}</p>
               </div>
             </div>
@@ -76,7 +76,9 @@
               <div class="col-6 col-sm-5">
                 <div class="card bg-primary text-success">
                   <div class="card-body">
-                    <div class="d-flex justify-content-between px-md-1">
+                    <div
+                      class="d-flex justify-content-md-between justify-content-center px-md-1"
+                    >
                       <div class="align-self-center">
                         <i class="bi bi-trophy-fill fs-1"></i>
                       </div>
@@ -91,7 +93,9 @@
               <div class="col-6 col-sm-5">
                 <div class="card bg-secondary">
                   <div class="card-body">
-                    <div class="d-flex justify-content-between px-md-1">
+                    <div
+                      class="d-flex justify-content-md-between justify-content-center"
+                    >
                       <div class="align-self-center">
                         <i class="bi bi-emoji-frown-fill fs-1"></i>
                       </div>
@@ -126,7 +130,19 @@
   </div>
   <!-- Parte delle partite da giocare -->
   <div class="container text-start mt-md-3 z-0">
-    <h2 class="text-primary">Partite da giocare</h2>
+    <div
+      class="d-flex flex-wrap align-items-center justify-content-between gap-md-5"
+    >
+      <h2 class="text-primary mt-0 mb-4">Partite da giocare</h2>
+      <span
+        (click)="apriModaleInfoCircolo()"
+        class="text-primary mb-4 testo d-flex align-items-center"
+        style="text-decoration: underline; cursor: pointer"
+        >Per annullare una partita che si svolge fra meno di 24 ore, contattare
+        il circolo (0444/ 492439)
+      </span>
+    </div>
+
     <h4 *ngIf="partiteDaGiocare.length <= 0">
       Nessuna partita presente in questa sezione.
     </h4>
@@ -319,7 +335,7 @@
   <!-- Parte delle partite passate -->
 
   <div class="container text-start mt-3 z-0">
-    <h2 class="text-primary">Partite passate</h2>
+    <h2 class="text-primary mb-4">Partite passate</h2>
     <h4 *ngIf="partitePassate.length <= 0">
       Nessuna partita presente in questa sezione.
     </h4>

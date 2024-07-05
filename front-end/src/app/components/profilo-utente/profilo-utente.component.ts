@@ -229,7 +229,7 @@ export class ProfiloUtenteComponent implements OnInit, OnDestroy {
     this.modalRef2 = this.modalSrv.open(ModalInfoComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
-        titolo: 'Numero: 0444/198471',
+        titolo: 'Numero: 0444/492439',
       },
     });
   }

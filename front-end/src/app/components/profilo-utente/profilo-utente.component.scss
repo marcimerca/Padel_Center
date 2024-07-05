@@ -18,6 +18,9 @@
     font-size: 11px;
     padding: 10px;
   }
+  .testo {
+    font-size: 12px;
+  }
 }
 .custom-button {
   width: 220px;
@@ -56,4 +59,8 @@
     height: 100px;
     width: 100px;
   }
+}
+
+.testo:hover {
+  scale: 1.05;
 }
