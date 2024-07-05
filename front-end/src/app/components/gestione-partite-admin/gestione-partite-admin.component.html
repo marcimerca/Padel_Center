@@ -25,19 +25,20 @@
   </div>
 </header>
 
-<main class="container text-start mt-3" *ngIf="partite">
+<main class="container text-start mt-3 z-0 position-relative" *ngIf="partite">
   <h1 *ngIf="dataOggi" class="mb-3 text-primary">Partite del giorno</h1>
   <h1 *ngIf="!dataOggi" class="mb-3 text-primary">
     Partite del {{ formattaDataParole(dataSelezionata) }}
   </h1>
+
   <div class="row position-relative">
     <div
-      class="d-flex justify-content-center text-primary align-items-center position-fixed z-3"
+      class="d-flex justify-content-center text-primary align-items-center position-absolute z-3"
       *ngIf="caricamento"
       style="
         z-index: 1050;
-        top: 50vh;
-        left: 50vw;
+        top: 50%;
+        left: 50%;
         transform: translate(-50%, -50%);
       "
     >
@@ -54,7 +55,7 @@
           class="btn btn-secondary btn-floating btn-sm"
           aria-label="Close"
           (click)="apriModaleEliminaPartita(partita.id!)"
-          style="position: absolute; top: -10px; right: -12px; z-index: 10"
+          style="position: absolute; top: -10px; right: -12px"
         >
           <i class="bi bi-x-circle-fill fs-3"></i>
         </button>
@@ -218,7 +219,7 @@
               style="width: 220px"
               [ngClass]="{ disabled: partita.utentiPrenotati.length < 4 }"
               class="btn btn-primary btn-sm text-success shadow-none custom-button"
-              (click)="apriModaleRisultato2(partita)"
+              (click)="apriModaleRisultato(partita)"
             >
               Registra risultato
             </button>

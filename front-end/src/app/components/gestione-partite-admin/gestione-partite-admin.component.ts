@@ -166,7 +166,7 @@ export class GestionePartiteAdminComponent implements OnInit {
     });
   }
 
-  apriModaleRisultato2(partita: Partita) {
+  apriModaleRisultato(partita: Partita) {
     this.modalRef3 = this.modalSrv.open(ModalAggiungiVincitoriAdminComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
@@ -177,20 +177,19 @@ export class GestionePartiteAdminComponent implements OnInit {
     this.modalRef3.onClose.subscribe((result) => {
       if (result.tipo === 'vittoria' || result.tipo === 'sconfitta') {
         this.modalDatiSrv.setDatiModalAdmin(result);
-
         this.modalRef3!.close();
 
         setTimeout(() => {
           this.modalRef = this.modalSrv.open(ModalConfermaComponent, {
             modalClass: 'modal-dialog-centered',
             data: {
-              titolo: `Confermi il risultato: "${result.tipo}" per ${result.compagni[0].nome} ${result.compagni[0].cognome} e ${result.compagni[1].nome}  ${result.compagni[1].cognome} ?`,
+              titolo: `Confermi il risultato: "${result.tipo}" per ${result.compagni[0].nome} ${result.compagni[0].cognome} e ${result.compagni[1].nome} ${result.compagni[1].cognome}?`,
             },
           });
 
           this.modalRef.onClose.subscribe((confermato: boolean) => {
-            this.caricamento = true;
             if (confermato) {
+              this.caricamento = true;
               const datiModalAdmin = this.modalDatiSrv.getDatiModalAdmin();
               if (
                 datiModalAdmin &&
@@ -207,7 +206,6 @@ export class GestionePartiteAdminComponent implements OnInit {
                     (response) => {
                       console.log('Vincitori aggiunti con successo:', response);
                       this.caricamento = false;
-
                       this.apriModaleConfermaRegistrazioneRisultato();
                       this.caricaPartite();
                     },
@@ -219,9 +217,12 @@ export class GestionePartiteAdminComponent implements OnInit {
                       );
                     }
                   );
+              } else {
+                this.caricamento = false;
               }
+            } else {
+              this.caricamento = false;
             }
-            this.caricamento = false;
           });
         }, 100);
       }
