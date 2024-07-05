@@ -12,6 +12,7 @@ Il mio progetto per il capstone finale di EPICODE prevede la realizzazione di un
 - **Front-end:** Angular
 - **Back-end:** Spring Boot
 - **DBMS:** PostgreSQL
+- **UI Library:** MDB Bootstrap
 
 ## Pagine e funzionalità
 
